@@ -1,7 +1,9 @@
 ﻿<Window x:Class="DisplacementFilter.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:l="clr-namespace:DisplacementFilter"
         Title="Displacement filter">
+
   <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
     <StackPanel Orientation="Vertical">
       <Button Content="Create highmap" Height="46"  />
@@ -23,6 +25,7 @@
       <Border BorderThickness="3" Height="50" Width="50" BorderBrush="#FF1D87F1">
         <Image x:Name="ShowColor" Height="50" Width="50" />
       </Border>
+      <l:SpinBox Width="91" Height="349" />
     </StackPanel>
   </StackPanel>
 </Window>
