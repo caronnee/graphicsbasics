@@ -2,7 +2,7 @@
 #define __HANDLER__
 
 #include <stdio.h>
-#include "String.h"
+#include "GuiString.h"
 
 class FileHandler
 {
@@ -11,7 +11,7 @@ public:
 	FileHandler(); 
 	bool Open(const char * name, const char * mode);
 	float GetFloat();
-	String GetWord();
+	GuiString GetWord();
 	bool End()const;
 	~FileHandler();
 	void Write(void * c, int elementSize, size_t elements);

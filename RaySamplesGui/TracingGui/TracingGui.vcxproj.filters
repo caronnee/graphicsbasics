@@ -136,9 +136,6 @@
     <ClCompile Include="Sources\scene.cpp">
       <Filter>Source Files\Logic\Debug\Scene</Filter>
     </ClCompile>
-    <ClCompile Include="Sources\String.cpp">
-      <Filter>Source Files\Logic\Utils</Filter>
-    </ClCompile>
     <ClCompile Include="Sources\vector.cpp">
       <Filter>Source Files\Logic\Math</Filter>
     </ClCompile>
@@ -177,6 +174,9 @@
     </ClCompile>
     <ClCompile Include="Sources\DoubleTriangle.cpp">
       <Filter>Source Files\Logic\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\GuiString.cpp">
+      <Filter>Source Files\Logic\Utils</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -254,9 +254,6 @@
     <ClInclude Include="Sources\scene.h">
       <Filter>Source Files\Logic\Debug\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="Sources\String.h">
-      <Filter>Source Files\Logic\Utils</Filter>
-    </ClInclude>
     <ClInclude Include="Sources\Vector.h">
       <Filter>Source Files\Logic\Math</Filter>
     </ClInclude>
@@ -271,6 +268,9 @@
     </ClInclude>
     <ClInclude Include="Sources\DoubleTriangle.h">
       <Filter>Source Files\Logic\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\GuiString.h">
+      <Filter>Source Files\Logic\Utils</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -1,4 +1,4 @@
 <RCC>
-    <qresource prefix="TracingGui">
+    <qresource prefix="tracinggui">
     </qresource>
 </RCC>
