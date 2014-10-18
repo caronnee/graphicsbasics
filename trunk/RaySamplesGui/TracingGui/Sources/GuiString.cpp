@@ -1,32 +1,32 @@
 
-#include "String.h"
+#include "GuiString.h"
 #include <string.h>
 
-String::String() :_s(NULL),_len(0),_allocated(0)
+GuiString::GuiString() :_s(NULL),_len(0),_allocated(0)
 {
 
 }
-String::String(const char * c, int len)
+GuiString::GuiString(const char * c, int len)
 {
 	Create(len);
 	memcpy(_s,c,len);
 	_len = len;
 }
 
-String::String(const char * n)
+GuiString::GuiString(const char * n)
 {
 	int len = strlen(n) + 1;
 	Create(len);
 	memcpy(_s,n,len);
 }
 
-String::String(const String& str)
+GuiString::GuiString(const GuiString& str)
 {
 	Create(str._allocated);
 	Add(str._s, str._len);
 }
 
-String& String::operator=(const String & str )
+GuiString& GuiString::operator=(const GuiString & str )
 {
 	Resize(str._len);
 	memcpy(_s,str._s,str._len);
@@ -34,7 +34,7 @@ String& String::operator=(const String & str )
 	return *this;
 }
 
-void String::Destroy()
+void GuiString::Destroy()
 {
 	if ( _s )
 	{
@@ -45,7 +45,7 @@ void String::Destroy()
 	}
 }
 
-void String::Create(int size)
+void GuiString::Create(int size)
 {
 	_len = 0;
 	_allocated = size;
@@ -53,7 +53,7 @@ void String::Create(int size)
 	memset(_s,0,_allocated);
 }
 
-void String::Resize(const int & sizeWanted)
+void GuiString::Resize(const int & sizeWanted)
 {
 	if ( sizeWanted >= _allocated )
 	{
@@ -66,7 +66,7 @@ void String::Resize(const int & sizeWanted)
 	}
 }
 
-void String::Add(char * c, int len)
+void GuiString::Add(char * c, int len)
 {
 	int sizeWanted = _len +len +1;
 	Resize( sizeWanted );
@@ -74,29 +74,29 @@ void String::Add(char * c, int len)
 	_len += len;
 }
 
-void String::Add(char c)
+void GuiString::Add(char c)
 {
 	Add(&c,1);
 }
 
-void String::Add(const String & str)
+void GuiString::Add(const GuiString & str)
 {
 	Resize(_len + str._len);
 	strcat_s(_s, _allocated, str._s);
 	_len = strlen(_s);
 }
 
-size_t String::Length()
+size_t GuiString::Length()
 {
 	return _len;
 }
 
-const char * String::Str() const
+const char * GuiString::Str() const
 {
 	return _s;
 }
 
-bool String::EqualI(const String& param)
+bool GuiString::EqualI(const GuiString& param)
 {
 	return _strcmpi(_s,param._s) == 0;
 }

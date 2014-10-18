@@ -17,14 +17,14 @@ FileHandler::~FileHandler()
 
 bool FileHandler::Open(const char * n, const char * mode)
 {
-	String name(n);
+	GuiString name(n);
 	if ( name.Str()[2] != ':' )
 	{
 		char c[128];
 		GetModuleFileNameA(NULL,c,128);
 		const char * end = strrchr(c,'\\');
 		int len = end - c +1;
-		String str(c,len);
+		GuiString str(c,len);
 		str.Add(name);
 		name = str;
 	}
@@ -39,9 +39,9 @@ float FileHandler::GetFloat()
 	return f;
 }
 
-String FileHandler::GetWord()
+GuiString FileHandler::GetWord()
 {
-	String ret;
+	GuiString ret;
 	while ( !End() )
 	{
 		char c = getc(_file);

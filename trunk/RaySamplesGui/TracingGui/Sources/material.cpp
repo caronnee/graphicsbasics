@@ -1,7 +1,7 @@
 #include "Material.h"
 #include "MaterialDiffuse.h"
 #include "MaterialSpecular.h"
-#include "String.h"
+#include "GuiString.h"
 #include "Debug.h"
 #include <stdio.h>
 

@@ -21,13 +21,15 @@ void Image::AddColor(int x, int y, const Vector4d & color)
 }
 
 #include "FileHandler.h"
+#include <string>
+
 void Image::SaveHdr(const char * name)
 {
 	FileHandler file;
 	file.Open(name,"wb");
 	
 	const char * frm = "#?RADIANCE\n# RenderMachine\nFORMAT=32-bit_rle_rgbe\n\n-Y %d +X %d\n\0";
-	size_t size =strlen(frm)*2;
+	size_t size = strlen(frm)*2;
 	char * c = new char[size];
 	sprintf_s(c,size,frm,_w,_h);
 	file.Write(c,1,strlen(c));
