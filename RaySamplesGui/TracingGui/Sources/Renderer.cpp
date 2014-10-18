@@ -37,7 +37,6 @@ Vector4d Renderer::RenderPixel( int x, int y)
 		}
 		
 	}
-	float ambient = _scene->Ambient();
 	//eval brdf
 	Vector4d brdf = isect.model->GetMaterial()->GetReflectance( isect.positionModel, -ray.direction);
 	total = brdf;

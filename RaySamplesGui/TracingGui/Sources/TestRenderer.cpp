@@ -19,6 +19,6 @@ void TestRenderer::Render()
 void TestRenderer::Init(Scene * scene, Image * image, Camera * camera)
 {
 	Renderer::Init(scene,image,camera);
-	_bounces = 1 + COEF * _scene->Ligths();
+	_bounces = 1 + COEF *0;
 }
 

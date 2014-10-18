@@ -103,9 +103,6 @@
     <ClCompile Include="Sources\HdrComponent.cpp">
       <Filter>Source Files\Logic\Image</Filter>
     </ClCompile>
-    <ClCompile Include="Sources\Light.cpp">
-      <Filter>Source Files\Logic\Light</Filter>
-    </ClCompile>
     <ClCompile Include="Sources\MaterialDiffuse.cpp">
       <Filter>Source Files\Logic\Material</Filter>
     </ClCompile>
@@ -123,9 +120,6 @@
     </ClCompile>
     <ClCompile Include="Sources\Point.cpp">
       <Filter>Source Files\Logic\Model</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\PointLight.cpp">
-      <Filter>Source Files\Logic\Light</Filter>
     </ClCompile>
     <ClCompile Include="Sources\Renderer.cpp">
       <Filter>Source Files\Logic\Renderer</Filter>
@@ -178,6 +172,9 @@
     <ClCompile Include="Sources\GuiString.cpp">
       <Filter>Source Files\Logic\Utils</Filter>
     </ClCompile>
+    <ClCompile Include="Sources\MaterialLight.cpp">
+      <Filter>Source Files\Logic\Material</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="Sources/tracinggui.ui">
@@ -221,9 +218,6 @@
     <ClInclude Include="Sources\HdrComponent.h">
       <Filter>Source Files\Logic\Image</Filter>
     </ClInclude>
-    <ClInclude Include="Sources\Light.h">
-      <Filter>Source Files\Logic\Light</Filter>
-    </ClInclude>
     <ClInclude Include="Sources\Material.h">
       <Filter>Source Files\Logic\Material</Filter>
     </ClInclude>
@@ -241,9 +235,6 @@
     </ClInclude>
     <ClInclude Include="Sources\Point.h">
       <Filter>Source Files\Logic\Model</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\PointLight.h">
-      <Filter>Source Files\Logic\Light</Filter>
     </ClInclude>
     <ClInclude Include="Sources\TestRenderer.h">
       <Filter>Source Files\Logic\Renderer</Filter>
@@ -271,6 +262,9 @@
     </ClInclude>
     <ClInclude Include="Sources\GuiString.h">
       <Filter>Source Files\Logic\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\MaterialLight.h">
+      <Filter>Source Files\Logic\Material</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

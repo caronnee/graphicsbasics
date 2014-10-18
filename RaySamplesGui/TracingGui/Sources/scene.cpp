@@ -1,26 +1,10 @@
 #include "scene.h"
-#include "PointLight.h"
 #include "Plane.h"
 #include "FileHandler.h"
 
-int Scene::Ligths()
+AmbientLight& Scene::Ambient()
 {
-	return _emitters.size();
-}
-
-void Scene::SetAmbientLight(Light * light)
-{
-	_ambientLight = light;
-}
-
-float Scene::Ambient()
-{
-	if (_ambientLight)
-	{
-		Vector4d temp(0,0,0,0);
-		return _ambientLight->Irradiance(temp,temp);
-	}
-	return 0;
+	return _ambientLight;
 }
 
 Scene::Scene() :_ambientLight(NULL)
@@ -58,16 +42,8 @@ void Scene::AddModel(Geometry * model)
 	_geometry.push_back(model);
 }
 
-void Scene::AddLight(Light * light)
-{
-	_emitters.push_back(light);
-	AddModel(light->GetGeometry());
-}
-
 void Scene::Clear()
 {
-	if (_ambientLight )
-		_ambientLight->SetPower(0);
-	_emitters.clear();
+	_ambientLight.SetPower(Vector4d(0,0,0,0));
 	_geometry.clear();
 }

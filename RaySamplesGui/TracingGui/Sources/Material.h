@@ -10,7 +10,8 @@ public:
 };
 
 enum MaterialType{
-	MDiffuse
+	MDiffuse,
+	MLight
 };
 
 Material * CreateMaterial(MaterialType type, const Vector4d & parameters);

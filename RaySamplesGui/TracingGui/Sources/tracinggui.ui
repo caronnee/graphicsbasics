@@ -15,17 +15,17 @@
   </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QGridLayout" name="gridLayout_4">
-    <item row="0" column="5">
-     <widget class="QPushButton" name="bRender">
-      <property name="text">
-       <string>Render!</string>
-      </property>
-     </widget>
-    </item>
     <item row="7" column="0" colspan="11">
      <widget class="QProgressBar" name="renderProgress">
       <property name="value">
        <number>0</number>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="5">
+     <widget class="QPushButton" name="bRender">
+      <property name="text">
+       <string>Render!</string>
       </property>
      </widget>
     </item>
@@ -128,13 +128,72 @@
       </property>
      </widget>
     </item>
+    <item row="0" column="0" colspan="2">
+     <widget class="QPushButton" name="exportScene">
+      <property name="text">
+       <string>Export</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="2">
+     <widget class="QPushButton" name="loadScene">
+      <property name="text">
+       <string>Load</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="3">
+     <widget class="QLabel" name="sceneName">
+      <property name="text">
+       <string>test.scene</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="0" colspan="6">
+     <widget class="QScrollArea" name="scrollArea">
+      <property name="widgetResizable">
+       <bool>true</bool>
+      </property>
+      <widget class="QWidget" name="scrollAreaWidgetContents">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>298</width>
+         <height>295</height>
+        </rect>
+       </property>
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <layout class="QHBoxLayout" name="horizontalLayout_4">
+        <item>
+         <widget class="QLabel" name="lImage">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="text">
+           <string>TextLabel</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </widget>
+    </item>
     <item row="0" column="8" rowspan="3" colspan="3">
      <widget class="QTabWidget" name="sceneInformation">
       <property name="tabPosition">
        <enum>QTabWidget::North</enum>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="model">
        <property name="layoutDirection">
@@ -174,11 +233,18 @@
         <item row="3" column="0">
          <widget class="QPushButton" name="delObject">
           <property name="text">
-           <string>DeleteObject</string>
+           <string>Delete Object</string>
           </property>
          </widget>
         </item>
-        <item row="0" column="1" rowspan="4">
+        <item row="4" column="0">
+         <widget class="QPushButton" name="addPointLight">
+          <property name="text">
+           <string>Add Point light</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1" rowspan="5">
          <layout class="QGridLayout" name="gridLayout">
           <item row="6" column="3">
            <widget class="QDial" name="zRotation">
@@ -523,18 +589,95 @@
        <attribute name="title">
         <string>Light</string>
        </attribute>
-       <layout class="QHBoxLayout" name="horizontalLayout">
-        <item>
-         <layout class="QFormLayout" name="formLayout">
-          <item row="0" column="0">
-           <widget class="QLabel" name="lLight">
+       <layout class="QGridLayout" name="gridLayout_5">
+        <item row="0" column="0">
+         <layout class="QGridLayout" name="gridLayout_6">
+          <item row="0" column="2">
+           <widget class="QLabel" name="aB">
             <property name="text">
-             <string>watts</string>
+             <string>Ambient B</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QSpinBox" name="aGValue">
+            <property name="maximum">
+             <number>255</number>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="2">
+           <widget class="QSpinBox" name="aBValue">
+            <property name="maximum">
+             <number>255</number>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="0">
+           <widget class="QLabel" name="aR">
+            <property name="text">
+             <string>Ambient R</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QSpinBox" name="aRValue">
+            <property name="maximum">
+             <number>255</number>
             </property>
            </widget>
           </item>
           <item row="0" column="1">
-           <widget class="QDoubleSpinBox" name="doubleSpinBox"/>
+           <widget class="QLabel" name="aG">
+            <property name="text">
+             <string>Ambient G</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="3">
+           <widget class="QLabel" name="R">
+            <property name="text">
+             <string>R</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="4">
+           <widget class="QLabel" name="G">
+            <property name="text">
+             <string>G</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="5">
+           <widget class="QLabel" name="label_4">
+            <property name="text">
+             <string>B</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="3">
+           <widget class="QSpinBox" name="eLight">
+            <property name="maximum">
+             <number>255</number>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="4">
+           <widget class="QSpinBox" name="eGreen">
+            <property name="maximum">
+             <number>255</number>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="5">
+           <widget class="QSpinBox" name="eBlue">
+            <property name="maximum">
+             <number>255</number>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0" colspan="6">
+           <widget class="QListView" name="lightsList"/>
           </item>
          </layout>
         </item>
@@ -884,65 +1027,6 @@
          </item>
         </layout>
        </widget>
-      </widget>
-     </widget>
-    </item>
-    <item row="0" column="0" colspan="2">
-     <widget class="QPushButton" name="exportScene">
-      <property name="text">
-       <string>Export</string>
-      </property>
-     </widget>
-    </item>
-    <item row="0" column="2">
-     <widget class="QPushButton" name="loadScene">
-      <property name="text">
-       <string>Load</string>
-      </property>
-     </widget>
-    </item>
-    <item row="0" column="3">
-     <widget class="QLabel" name="sceneName">
-      <property name="text">
-       <string>test.scene</string>
-      </property>
-     </widget>
-    </item>
-    <item row="1" column="0" colspan="6">
-     <widget class="QScrollArea" name="scrollArea">
-      <property name="widgetResizable">
-       <bool>true</bool>
-      </property>
-      <widget class="QWidget" name="scrollAreaWidgetContents">
-       <property name="geometry">
-        <rect>
-         <x>0</x>
-         <y>0</y>
-         <width>298</width>
-         <height>295</height>
-        </rect>
-       </property>
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <layout class="QHBoxLayout" name="horizontalLayout_4">
-        <item>
-         <widget class="QLabel" name="lImage">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="text">
-           <string>TextLabel</string>
-          </property>
-         </widget>
-        </item>
-       </layout>
       </widget>
      </widget>
     </item>
