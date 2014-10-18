@@ -2,22 +2,18 @@
 #define __SCENE__
 
 #include "Camera.h"
-#include "Light.h"
+#include "AmbientLight.h"
 #include <vector>
 
 class Scene
 {
-	Light * _ambientLight;
-	std::vector<Light *> _emitters;
+	AmbientLight _ambientLight;
 	std::vector<Geometry *> _geometry;
 public:
 	Scene();
 	void AddModel(Geometry * model);
-	int Ligths();
-	void SetAmbientLight(Light * l);;
-	float Ambient();
+	AmbientLight& Ambient();
 	bool FindIntersection(const Ray & ray, Intersection& isect);
-	void AddLight(Light * light);
 	void CreateCornellBox();
 	void Clear();
 };

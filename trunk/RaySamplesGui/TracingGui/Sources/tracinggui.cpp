@@ -411,7 +411,7 @@ void TracingGui::CreateFixedScene( Scene & scene)
 	plane->Rotate(Axis_Z, angle );
 	scene.AddModel(plane);
 	plane->Translate(translation);
-	scene.SetAmbientLight(new AmbientLight(10));
+	scene.Ambient().SetPower(Vector4d(10,10,10));
 }
 
 void TracingGui::UpdateSelectedModel( QModelIndexList indexes )
@@ -449,7 +449,7 @@ void TracingGui::CreateScene( Scene & scene)
 		_scene.AddModel(geom);
 		i++;
 	}
-	_scene.SetAmbientLight(new AmbientLight(30));
+	_scene.Ambient().SetPower(Vector4d(ui.aRValue->value(),ui.aGValue->value(),ui.aBValue->value() ) );
 }
 
 void TracingGui::Test(Camera * camera)
