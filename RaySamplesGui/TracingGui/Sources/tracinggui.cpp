@@ -228,8 +228,8 @@ void TracingGui::AddTriangleSlot()
 }
 
 #include "FileHandler.h"
-#define DEFAULT_SCENE "test.scene"
-#define DEFAULT_CAMERA "camera.scene"
+#define DEFAULT_SCENE "../../data/test.scene"
+#define DEFAULT_CAMERA "../../data/camera.scene"
 
 void TracingGui::LoadModels()
 {

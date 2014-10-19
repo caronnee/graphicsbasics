@@ -19,7 +19,7 @@ Camera * Camera::CreateCamera(const Vector4d & toCenter, const Vector4d& directi
 	c->Translate(toCenter);
 	float zFar = 1000;
 	c->SetPerspective(zFar,fov);
-	Vector4d r = c->RasterToWorld(Vector4d(0.5,0.5,0,1));
+	// Vector4d r = c->RasterToWorld(Vector4d(0.5,0.5,0,1));
 	return c;
 }
 

@@ -20,8 +20,8 @@ protected:
 public:
 	Renderer();
 	virtual void Init(Scene * scene, Image * image, Camera * camera);
-	virtual void Render( ) = 0;
-	Vector4d RenderPixel( int x, int y );
+	virtual void Render( );
+	virtual Vector4d RenderPixel( const int &x, const int &y ) = 0;
 	virtual ~Renderer();
 };
 

@@ -12,7 +12,9 @@ Scene::Scene() :_ambientLight(NULL)
 
 }
 
+#if _DEBUG
 extern bool stop;
+#endif
 
 bool Scene::FindIntersection(const Ray & ray, Intersection& res)
 {
