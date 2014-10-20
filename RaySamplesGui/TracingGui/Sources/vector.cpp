@@ -200,3 +200,8 @@ Vector4d& Vector4d::operator/=(const float & oper)
 	W() /= oper;
 	return *this;
 }
+
+void Vector4d::Zero()
+{
+  memset(_val,0,sizeof(_val));
+}

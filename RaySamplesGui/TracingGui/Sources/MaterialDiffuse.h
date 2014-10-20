@@ -5,12 +5,14 @@
 
 class MaterialDiffuse : public Material
 {
-	Vector4d _diffuseReflectance;
+  typedef Material base;
+  Vector4d _diffuseReflectance;
+  Vector4d _emmisive;
 public:
-	MaterialDiffuse(const Vector4d & diffuseReflectance);
 
+	MaterialDiffuse(const Vector4d & diffuseReflectance,const Vector4d & emmisive);
 	Vector4d GetDiffuse( const Vector4d & input, const Vector4d & output ) const;
-	Vector4d GetReflectance(const Vector4d & input, const Vector4d & output ) const;
+	Vector4d GetTotalReflectance(const Vector4d & input, const Vector4d & output ) const;
 };
 
 #endif
