@@ -1,7 +1,7 @@
 #include "MaterialSpecular.h"
 #include "mathutil.h"
 
-MaterialSpecular::MaterialSpecular(float diffuse, float specular, float phongCoef) : MaterialDiffuse(diffuse),
+MaterialSpecular::MaterialSpecular(const Vector4d & diffuse, const Vector4d & specular, const float & phongCoef) : MaterialDiffuse(diffuse, Vector4d(0,0,0,0)),
 	_specularReflectance(specular),
 	_phongCoef(phongCoef)
 {
@@ -17,7 +17,7 @@ Vector4d MaterialSpecular::GetSpecular(const Vector4d & input, const Vector4d & 
 	return v;
 }
 
-Vector4d MaterialSpecular::GetReflectance(const Vector4d & input, const Vector4d & output) const
+Vector4d MaterialSpecular::GetTotalReflectance(const Vector4d & input, const Vector4d & output) const
 {
 	return GetDiffuse(input,output) + GetSpecular(input,output);
 }

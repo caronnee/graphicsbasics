@@ -30,7 +30,7 @@ Vector4d TestRenderer::RenderPixel(const int & x, const int & y)
 		return BLACK; //nothing got rendered in this pixel
 	}
 	//eval brdf
-	Vector4d brdf = isect.model->GetMaterial()->GetReflectance( isect.positionModel, -ray.direction);
+	Vector4d brdf = isect.model->GetMaterial()->GetTotalReflectance( isect.positionModel, -ray.direction);
 	total = brdf;
 	return total;
 }

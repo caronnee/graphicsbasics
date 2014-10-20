@@ -55,6 +55,7 @@ public:
 	float Size2()const;
 	float Size()const;
 	void Normalize();
+  void Zero();
 };
 
 #endif
