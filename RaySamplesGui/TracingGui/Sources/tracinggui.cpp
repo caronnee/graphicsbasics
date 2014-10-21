@@ -167,6 +167,8 @@ TracingGui::TracingGui(QWidget *parent)
 	QItemSelectionModel *selectionModel= ui.treeView->selectionModel();
 	connect(selectionModel, SIGNAL(selectionChanged (const QItemSelection &, const QItemSelection &)),
 		this, SLOT(SelectionModelChangedSlot(const QItemSelection &, const QItemSelection &)));
+	ui.rendererType->addItem("TestRenderer",QVariant(0));
+	ui.rendererType->addItem("PathtracerRenderer",QVariant(1));
 }
 
 #include "Sphere.h"
@@ -484,6 +486,8 @@ void TracingGui::Test(Camera * camera)
 
 }
 
+#include "PathTraceRenderer.h"
+
 void TracingGui::RenderSlot()
 {
 	int xDim = ui.xDim->value();
@@ -519,9 +523,21 @@ void TracingGui::RenderSlot()
 	
 	Test(camera);
 
-	TestRenderer renderer;
-	renderer.Init(&_scene,&_image,camera);
-	renderer.Render();
+	QVariant val = ui.rendererType->currentData();
+	Renderer * renderer;
+	switch (val.toInt())
+	{
+	case 0:
+		renderer=new TestRenderer();
+		break;
+	case 1:
+		renderer = new PathTraceRenderer();
+		break;
+	default:
+		throw "renderer has unexpected values";
+	}
+	renderer->Init(&_scene,&_image,camera);
+	renderer->Render();
 	// convert Image to label
 	ShowHdr(0);
 }

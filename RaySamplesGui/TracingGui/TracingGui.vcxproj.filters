@@ -175,6 +175,9 @@
     <ClCompile Include="Sources\MaterialLight.cpp">
       <Filter>Source Files\Logic\Material</Filter>
     </ClCompile>
+    <ClCompile Include="Sources\PathTraceRenderer.cpp">
+      <Filter>Source Files\Logic\Renderer</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="Sources/tracinggui.ui">
@@ -265,6 +268,9 @@
     </ClInclude>
     <ClInclude Include="Sources\MaterialLight.h">
       <Filter>Source Files\Logic\Material</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\PathTraceRenderer.h">
+      <Filter>Source Files\Logic\Renderer</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

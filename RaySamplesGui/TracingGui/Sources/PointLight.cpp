@@ -4,7 +4,6 @@
 PointLight::PointLight( float watts )
 {
 	SetPower(watts);
-	SetGeometry( new PointObject() );
 }
 
 void PointLight::SetPower(float watts)

@@ -15,17 +15,17 @@
   </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QGridLayout" name="gridLayout_4">
-    <item row="7" column="0" colspan="11">
-     <widget class="QProgressBar" name="renderProgress">
-      <property name="value">
-       <number>0</number>
-      </property>
-     </widget>
-    </item>
     <item row="0" column="5">
      <widget class="QPushButton" name="bRender">
       <property name="text">
        <string>Render!</string>
+      </property>
+     </widget>
+    </item>
+    <item row="7" column="0" colspan="11">
+     <widget class="QProgressBar" name="renderProgress">
+      <property name="value">
+       <number>0</number>
       </property>
      </widget>
     </item>
@@ -193,7 +193,7 @@
        <enum>QTabWidget::North</enum>
       </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>3</number>
       </property>
       <widget class="QWidget" name="model">
        <property name="layoutDirection">
@@ -983,50 +983,71 @@
       </widget>
       <widget class="QWidget" name="image">
        <attribute name="title">
-        <string>Image</string>
+        <string>Rendering</string>
        </attribute>
-       <widget class="QWidget" name="formLayoutWidget">
-        <property name="geometry">
-         <rect>
-          <x>20</x>
-          <y>49</y>
-          <width>199</width>
-          <height>22</height>
-         </rect>
-        </property>
-        <layout class="QHBoxLayout" name="horizontalLayout_2">
-         <item>
-          <widget class="QSpinBox" name="xDim">
-           <property name="minimum">
-            <number>128</number>
-           </property>
-           <property name="maximum">
-            <number>1024</number>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QSpinBox" name="yDim">
-           <property name="minimum">
-            <number>128</number>
-           </property>
-           <property name="maximum">
-            <number>1024</number>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QCheckBox" name="checkBox">
-           <property name="enabled">
-            <bool>false</bool>
-           </property>
-           <property name="text">
-            <string>Respect ratio</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </widget>
+       <layout class="QGridLayout" name="gridLayout_7">
+        <item row="5" column="0">
+         <widget class="QLabel" name="label_5">
+          <property name="text">
+           <string>Jittering</string>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="0">
+         <widget class="QLabel" name="label_3">
+          <property name="text">
+           <string>Renderer</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="3">
+         <layout class="QHBoxLayout" name="horizontalLayout_2">
+          <item>
+           <widget class="QCheckBox" name="checkBox">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="text">
+             <string>Respect ratio</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item row="0" column="0">
+         <widget class="QLabel" name="label_2">
+          <property name="text">
+           <string>Image:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QSpinBox" name="xDim">
+          <property name="minimum">
+           <number>128</number>
+          </property>
+          <property name="maximum">
+           <number>1024</number>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="2">
+         <widget class="QSpinBox" name="yDim">
+          <property name="minimum">
+           <number>128</number>
+          </property>
+          <property name="maximum">
+           <number>1024</number>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="1" colspan="3">
+         <widget class="QComboBox" name="rendererType"/>
+        </item>
+        <item row="5" column="1" colspan="3">
+         <widget class="QComboBox" name="jitteringType"/>
+        </item>
+       </layout>
       </widget>
      </widget>
     </item>

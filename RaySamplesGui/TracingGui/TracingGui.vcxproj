@@ -120,6 +120,7 @@
     <ClCompile Include="Sources\MaterialSpecular.cpp" />
     <ClCompile Include="Sources\MathUtil.cpp" />
     <ClCompile Include="Sources\Matrix.cpp" />
+    <ClCompile Include="Sources\PathTraceRenderer.cpp" />
     <ClCompile Include="Sources\Plane.cpp" />
     <ClCompile Include="Sources\Point.cpp" />
     <ClCompile Include="Sources\Renderer.cpp" />
@@ -183,6 +184,7 @@
     <ClInclude Include="Sources\MaterialSpecular.h" />
     <ClInclude Include="Sources\MathUtil.h" />
     <ClInclude Include="Sources\Matrix.h" />
+    <ClInclude Include="Sources\PathTraceRenderer.h" />
     <ClInclude Include="Sources\Plane.h" />
     <ClInclude Include="Sources\Point.h" />
     <ClInclude Include="Sources\renderer.h" />
