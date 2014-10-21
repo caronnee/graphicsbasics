@@ -70,7 +70,7 @@ QModelIndex GModelObjects::Add(Geometry * geom)
 	GProperties prop;
 	memset(&prop, 0, sizeof(prop));
 	prop.position = Vector4d(0,0,3,0);
-	prop.matParams = Vector4d(1,1,1,1);
+	prop.matDiffuse = Vector4d(1,1,1,1);
 	prop.geom = geom;
 	_geometries.push_back(prop);
 	endInsertRows();
@@ -168,7 +168,7 @@ TracingGui::TracingGui(QWidget *parent)
 	connect(ui.treeView->selectionModel(), SIGNAL(selectionChanged (const QItemSelection &, const QItemSelection &)),
 		this, SLOT(SelectionModelChangedSlot(const QItemSelection &, const QItemSelection &)));
 	connect(ui.treeViewLight->selectionModel(), SIGNAL(selectionChanged (const QItemSelection &, const QItemSelection &)),
-		this, SLOT(SelectionModelChangedSlot(const QItemSelection &, const QItemSelection &)));
+		this, SLOT(SelectionMaterialChangedSlot(const QItemSelection &, const QItemSelection &)));
 
 	// renderer
 	ui.rendererType->addItem("TestRenderer",QVariant(0));
@@ -177,9 +177,24 @@ TracingGui::TracingGui(QWidget *parent)
 
 #include "Sphere.h"
 
+void TracingGui::SelectionMaterialChangedSlot(const QItemSelection & newSel, const QItemSelection &oldSel)
+{
+	UpdateSelectedModel(oldSel.indexes(),1);
+	QModelIndexList list = newSel.indexes();
+	if ( list.size() == 0 )
+		return;
+
+	int index = list[0].row();
+	GProperties & gProp = *_gModels->Get(index);
+
+	//ui.MaterialType 
+	ui.dR->setValue(gProp.matDiffuse[0]*255);
+	ui.dB->setValue(gProp.matDiffuse[2]*255);
+	ui.dG->setValue(gProp.matDiffuse[1]*255);
+}
 void TracingGui::SelectionModelChangedSlot(const QItemSelection & newSel, const QItemSelection &oldSel)
 {
-	UpdateSelectedModel(oldSel.indexes());
+	UpdateSelectedModel(oldSel.indexes(),0);
 	// fill from new index
 	QModelIndexList list = newSel.indexes();
 	if ( list.size() == 0 )
@@ -193,10 +208,7 @@ void TracingGui::SelectionModelChangedSlot(const QItemSelection & newSel, const 
 	ui.xRotationDeg->setValue( gProp.rotation[0] );
 	ui.yRotationDeg->setValue( gProp.rotation[1] );
 	ui.zRotationDeg->setValue( gProp.rotation[2] );
-	//ui.MaterialType 
-	ui.dR->setValue(gProp.matParams[0]*255);
-	ui.dG->setValue(gProp.matParams[1]*255);
-	ui.dB->setValue(gProp.matParams[2]*255);
+
 	// position
 	Vector4d * vectors = (Vector4d *)gProp.geom->GetProperty(PPoints);
 	static Vector4d def [] = {Vector4d(0,0,0,1),Vector4d(0,0,0,1),Vector4d(0,0,0,1)};
@@ -267,7 +279,7 @@ void TracingGui::LoadModels()
 		GProperties * g = _gModels->Get(index.row());
 
 		handler.Read( &g->material,sizeof (g->material), 1 );
-		handler.Read( &g->matParams, sizeof (g->matParams), 1);
+		handler.Read( &g->matDiffuse, sizeof (g->matDiffuse), 1);
 		handler.Read( &g->position, sizeof (g->position), 1 );
 		handler.Read( &g->rotation, sizeof (g->rotation), 1);
 		if ( points )
@@ -287,7 +299,8 @@ void TracingGui::LoadSceneSlot()
 
 void TracingGui::SaveModels( )
 {
-	UpdateSelectedModel(ui.treeView->selectionModel()->selectedIndexes());
+	UpdateSelectedModel(ui.treeView->selectionModel()->selectedIndexes(),0);
+	UpdateSelectedModel(ui.treeViewLight->selectionModel()->selectedIndexes(),1);
 
 	FileHandler handler;
 	handler.Open(DEFAULT_SCENE,"w");
@@ -305,7 +318,7 @@ void TracingGui::SaveModels( )
 		GProperties * g = _gModels->Get(i);
 
 		handler.Write( &g->material, sizeof (g->material),1 );
-		handler.Write( &g->matParams, sizeof (g->matParams),1 );
+		handler.Write( &g->matDiffuse, sizeof (g->matDiffuse),1 );
 		handler.Write( &g->position, sizeof (g->position),1 );
 		handler.Write( &g->rotation, sizeof (g->rotation),1 );
 
@@ -420,33 +433,40 @@ void TracingGui::CreateFixedScene( Scene & scene)
 	scene.Ambient().SetPower(Vector4d(10,10,10));
 }
 
-void TracingGui::UpdateSelectedModel( QModelIndexList indexes )
+void TracingGui::UpdateSelectedModel( QModelIndexList indexes, int type )
 {
 	for ( int i =0; i < indexes.size(); i++)
 	{
 		GProperties& g = *_gModels->Get(indexes[i].row());
-		g.matParams = Vector4d(ui.dR->value()/255.f,ui.dG->value()/255.f,ui.dB->value()/255.f);
-		g.position = Vector4d(ui.xModelPos->value(),ui.yModelPos->value(),ui.zModelPos->value(),0);
-		g.rotation = Vector4d(ui.xRotationDeg->value(),ui.yRotationDeg->value(),ui.zRotationDeg->value());
-		Vector4d points[] = { 
-			Vector4d(ui.xVert_1->value(),ui.yVert_1->value(),ui.zVert_1->value(),1),
-			Vector4d(ui.xVert_2->value(),ui.yVert_2->value(),ui.zVert_2->value(),1),
-			Vector4d(ui.xVert_3->value(),ui.yVert_3->value(),ui.zVert_3->value(),1),
-		};
-		g.geom->SetProperty(PPoints, points);
+		if (type == 0)
+		{
+			g.position = Vector4d(ui.xModelPos->value(),ui.yModelPos->value(),ui.zModelPos->value(),0);
+			g.rotation = Vector4d(ui.xRotationDeg->value(),ui.yRotationDeg->value(),ui.zRotationDeg->value());
+			Vector4d points[] = { 
+				Vector4d(ui.xVert_1->value(),ui.yVert_1->value(),ui.zVert_1->value(),1),
+				Vector4d(ui.xVert_2->value(),ui.yVert_2->value(),ui.zVert_2->value(),1),
+				Vector4d(ui.xVert_3->value(),ui.yVert_3->value(),ui.zVert_3->value(),1),
+			};
+			g.geom->SetProperty(PPoints, points);
+		}
+		if (type == 1)
+		{
+			g.matDiffuse = Vector4d(ui.dR->value()/255.f,ui.dG->value()/255.f,ui.dB->value()/255.f);
+		}
 	}
 }
 
 void TracingGui::CreateScene( Scene & scene)
 {
-	UpdateSelectedModel(ui.treeView->selectionModel()->selectedIndexes());
+	UpdateSelectedModel(ui.treeView->selectionModel()->selectedIndexes(),0);
+	UpdateSelectedModel(ui.treeViewLight->selectionModel()->selectedIndexes(),1);
 	int i =0;
 	GProperties * g;
 	while ( g = _gModels->Get(i))
 	{
 		Geometry * geom = g->geom;
 		geom->Clear();
-		geom->SetMaterial( CreateMaterial(MDiffuse, g->matParams) );
+		geom->SetMaterial( CreateMaterial(MDiffuse, g->matDiffuse) );
 		geom->Rotate(Axis_X, toRadians( g->rotation[0] ) );
 		geom->Rotate(Axis_Y, toRadians( g->rotation[1] ) );
 		geom->Rotate(Axis_Z, toRadians( g->rotation[2] ) );

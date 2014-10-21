@@ -15,7 +15,7 @@ struct GProperties
 	Vector4d rotation;
 	Vector4d position;
 	// material color
-	Vector4d matParams;
+	Vector4d matDiffuse;
 	MaterialType material;
 	Geometry * geom;
 };
@@ -58,6 +58,7 @@ private slots:
 	void SaveSceneSlot();
 	void AddSphereSlot();
 	void SelectionModelChangedSlot(const QItemSelection & newSel, const QItemSelection &oldSel);
+	void SelectionMaterialChangedSlot(const QItemSelection & newSel, const QItemSelection &oldSel);
 	void AddTriangleSlot();
 	void LoadSceneSlot();
 	void DeleteObjectSlot();
@@ -67,7 +68,7 @@ private:
 	void ShowHdr(float exponent);
 	void CreateScene( Scene & scene);	
 	void CreateFixedScene( Scene & scene);
-	void UpdateSelectedModel( QModelIndexList indexes );
+	void UpdateSelectedModel( QModelIndexList indexes, int type );
 	void SaveModels( );
 	void SaveCamera();
 	void LoadCamera();
