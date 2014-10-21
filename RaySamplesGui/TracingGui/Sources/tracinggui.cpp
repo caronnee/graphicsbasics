@@ -190,9 +190,9 @@ void TracingGui::SelectionModelChangedSlot(const QItemSelection & newSel, const 
 	ui.yRotationDeg->setValue( gProp.rotation[1] );
 	ui.zRotationDeg->setValue( gProp.rotation[2] );
 	//ui.MaterialType 
-	ui.cr->setValue(gProp.matParams[0]*255);
-	ui.cg->setValue(gProp.matParams[1]*255);
-	ui.cb->setValue(gProp.matParams[2]*255);
+	ui.dR->setValue(gProp.matParams[0]*255);
+	ui.dG->setValue(gProp.matParams[1]*255);
+	ui.dB->setValue(gProp.matParams[2]*255);
 	// position
 	Vector4d * vectors = (Vector4d *)gProp.geom->GetProperty(PPoints);
 	static Vector4d def [] = {Vector4d(0,0,0,1),Vector4d(0,0,0,1),Vector4d(0,0,0,1)};
@@ -421,7 +421,7 @@ void TracingGui::UpdateSelectedModel( QModelIndexList indexes )
 	for ( int i =0; i < indexes.size(); i++)
 	{
 		GProperties& g = *_gModels->Get(indexes[i].row());
-		g.matParams = Vector4d(ui.cr->value()/255.f,ui.cg->value()/255.f,ui.cb->value()/255.f);
+		g.matParams = Vector4d(ui.dR->value()/255.f,ui.dG->value()/255.f,ui.dB->value()/255.f);
 		g.position = Vector4d(ui.xModelPos->value(),ui.yModelPos->value(),ui.zModelPos->value(),0);
 		g.rotation = Vector4d(ui.xRotationDeg->value(),ui.yRotationDeg->value(),ui.zRotationDeg->value());
 		Vector4d points[] = { 

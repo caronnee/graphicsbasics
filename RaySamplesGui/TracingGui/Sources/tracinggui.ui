@@ -193,7 +193,7 @@
        <enum>QTabWidget::North</enum>
       </property>
       <property name="currentIndex">
-       <number>3</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="model">
        <property name="layoutDirection">
@@ -246,7 +246,14 @@
         </item>
         <item row="0" column="1" rowspan="5">
          <layout class="QGridLayout" name="gridLayout">
-          <item row="6" column="3">
+          <item row="6" column="2">
+           <widget class="QSpinBox" name="yRotationDeg">
+            <property name="maximum">
+             <number>359</number>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="3">
            <widget class="QDial" name="zRotation">
             <property name="maximum">
              <number>359</number>
@@ -262,7 +269,7 @@
             </property>
            </widget>
           </item>
-          <item row="6" column="0">
+          <item row="4" column="0">
            <widget class="QDial" name="xRotation">
             <property name="enabled">
              <bool>true</bool>
@@ -281,7 +288,7 @@
             </property>
            </widget>
           </item>
-          <item row="6" column="2">
+          <item row="4" column="2">
            <widget class="QDial" name="yRotation">
             <property name="maximum">
              <number>359</number>
@@ -297,7 +304,7 @@
             </property>
            </widget>
           </item>
-          <item row="7" column="2">
+          <item row="5" column="2">
            <widget class="DoubleIntSpinBox" name="yRotationRad">
             <property name="readOnly">
              <bool>true</bool>
@@ -307,21 +314,14 @@
             </property>
            </widget>
           </item>
-          <item row="8" column="2">
-           <widget class="QSpinBox" name="yRotationDeg">
-            <property name="maximum">
-             <number>359</number>
-            </property>
-           </widget>
-          </item>
-          <item row="8" column="0">
+          <item row="6" column="0">
            <widget class="QSpinBox" name="xRotationDeg">
             <property name="maximum">
              <number>359</number>
             </property>
            </widget>
           </item>
-          <item row="7" column="3">
+          <item row="5" column="3">
            <widget class="DoubleIntSpinBox" name="zRotationRad">
             <property name="readOnly">
              <bool>true</bool>
@@ -331,7 +331,7 @@
             </property>
            </widget>
           </item>
-          <item row="7" column="0">
+          <item row="5" column="0">
            <widget class="DoubleIntSpinBox" name="xRotationRad">
             <property name="readOnly">
              <bool>true</bool>
@@ -341,14 +341,14 @@
             </property>
            </widget>
           </item>
-          <item row="8" column="3">
+          <item row="6" column="3">
            <widget class="QSpinBox" name="zRotationDeg">
             <property name="maximum">
              <number>359</number>
             </property>
            </widget>
           </item>
-          <item row="9" column="0">
+          <item row="7" column="0">
            <widget class="QDoubleSpinBox" name="xModelPos">
             <property name="prefix">
              <string>x:</string>
@@ -361,7 +361,7 @@
             </property>
            </widget>
           </item>
-          <item row="9" column="2">
+          <item row="7" column="2">
            <widget class="QDoubleSpinBox" name="yModelPos">
             <property name="prefix">
              <string>y:</string>
@@ -377,7 +377,7 @@
             </property>
            </widget>
           </item>
-          <item row="9" column="3">
+          <item row="7" column="3">
            <widget class="QDoubleSpinBox" name="zModelPos">
             <property name="prefix">
              <string>z:</string>
@@ -393,21 +393,7 @@
             </property>
            </widget>
           </item>
-          <item row="1" column="2">
-           <widget class="QSpinBox" name="cg">
-            <property name="maximum">
-             <number>255</number>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="3">
-           <widget class="QSpinBox" name="cb">
-            <property name="maximum">
-             <number>255</number>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="2">
+          <item row="0" column="2">
            <widget class="QDoubleSpinBox" name="yVert_1">
             <property name="prefix">
              <string>y:</string>
@@ -423,14 +409,7 @@
             </property>
            </widget>
           </item>
-          <item row="0" column="2">
-           <widget class="QComboBox" name="MaterialType">
-            <property name="currentText">
-             <string/>
-            </property>
-           </widget>
-          </item>
-          <item row="5" column="0">
+          <item row="3" column="0">
            <widget class="QDoubleSpinBox" name="xVert_3">
             <property name="prefix">
              <string>x:</string>
@@ -449,7 +428,7 @@
             </property>
            </widget>
           </item>
-          <item row="3" column="0">
+          <item row="1" column="0">
            <widget class="QDoubleSpinBox" name="xVert_2">
             <property name="prefix">
              <string>x:</string>
@@ -468,7 +447,7 @@
             </property>
            </widget>
           </item>
-          <item row="3" column="3">
+          <item row="1" column="3">
            <widget class="QDoubleSpinBox" name="zVert_2">
             <property name="prefix">
              <string>z:</string>
@@ -484,7 +463,7 @@
             </property>
            </widget>
           </item>
-          <item row="2" column="0">
+          <item row="0" column="0">
            <widget class="QDoubleSpinBox" name="xVert_1">
             <property name="prefix">
              <string>x:</string>
@@ -503,21 +482,7 @@
             </property>
            </widget>
           </item>
-          <item row="0" column="0">
-           <widget class="QLabel" name="materialLabel">
-            <property name="text">
-             <string>Material</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="0">
-           <widget class="QSpinBox" name="cr">
-            <property name="maximum">
-             <number>255</number>
-            </property>
-           </widget>
-          </item>
-          <item row="3" column="2">
+          <item row="1" column="2">
            <widget class="QDoubleSpinBox" name="yVert_2">
             <property name="prefix">
              <string>y:</string>
@@ -533,7 +498,7 @@
             </property>
            </widget>
           </item>
-          <item row="2" column="3">
+          <item row="0" column="3">
            <widget class="QDoubleSpinBox" name="zVert_1">
             <property name="prefix">
              <string>z:</string>
@@ -549,7 +514,7 @@
             </property>
            </widget>
           </item>
-          <item row="5" column="2">
+          <item row="3" column="2">
            <widget class="QDoubleSpinBox" name="yVert_3">
             <property name="prefix">
              <string>y:</string>
@@ -565,7 +530,7 @@
             </property>
            </widget>
           </item>
-          <item row="5" column="3">
+          <item row="3" column="3">
            <widget class="QDoubleSpinBox" name="zVert_3">
             <property name="prefix">
              <string>z:</string>
@@ -590,96 +555,120 @@
         <string>Light</string>
        </attribute>
        <layout class="QGridLayout" name="gridLayout_5">
-        <item row="0" column="0">
-         <layout class="QGridLayout" name="gridLayout_6">
-          <item row="0" column="2">
-           <widget class="QLabel" name="aB">
-            <property name="text">
-             <string>Ambient B</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="1">
-           <widget class="QSpinBox" name="aGValue">
-            <property name="maximum">
-             <number>255</number>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="2">
-           <widget class="QSpinBox" name="aBValue">
-            <property name="maximum">
-             <number>255</number>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="0">
-           <widget class="QLabel" name="aR">
-            <property name="text">
-             <string>Ambient R</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="0">
-           <widget class="QSpinBox" name="aRValue">
-            <property name="maximum">
-             <number>255</number>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="1">
-           <widget class="QLabel" name="aG">
-            <property name="text">
-             <string>Ambient G</string>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="3">
-           <widget class="QLabel" name="R">
-            <property name="text">
-             <string>R</string>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="4">
-           <widget class="QLabel" name="G">
-            <property name="text">
-             <string>G</string>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="5">
-           <widget class="QLabel" name="label_4">
-            <property name="text">
-             <string>B</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="3">
-           <widget class="QSpinBox" name="eLight">
-            <property name="maximum">
-             <number>255</number>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="4">
-           <widget class="QSpinBox" name="eGreen">
-            <property name="maximum">
-             <number>255</number>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="5">
-           <widget class="QSpinBox" name="eBlue">
-            <property name="maximum">
-             <number>255</number>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="0" colspan="6">
-           <widget class="QListView" name="lightsList"/>
-          </item>
-         </layout>
+        <item row="3" column="4">
+         <widget class="QSpinBox" name="dB">
+          <property name="maximum">
+           <number>255</number>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="3">
+         <widget class="QSpinBox" name="dG">
+          <property name="maximum">
+           <number>255</number>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="2">
+         <widget class="QSpinBox" name="dR">
+          <property name="maximum">
+           <number>255</number>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="QLabel" name="materialLabel">
+          <property name="text">
+           <string>Material</string>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="1">
+         <widget class="QLabel" name="label_6">
+          <property name="text">
+           <string>Specular</string>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="4">
+         <widget class="QSpinBox" name="sB">
+          <property name="maximum">
+           <number>255</number>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="2">
+         <widget class="QSpinBox" name="sR">
+          <property name="maximum">
+           <number>255</number>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="3">
+         <widget class="QSpinBox" name="rG">
+          <property name="maximum">
+           <number>255</number>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="1">
+         <widget class="QLabel" name="label_4">
+          <property name="text">
+           <string>Diffuse</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="2" colspan="4">
+         <widget class="QComboBox" name="materialType">
+          <property name="currentText">
+           <string/>
+          </property>
+         </widget>
+        </item>
+        <item row="5" column="1">
+         <widget class="QLabel" name="label_7">
+          <property name="text">
+           <string>Emmisive</string>
+          </property>
+         </widget>
+        </item>
+        <item row="5" column="2">
+         <widget class="QSpinBox" name="eR">
+          <property name="maximum">
+           <number>255</number>
+          </property>
+         </widget>
+        </item>
+        <item row="5" column="3">
+         <widget class="QSpinBox" name="eG">
+          <property name="maximum">
+           <number>255</number>
+          </property>
+         </widget>
+        </item>
+        <item row="5" column="4">
+         <widget class="QSpinBox" name="eB">
+          <property name="maximum">
+           <number>255</number>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="5">
+         <widget class="QDoubleSpinBox" name="sE">
+          <property name="minimum">
+           <double>0.100000000000000</double>
+          </property>
+         </widget>
+        </item>
+        <item row="9" column="1" colspan="5">
+         <widget class="QTreeView" name="treeViewLight">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+         </widget>
         </item>
        </layout>
       </widget>
@@ -985,22 +974,67 @@
        <attribute name="title">
         <string>Rendering</string>
        </attribute>
-       <layout class="QGridLayout" name="gridLayout_7">
-        <item row="5" column="0">
-         <widget class="QLabel" name="label_5">
+       <layout class="QGridLayout" name="gridLayout_6">
+        <item row="0" column="0" colspan="2">
+         <widget class="QLabel" name="aR">
           <property name="text">
-           <string>Jittering</string>
+           <string>Ambient R</string>
           </property>
          </widget>
         </item>
-        <item row="4" column="0">
-         <widget class="QLabel" name="label_3">
+        <item row="0" column="2" colspan="2">
+         <widget class="QLabel" name="aG">
           <property name="text">
-           <string>Renderer</string>
+           <string>Ambient G</string>
           </property>
          </widget>
         </item>
-        <item row="0" column="3">
+        <item row="0" column="4">
+         <widget class="QLabel" name="aB">
+          <property name="text">
+           <string>Ambient B</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0" colspan="2">
+         <widget class="QSpinBox" name="aRValue">
+          <property name="maximum">
+           <number>255</number>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="2" colspan="2">
+         <widget class="QSpinBox" name="aGValue">
+          <property name="maximum">
+           <number>255</number>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="4">
+         <widget class="QSpinBox" name="aBValue">
+          <property name="maximum">
+           <number>255</number>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="label_2">
+          <property name="text">
+           <string>Image:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="3">
+         <widget class="QSpinBox" name="yDim">
+          <property name="minimum">
+           <number>128</number>
+          </property>
+          <property name="maximum">
+           <number>1024</number>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="4">
          <layout class="QHBoxLayout" name="horizontalLayout_2">
           <item>
            <widget class="QCheckBox" name="checkBox">
@@ -1014,14 +1048,34 @@
           </item>
          </layout>
         </item>
-        <item row="0" column="0">
-         <widget class="QLabel" name="label_2">
+        <item row="3" column="0">
+         <widget class="QLabel" name="label_3">
           <property name="text">
-           <string>Image:</string>
+           <string>Renderer</string>
           </property>
          </widget>
         </item>
-        <item row="0" column="1">
+        <item row="4" column="0">
+         <widget class="QLabel" name="label_5">
+          <property name="text">
+           <string>Jittering</string>
+          </property>
+         </widget>
+        </item>
+        <item row="5" column="1">
+         <spacer name="verticalSpacer">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>40</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item row="2" column="2">
          <widget class="QSpinBox" name="xDim">
           <property name="minimum">
            <number>128</number>
@@ -1031,20 +1085,10 @@
           </property>
          </widget>
         </item>
-        <item row="0" column="2">
-         <widget class="QSpinBox" name="yDim">
-          <property name="minimum">
-           <number>128</number>
-          </property>
-          <property name="maximum">
-           <number>1024</number>
-          </property>
-         </widget>
-        </item>
-        <item row="4" column="1" colspan="3">
+        <item row="3" column="1" colspan="4">
          <widget class="QComboBox" name="rendererType"/>
         </item>
-        <item row="5" column="1" colspan="3">
+        <item row="4" column="1" colspan="4">
          <widget class="QComboBox" name="jitteringType"/>
         </item>
        </layout>
