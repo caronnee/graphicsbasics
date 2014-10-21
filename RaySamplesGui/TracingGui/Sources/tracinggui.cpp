@@ -163,10 +163,14 @@ TracingGui::TracingGui(QWidget *parent)
 
 	_gModels = new GModelObjects(NULL);
 	ui.treeView->setModel(_gModels);
+	ui.treeViewLight->setModel(_gModels);
 	//selection changes shall trigger a slot
-	QItemSelectionModel *selectionModel= ui.treeView->selectionModel();
-	connect(selectionModel, SIGNAL(selectionChanged (const QItemSelection &, const QItemSelection &)),
+	connect(ui.treeView->selectionModel(), SIGNAL(selectionChanged (const QItemSelection &, const QItemSelection &)),
 		this, SLOT(SelectionModelChangedSlot(const QItemSelection &, const QItemSelection &)));
+	connect(ui.treeViewLight->selectionModel(), SIGNAL(selectionChanged (const QItemSelection &, const QItemSelection &)),
+		this, SLOT(SelectionModelChangedSlot(const QItemSelection &, const QItemSelection &)));
+
+	// renderer
 	ui.rendererType->addItem("TestRenderer",QVariant(0));
 	ui.rendererType->addItem("PathtracerRenderer",QVariant(1));
 }
