@@ -8,8 +8,8 @@ class Material
   Vector4d _emmisive;
 public:
   Material(Vector4d e);
-  bool IsLight();
-  Vector4d Emmisive() { return _emmisive; }
+  bool IsLight() const;
+  Vector4d Emmisive() const;
 	virtual Vector4d GetTotalReflectance(const Vector4d & input, const Vector4d & output ) const =0;
 };
 

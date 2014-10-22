@@ -29,9 +29,14 @@ Vector4d TestRenderer::RenderPixel(const int & x, const int & y)
 		//		DoAssert(false);
 		return BLACK; //nothing got rendered in this pixel
 	}
-	//eval brdf
-	Vector4d brdf = isect.model->GetMaterial()->GetTotalReflectance( isect.positionModel, -ray.direction);
-	total = brdf;
+  const Material* material = isect.model->GetMaterial();
+  if (material->IsLight())
+    total = material->Emmisive();
+  else
+  {
+    // eval brdf
+    total = isect.model->GetMaterial()->GetTotalReflectance( isect.positionModel, -ray.direction);
+  }
 	return total;
 }
 

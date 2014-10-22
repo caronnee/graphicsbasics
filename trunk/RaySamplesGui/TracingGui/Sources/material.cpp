@@ -27,7 +27,7 @@ Material * CreateMaterial(MaterialType type, const Vector4d & parameters, const 
 	return GMaterialCreator.CreateMaterialDiffuse(parameters, emmisive);
 }
 
-bool Material::IsLight()
+bool Material::IsLight()const
 {
   return _emmisive.Size2() > 0;
 }
@@ -35,4 +35,9 @@ bool Material::IsLight()
 Material::Material(Vector4d e) : _emmisive(e)
 {
 
+}
+
+Vector4d Material::Emmisive() const
+{
+  return _emmisive;
 }
