@@ -16,6 +16,9 @@ struct GProperties
 	Vector4d position;
 	// material color
 	Vector4d matDiffuse;
+	Vector4d matSpecular;
+	Vector4d matEmmisive;
+	float matSpecularExp;
 	MaterialType material;
 	Geometry * geom;
 };
