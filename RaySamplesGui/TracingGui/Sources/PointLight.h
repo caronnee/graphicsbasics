@@ -1,7 +1,6 @@
 #ifndef __POINTLIGHT__
 #define __POINTLIGHT__
 
-#include "Light.h"
 #include "Point.h"
 
 class PointLight : public Light

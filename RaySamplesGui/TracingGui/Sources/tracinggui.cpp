@@ -278,8 +278,6 @@ void TracingGui::LoadModels()
 		QModelIndex index = _gModels->Add(geom);
 		GProperties * g = _gModels->Get(index.row());
 
-		handler.Read( &g->material,sizeof (g->material), 1 );
-		handler.Read( &g->matDiffuse, sizeof (g->matDiffuse), 1);
 		handler.Read( &g->position, sizeof (g->position), 1 );
 		handler.Read( &g->rotation, sizeof (g->rotation), 1);
 		if ( points )
@@ -288,6 +286,12 @@ void TracingGui::LoadModels()
 			handler.Read(&test,sizeof(Vector4d),3);		
 			geom->SetProperty(PPoints,test);
 		}
+		handler.Read( &g->material,sizeof (g->material), 1 );
+		handler.Read( &g->matDiffuse, sizeof (g->matDiffuse), 1);
+		handler.Read( &g->matSpecular, sizeof (g->matSpecular), 1);
+		handler.Read( &g->matSpecularExp, sizeof (g->matSpecularExp), 1);
+		handler.Read( &g->matEmmisive, sizeof (g->matEmmisive), 1);
+
 	}
 }
 
@@ -317,14 +321,20 @@ void TracingGui::SaveModels( )
 
 		GProperties * g = _gModels->Get(i);
 
-		handler.Write( &g->material, sizeof (g->material),1 );
-		handler.Write( &g->matDiffuse, sizeof (g->matDiffuse),1 );
 		handler.Write( &g->position, sizeof (g->position),1 );
 		handler.Write( &g->rotation, sizeof (g->rotation),1 );
 
 		Vector4d * test = (Vector4d *) geom->GetProperty(PPoints);
 		if (test)
 			handler.Write(test,sizeof(Vector4d),3);	
+		
+		// material related
+		handler.Write( &g->material, sizeof (g->material),1 );
+		handler.Write( &g->matDiffuse, sizeof (g->matDiffuse),1 );
+		handler.Write( &g->matSpecular, sizeof (g->matSpecular),1 );
+		handler.Write( &g->matSpecularExp, sizeof (g->matSpecularExp),1 );
+		handler.Write( &g->matEmmisive, sizeof (g->matEmmisive),1 );
+
 		i++;
 	}
 }
@@ -452,6 +462,9 @@ void TracingGui::UpdateSelectedModel( QModelIndexList indexes, int type )
 		if (type == 1)
 		{
 			g.matDiffuse = Vector4d(ui.dR->value()/255.f,ui.dG->value()/255.f,ui.dB->value()/255.f);
+			g.matSpecular = Vector4d(ui.sR->value()/255.f,ui.sG->value()/255.f,ui.sB->value()/255.f);
+			g.matSpecularExp = ui.sE->value();
+			g.matEmmisive = Vector4d(ui.eR->value()/255.f,ui.eG->value()/255.f,ui.eB->value()/255.f);
 		}
 	}
 }

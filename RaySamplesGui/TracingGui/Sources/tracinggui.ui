@@ -605,7 +605,7 @@
          </widget>
         </item>
         <item row="4" column="3">
-         <widget class="QSpinBox" name="rG">
+         <widget class="QSpinBox" name="sG">
           <property name="maximum">
            <number>255</number>
           </property>
