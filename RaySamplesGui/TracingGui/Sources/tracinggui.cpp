@@ -479,7 +479,7 @@ void TracingGui::CreateScene( Scene & scene)
 	{
 		Geometry * geom = g->geom;
 		geom->Clear();
-		geom->SetMaterial( CreateMaterial(MDiffuse, g->matDiffuse) );
+		geom->SetMaterial( CreateMaterial(MDiffuse, g->matDiffuse,g->matEmmisive) );			
 		geom->Rotate(Axis_X, toRadians( g->rotation[0] ) );
 		geom->Rotate(Axis_Y, toRadians( g->rotation[1] ) );
 		geom->Rotate(Axis_Z, toRadians( g->rotation[2] ) );
