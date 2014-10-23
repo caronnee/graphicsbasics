@@ -21,6 +21,7 @@ struct GProperties
 	float matSpecularExp;
 	MaterialType material;
 	Geometry * geom;
+	QString name;
 };
 
 class GModelObjects: public QAbstractListModel
@@ -38,6 +39,8 @@ public:
 	GProperties * Get(int row);
 	void Clear();
 	void Remove(int index);
+	Qt::ItemFlags flags(const QModelIndex & /*index*/) const;
+	bool setData(const QModelIndex & index, const QVariant & value, int role);
 };
 
 class TracingGui : public QMainWindow
@@ -65,6 +68,7 @@ private slots:
 	void AddTriangleSlot();
 	void LoadSceneSlot();
 	void DeleteObjectSlot();
+	void AddPointSlot();
 
 private:
 	Ui::TracingGuiClass ui;

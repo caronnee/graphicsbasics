@@ -193,7 +193,7 @@
        <enum>QTabWidget::North</enum>
       </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="model">
        <property name="layoutDirection">
@@ -238,9 +238,9 @@
          </widget>
         </item>
         <item row="4" column="0">
-         <widget class="QPushButton" name="addPointLight">
+         <widget class="QPushButton" name="addPoint">
           <property name="text">
-           <string>Add Point light</string>
+           <string>Add Point</string>
           </property>
          </widget>
         </item>

@@ -52,14 +52,7 @@ QVariant GModelObjects::data(const QModelIndex &index, int role) const
 	if (role == Qt::DisplayRole)
 	{
 		int rindex = 0;
-		int type = _geometries[index.row()].geom->Type();
-		for (int i =0; i< index.row(); i++)
-		{
-			if ( type == _geometries[i].geom->Type())
-				rindex++;
-		}
-		return QString("%1_%2").arg(typeNames[type]).arg(rindex);
-		//return QString("Sphere%1").arg(index.row() + 1);
+		return _geometries[index.row()].name;
 	}
 	return QVariant();
 }
@@ -68,13 +61,30 @@ QModelIndex GModelObjects::Add(Geometry * geom)
 {
 	beginInsertRows(QModelIndex(), _geometries.size(), _geometries.size() + 1);
 	GProperties prop;
-	memset(&prop, 0, sizeof(prop));
-	prop.position = Vector4d(0,0,3,0);
+	memset(&prop, 0, sizeof(prop) - sizeof(QString));
+	prop.position = Vector4d(0,0,0,0);
 	prop.matDiffuse = Vector4d(1,1,1,1);
 	prop.geom = geom;
+	prop.name = typeNames[geom->Type()];
 	_geometries.push_back(prop);
 	endInsertRows();
 	return createIndex(_geometries.size()-1,0);
+}
+
+bool GModelObjects::setData(const QModelIndex & index, const QVariant & value, int role)
+{
+	if (role == Qt::EditRole)
+	{
+		GProperties& prop = _geometries[index.row()];		
+		//save value from editor to member m_gridData
+		prop.name = value.toString();
+	}
+	return true;
+}
+
+Qt::ItemFlags GModelObjects::flags(const QModelIndex & /*index*/) const
+{
+	return Qt::ItemIsSelectable |  Qt::ItemIsEditable | Qt::ItemIsEnabled ;
 }
 
 GProperties * GModelObjects::Get(int row)
@@ -160,6 +170,7 @@ TracingGui::TracingGui(QWidget *parent)
 	connect( ui.addSphere, SIGNAL(clicked(void)), this, SLOT(AddSphereSlot()));
 	connect( ui.addTriangle, SIGNAL(clicked(void)), this, SLOT(AddTriangleSlot()));
 	connect( ui.delObject, SIGNAL(clicked(void)), this, SLOT(DeleteObjectSlot()));
+	connect( ui.addPoint, SIGNAL(clicked(void)), this, SLOT(AddPointSlot()));
 
 	_gModels = new GModelObjects(NULL);
 	ui.treeView->setModel(_gModels);
@@ -599,4 +610,9 @@ void TracingGui::DeleteObjectSlot()
 	{
 		_gModels->Remove(list[i].row());
 	}
+}
+
+void TracingGui::AddPointSlot()
+{
+
 }
