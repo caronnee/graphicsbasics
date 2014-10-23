@@ -23,6 +23,7 @@ int GModelObjects::rowCount(const QModelIndex & /*parent*/) const
 {
 	return _geometries.size();
 }
+
 int GModelObjects::columnCount(const QModelIndex & /*parent*/) const
 {
 	return 1;
@@ -620,7 +621,11 @@ void TracingGui::DeleteObjectSlot()
 	}
 }
 
+#include "Point.h"
+
 void TracingGui::AddPointSlot()
 {
-
+	Geometry * geom = new PointObject();
+	QModelIndex index = _gModels->Add(geom);
+	ui.treeView->selectionModel()->select(index,QItemSelectionModel::ClearAndSelect);
 }
