@@ -49,7 +49,7 @@ QVariant GModelObjects::headerData(int section, Qt::Orientation orientation, int
 
 QVariant GModelObjects::data(const QModelIndex &index, int role) const
 {
-	if (role == Qt::DisplayRole)
+	if (role == Qt::DisplayRole || role == Qt::EditRole )
 	{
 		int rindex = 0;
 		return _geometries[index.row()].name;
@@ -240,6 +240,7 @@ void TracingGui::SelectionModelChangedSlot(const QItemSelection & newSel, const 
 	ui.yVert_3->setValue(vectors[2][1]);
 	ui.zVert_3->setValue(vectors[2][2]);
 }
+
 void TracingGui::AddSphereSlot()
 {
 	Geometry * geom = new Sphere(1);
@@ -307,7 +308,6 @@ void TracingGui::LoadModels()
 		handler.Read( &g->matSpecular, sizeof (g->matSpecular), 1);
 		handler.Read( &g->matSpecularExp, sizeof (g->matSpecularExp), 1);
 		handler.Read( &g->matEmmisive, sizeof (g->matEmmisive), 1);
-
 	}
 }
 
