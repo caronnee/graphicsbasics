@@ -268,7 +268,6 @@ void TracingGui::LoadModels()
 	handler.Open(DEFAULT_SCENE,"r");
 	while (true)
 	{
-		GProperties * prop;
 		int w;
 		handler.Read(&w,sizeof(int),1);
 		if (handler.End())
@@ -289,6 +288,12 @@ void TracingGui::LoadModels()
 		QModelIndex index = _gModels->Add(geom);
 		GProperties * g = _gModels->Get(index.row());
 
+		int l;
+		handler.Read(&l,sizeof(int),1);
+		char buffer[256];
+		handler.Read(buffer,1,l);
+		buffer[l] = '\0';
+		g->name = buffer;
 		handler.Read( &g->position, sizeof (g->position), 1 );
 		handler.Read( &g->rotation, sizeof (g->rotation), 1);
 		if ( points )
@@ -332,6 +337,9 @@ void TracingGui::SaveModels( )
 
 		GProperties * g = _gModels->Get(i);
 
+		int len = g->name.length();
+		handler.Write(&len,sizeof(int),1);
+		handler.Write(g->name.toLocal8Bit().data(),1,g->name.length());
 		handler.Write( &g->position, sizeof (g->position),1 );
 		handler.Write( &g->rotation, sizeof (g->rotation),1 );
 
