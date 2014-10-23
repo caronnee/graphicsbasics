@@ -42,8 +42,6 @@ enum PropertyType
 	XX(Point)	\
 	XX(Sphere)	\
 	XX(Triangle)	\
-	XX(PointLight)	\
-	XX(AmbientLight)	\
 	XX(Camera)	\
 
 #define CREATE_ENUM(one)	\

@@ -201,8 +201,17 @@ void TracingGui::SelectionMaterialChangedSlot(const QItemSelection & newSel, con
 
 	//ui.MaterialType 
 	ui.dR->setValue(gProp.matDiffuse[0]*255);
-	ui.dB->setValue(gProp.matDiffuse[2]*255);
-	ui.dG->setValue(gProp.matDiffuse[1]*255);
+	ui.dB->setValue(gProp.matDiffuse[1]*255);
+	ui.dG->setValue(gProp.matDiffuse[2]*255);
+
+	ui.sR->setValue(gProp.matSpecular[0]*255);
+	ui.sB->setValue(gProp.matSpecular[1]*255);
+	ui.sG->setValue(gProp.matSpecular[2]*255);
+	ui.sE->setValue(gProp.matSpecularExp);
+
+	ui.eR->setValue(gProp.matEmmisive[0]);
+	ui.eB->setValue(gProp.matEmmisive[1]);
+	ui.eG->setValue(gProp.matEmmisive[2]);
 }
 void TracingGui::SelectionModelChangedSlot(const QItemSelection & newSel, const QItemSelection &oldSel)
 {
@@ -265,6 +274,7 @@ void TracingGui::AddTriangleSlot()
 void TracingGui::LoadModels()
 {
 	ui.treeView->selectionModel()->clear();
+	ui.treeViewLight->selectionModel()->clear();
 	_gModels->Clear();
 	FileHandler handler;
 	handler.Open(DEFAULT_SCENE,"r");
@@ -282,6 +292,10 @@ void TracingGui::LoadModels()
 		{
 			geom = new DoubleTriangle(NULL);
 			points = true;
+		}
+		else if (w == TypePoint)
+		{
+			geom = new PointObject();
 		}
 		else
 		{
@@ -354,7 +368,6 @@ void TracingGui::SaveModels( )
 		handler.Write( &g->matSpecular, sizeof (g->matSpecular),1 );
 		handler.Write( &g->matSpecularExp, sizeof (g->matSpecularExp),1 );
 		handler.Write( &g->matEmmisive, sizeof (g->matEmmisive),1 );
-
 		i++;
 	}
 }
@@ -397,10 +410,8 @@ void TracingGui::SaveSceneSlot()
 {
 	// saveModels
 	SaveModels();
-
+	// save camera
 	SaveCamera();
-
-	//SaveLights()
 }
 
 void TracingGui::UpdateExposureNumberSlot(int exposure)
@@ -484,7 +495,7 @@ void TracingGui::UpdateSelectedModel( QModelIndexList indexes, int type )
 			g.matDiffuse = Vector4d(ui.dR->value()/255.f,ui.dG->value()/255.f,ui.dB->value()/255.f);
 			g.matSpecular = Vector4d(ui.sR->value()/255.f,ui.sG->value()/255.f,ui.sB->value()/255.f);
 			g.matSpecularExp = ui.sE->value();
-			g.matEmmisive = Vector4d(ui.eR->value()/255.f,ui.eG->value()/255.f,ui.eB->value()/255.f);
+			g.matEmmisive = Vector4d(ui.eR->value(),ui.eG->value(),ui.eB->value());
 		}
 	}
 }
