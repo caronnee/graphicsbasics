@@ -193,7 +193,7 @@
        <enum>QTabWidget::North</enum>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="model">
        <property name="layoutDirection">
@@ -632,27 +632,6 @@
           </property>
          </widget>
         </item>
-        <item row="5" column="2">
-         <widget class="QSpinBox" name="eR">
-          <property name="maximum">
-           <number>255</number>
-          </property>
-         </widget>
-        </item>
-        <item row="5" column="3">
-         <widget class="QSpinBox" name="eG">
-          <property name="maximum">
-           <number>255</number>
-          </property>
-         </widget>
-        </item>
-        <item row="5" column="4">
-         <widget class="QSpinBox" name="eB">
-          <property name="maximum">
-           <number>255</number>
-          </property>
-         </widget>
-        </item>
         <item row="4" column="5">
          <widget class="QDoubleSpinBox" name="sE">
           <property name="minimum">
@@ -667,6 +646,36 @@
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
+          </property>
+         </widget>
+        </item>
+        <item row="5" column="4">
+         <widget class="QDoubleSpinBox" name="eB">
+          <property name="maximum">
+           <double>10.000000000000000</double>
+          </property>
+          <property name="singleStep">
+           <double>0.001000000000000</double>
+          </property>
+         </widget>
+        </item>
+        <item row="5" column="3">
+         <widget class="QDoubleSpinBox" name="eG">
+          <property name="maximum">
+           <double>10.000000000000000</double>
+          </property>
+          <property name="singleStep">
+           <double>0.001000000000000</double>
+          </property>
+         </widget>
+        </item>
+        <item row="5" column="2">
+         <widget class="QDoubleSpinBox" name="eR">
+          <property name="maximum">
+           <double>10.000000000000000</double>
+          </property>
+          <property name="singleStep">
+           <double>0.001000000000000</double>
           </property>
          </widget>
         </item>
