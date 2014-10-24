@@ -286,8 +286,13 @@ void TracingGui::LoadModels()
 			break;
 		Geometry * geom;
 		bool points = false;
+		bool positionManual = false;
 		if ( w == TypeSphere )
+		{
+			positionManual = true;
 			geom = new Sphere(1);
+			
+		}
 		else if (w == TypeTriangle)
 		{
 			geom = new DoubleTriangle(NULL);
@@ -311,6 +316,22 @@ void TracingGui::LoadModels()
 		buffer[l] = '\0';
 		g->name = buffer;
 		handler.Read( &g->position, sizeof (g->position), 1 );
+
+		if (positionManual)
+		{
+			Vector4d v1(-1.27029f,  1.30455f, -1.28002f);
+			Vector4d v2(-1.27029f, -1.25549f, -1.28002f);
+			g->position = v1+v2/2;
+			//Vec3f(-1.27029f,  1.30455f, -1.28002f),
+			//	Vec3f( 1.28975f,  1.30455f, -1.28002f),
+			//	Vec3f( 1.28975f,  1.30455f,  1.28002f),
+			//	Vec3f(-1.27029f,  1.30455f,  1.28002f),
+			//	Vec3f(-1.27029f, -1.25549f, -1.28002f),
+			//	Vec3f( 1.28975f, -1.25549f, -1.28002f),
+			//	Vec3f( 1.28975f, -1.25549f,  1.28002f),
+			//	Vec3f(-1.27029f, -1.25549f,  1.28002f) 
+		}
+
 		handler.Read( &g->rotation, sizeof (g->rotation), 1);
 		if ( points )
 		{
