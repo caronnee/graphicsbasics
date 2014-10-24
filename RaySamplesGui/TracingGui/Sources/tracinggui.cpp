@@ -200,18 +200,18 @@ void TracingGui::SelectionMaterialChangedSlot(const QItemSelection & newSel, con
 	GProperties & gProp = *_gModels->Get(index);
 
 	//ui.MaterialType 
-	ui.dR->setValue(gProp.matDiffuse[0]*255);
-	ui.dB->setValue(gProp.matDiffuse[1]*255);
-	ui.dG->setValue(gProp.matDiffuse[2]*255);
+	ui.dR->setValue(gProp.matDiffuse[0] );
+	ui.dB->setValue(gProp.matDiffuse[1] );
+	ui.dG->setValue(gProp.matDiffuse[2] );
 
-	ui.sR->setValue(gProp.matSpecular[0]*255);
-	ui.sB->setValue(gProp.matSpecular[1]*255);
-	ui.sG->setValue(gProp.matSpecular[2]*255);
+	ui.sR->setValue(gProp.matSpecular[0] );
+	ui.sB->setValue(gProp.matSpecular[1] );
+	ui.sG->setValue(gProp.matSpecular[2] );
 	ui.sE->setValue(gProp.matSpecularExp);
 
-	ui.eR->setValue(gProp.matEmmisive[0]);
-	ui.eB->setValue(gProp.matEmmisive[1]);
-	ui.eG->setValue(gProp.matEmmisive[2]);
+	ui.eR->setValue(gProp.matEmmisive[0] );
+	ui.eB->setValue(gProp.matEmmisive[1] );
+	ui.eG->setValue(gProp.matEmmisive[2] );
 }
 void TracingGui::SelectionModelChangedSlot(const QItemSelection & newSel, const QItemSelection &oldSel)
 {
@@ -513,8 +513,8 @@ void TracingGui::UpdateSelectedModel( QModelIndexList indexes, int type )
 		}
 		if (type == 1)
 		{
-			g.matDiffuse = Vector4d(ui.dR->value()/255.f,ui.dG->value()/255.f,ui.dB->value()/255.f);
-			g.matSpecular = Vector4d(ui.sR->value()/255.f,ui.sG->value()/255.f,ui.sB->value()/255.f);
+			g.matDiffuse = Vector4d(ui.dR->value(),ui.dG->value(),ui.dB->value());
+			g.matSpecular = Vector4d(ui.sR->value(),ui.sG->value(),ui.sB->value());
 			g.matSpecularExp = ui.sE->value();
 			g.matEmmisive = Vector4d(ui.eR->value(),ui.eG->value(),ui.eB->value());
 		}
