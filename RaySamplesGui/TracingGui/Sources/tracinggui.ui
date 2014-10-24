@@ -193,7 +193,7 @@
        <enum>QTabWidget::North</enum>
       </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="model">
        <property name="layoutDirection">
@@ -246,14 +246,21 @@
         </item>
         <item row="0" column="1" rowspan="5">
          <layout class="QGridLayout" name="gridLayout">
-          <item row="6" column="2">
+          <item row="7" column="0">
+           <widget class="QSpinBox" name="xRotationDeg">
+            <property name="maximum">
+             <number>359</number>
+            </property>
+           </widget>
+          </item>
+          <item row="7" column="2">
            <widget class="QSpinBox" name="yRotationDeg">
             <property name="maximum">
              <number>359</number>
             </property>
            </widget>
           </item>
-          <item row="4" column="3">
+          <item row="5" column="3">
            <widget class="QDial" name="zRotation">
             <property name="maximum">
              <number>359</number>
@@ -269,7 +276,7 @@
             </property>
            </widget>
           </item>
-          <item row="4" column="0">
+          <item row="5" column="0">
            <widget class="QDial" name="xRotation">
             <property name="enabled">
              <bool>true</bool>
@@ -288,7 +295,7 @@
             </property>
            </widget>
           </item>
-          <item row="4" column="2">
+          <item row="5" column="2">
            <widget class="QDial" name="yRotation">
             <property name="maximum">
              <number>359</number>
@@ -304,7 +311,7 @@
             </property>
            </widget>
           </item>
-          <item row="5" column="2">
+          <item row="6" column="2">
            <widget class="DoubleIntSpinBox" name="yRotationRad">
             <property name="readOnly">
              <bool>true</bool>
@@ -314,14 +321,7 @@
             </property>
            </widget>
           </item>
-          <item row="6" column="0">
-           <widget class="QSpinBox" name="xRotationDeg">
-            <property name="maximum">
-             <number>359</number>
-            </property>
-           </widget>
-          </item>
-          <item row="5" column="3">
+          <item row="6" column="3">
            <widget class="DoubleIntSpinBox" name="zRotationRad">
             <property name="readOnly">
              <bool>true</bool>
@@ -331,7 +331,7 @@
             </property>
            </widget>
           </item>
-          <item row="5" column="0">
+          <item row="6" column="0">
            <widget class="DoubleIntSpinBox" name="xRotationRad">
             <property name="readOnly">
              <bool>true</bool>
@@ -341,14 +341,14 @@
             </property>
            </widget>
           </item>
-          <item row="6" column="3">
+          <item row="7" column="3">
            <widget class="QSpinBox" name="zRotationDeg">
             <property name="maximum">
              <number>359</number>
             </property>
            </widget>
           </item>
-          <item row="7" column="0">
+          <item row="8" column="0">
            <widget class="QDoubleSpinBox" name="xModelPos">
             <property name="prefix">
              <string>x:</string>
@@ -361,7 +361,7 @@
             </property>
            </widget>
           </item>
-          <item row="7" column="2">
+          <item row="8" column="2">
            <widget class="QDoubleSpinBox" name="yModelPos">
             <property name="prefix">
              <string>y:</string>
@@ -377,7 +377,7 @@
             </property>
            </widget>
           </item>
-          <item row="7" column="3">
+          <item row="8" column="3">
            <widget class="QDoubleSpinBox" name="zModelPos">
             <property name="prefix">
              <string>z:</string>
@@ -545,6 +545,9 @@
              <double>1000.000000000000000</double>
             </property>
            </widget>
+          </item>
+          <item row="4" column="2">
+           <widget class="QDoubleSpinBox" name="radius"/>
           </item>
          </layout>
         </item>

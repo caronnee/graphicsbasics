@@ -35,6 +35,7 @@ enum PropertyType
 {
 	PMaterial,
 	PMatrix,
+	PRadius,
 	PPoints
 };
 
