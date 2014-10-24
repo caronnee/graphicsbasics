@@ -555,27 +555,6 @@
         <string>Light</string>
        </attribute>
        <layout class="QGridLayout" name="gridLayout_5">
-        <item row="3" column="4">
-         <widget class="QSpinBox" name="dB">
-          <property name="maximum">
-           <number>255</number>
-          </property>
-         </widget>
-        </item>
-        <item row="3" column="3">
-         <widget class="QSpinBox" name="dG">
-          <property name="maximum">
-           <number>255</number>
-          </property>
-         </widget>
-        </item>
-        <item row="3" column="2">
-         <widget class="QSpinBox" name="dR">
-          <property name="maximum">
-           <number>255</number>
-          </property>
-         </widget>
-        </item>
         <item row="1" column="1">
          <widget class="QLabel" name="materialLabel">
           <property name="text">
@@ -587,27 +566,6 @@
          <widget class="QLabel" name="label_6">
           <property name="text">
            <string>Specular</string>
-          </property>
-         </widget>
-        </item>
-        <item row="4" column="4">
-         <widget class="QSpinBox" name="sB">
-          <property name="maximum">
-           <number>255</number>
-          </property>
-         </widget>
-        </item>
-        <item row="4" column="2">
-         <widget class="QSpinBox" name="sR">
-          <property name="maximum">
-           <number>255</number>
-          </property>
-         </widget>
-        </item>
-        <item row="4" column="3">
-         <widget class="QSpinBox" name="sG">
-          <property name="maximum">
-           <number>255</number>
           </property>
          </widget>
         </item>
@@ -678,6 +636,24 @@
            <double>0.001000000000000</double>
           </property>
          </widget>
+        </item>
+        <item row="3" column="4">
+         <widget class="QDoubleSpinBox" name="dB"/>
+        </item>
+        <item row="4" column="4">
+         <widget class="QDoubleSpinBox" name="sB"/>
+        </item>
+        <item row="3" column="3">
+         <widget class="QDoubleSpinBox" name="dG"/>
+        </item>
+        <item row="3" column="2">
+         <widget class="QDoubleSpinBox" name="dR"/>
+        </item>
+        <item row="4" column="2">
+         <widget class="QDoubleSpinBox" name="sR"/>
+        </item>
+        <item row="4" column="3">
+         <widget class="QDoubleSpinBox" name="sG"/>
         </item>
        </layout>
       </widget>
