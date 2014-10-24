@@ -28,7 +28,6 @@ bool Sphere::Intersect(const Ray & ray, Intersection & sect)
 	// analytic solution
 	Vector4d rayDirection = WorldToModel(ray.direction);
 	Vector4d rayOrigin = WorldToModel( ray.origin );
-
 	Vector4d L = Vector4d(0,0,0,1) - rayOrigin;	
 	//float a = rayDirection.Dot(rayDirection);
 	//float b = 2 * rayDirection.Dot(L);
@@ -38,6 +37,7 @@ bool Sphere::Intersect(const Ray & ray, Intersection & sect)
 	//	return false;
 
 	//// geometric solution
+	DoAssert( 1 - rayDirection.Size2() <  EPSILON);
 	float tca = L.Dot(rayDirection);
 	if (tca < 0) // behind the ray
 		return false;
