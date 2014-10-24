@@ -229,6 +229,12 @@ void TracingGui::SelectionModelChangedSlot(const QItemSelection & newSel, const 
 	ui.xRotationDeg->setValue( gProp.rotation[0] );
 	ui.yRotationDeg->setValue( gProp.rotation[1] );
 	ui.zRotationDeg->setValue( gProp.rotation[2] );
+	static float defRadius = 0;
+	float * r = (float *)gProp.geom->GetProperty(PRadius);
+	if (!r)
+		r = &defRadius;
+	
+	ui.radius->setValue( *r );
 
 	// position
 	Vector4d * vectors = (Vector4d *)gProp.geom->GetProperty(PPoints);
@@ -278,6 +284,8 @@ void TracingGui::LoadModels()
 	_gModels->Clear();
 	FileHandler handler;
 	handler.Open(DEFAULT_SCENE,"r");
+	int positionManual = 0;
+
 	while (true)
 	{
 		int w;
@@ -286,12 +294,12 @@ void TracingGui::LoadModels()
 			break;
 		Geometry * geom;
 		bool points = false;
-		bool positionManual = false;
+		bool hasRadius = false;
 		if ( w == TypeSphere )
 		{
-			positionManual = true;
+			hasRadius = true;
+			positionManual++;
 			geom = new Sphere(1);
-			
 		}
 		else if (w == TypeTriangle)
 		{
@@ -317,22 +325,39 @@ void TracingGui::LoadModels()
 		g->name = buffer;
 		handler.Read( &g->position, sizeof (g->position), 1 );
 
-		if (positionManual)
+		if (positionManual == -1)
 		{
-			Vector4d v1(-1.27029f,  1.30455f, -1.28002f);
-			Vector4d v2(-1.27029f, -1.25549f, -1.28002f);
-			g->position = v1+v2/2;
-			//Vec3f(-1.27029f,  1.30455f, -1.28002f),
-			//	Vec3f( 1.28975f,  1.30455f, -1.28002f),
-			//	Vec3f( 1.28975f,  1.30455f,  1.28002f),
-			//	Vec3f(-1.27029f,  1.30455f,  1.28002f),
-			//	Vec3f(-1.27029f, -1.25549f, -1.28002f),
-			//	Vec3f( 1.28975f, -1.25549f, -1.28002f),
-			//	Vec3f( 1.28975f, -1.25549f,  1.28002f),
-			//	Vec3f(-1.27029f, -1.25549f,  1.28002f) 
+			Vector4d cb[]= {
+				Vector4d(-1.27029f,  1.30455f, -1.28002f),
+				Vector4d( 1.28975f,  1.30455f, -1.28002f),
+				Vector4d( 1.28975f,  1.30455f,  1.28002f),
+				Vector4d(-1.27029f,  1.30455f,  1.28002f),
+				Vector4d(-1.27029f, -1.25549f, -1.28002f),
+				Vector4d( 1.28975f, -1.25549f, -1.28002f),
+				Vector4d( 1.28975f, -1.25549f,  1.28002f),
+				Vector4d(-1.27029f, -1.25549f,  1.28002f) };
+
+			float smallRadius = 0.5f;
+			Vector4d leftWallCenter  = (cb[0] + cb[4]) * (1.f / 2.f) + Vector4d(0, 0, smallRadius);
+			Vector4d rightWallCenter = (cb[1] + cb[5]) * (1.f / 2.f) + Vector4d(0, 0, smallRadius);
+			float xlen = rightWallCenter[0] - leftWallCenter[0];
+			Vector4d leftBallCenter  = leftWallCenter  + Vector4d(2.f * xlen / 7.f, 0, 0);
+			Vector4d rightBallCenter = rightWallCenter - Vector4d(2.f * xlen / 7.f, -xlen/4, 0);
+
+			Vector4d final = rightBallCenter;
+			float temp = final[1];
+			final[1] = final[2];
+			final[2] = temp;
+			g->position = final;
 		}
 
 		handler.Read( &g->rotation, sizeof (g->rotation), 1);
+		if ( hasRadius)
+		{
+			float r;
+			handler.Read( &r, sizeof (r), 1);
+			geom->SetProperty(PRadius,&r);
+		}
 		if ( points )
 		{
 			Vector4d test[3];
@@ -379,6 +404,9 @@ void TracingGui::SaveModels( )
 		handler.Write( &g->position, sizeof (g->position),1 );
 		handler.Write( &g->rotation, sizeof (g->rotation),1 );
 
+		float * hasRadius = (float *)geom->GetProperty(PRadius);
+		if (hasRadius)
+			handler.Write( hasRadius, sizeof (float),1 );
 		Vector4d * test = (Vector4d *) geom->GetProperty(PPoints);
 		if (test)
 			handler.Write(test,sizeof(Vector4d),3);	
@@ -504,12 +532,14 @@ void TracingGui::UpdateSelectedModel( QModelIndexList indexes, int type )
 		{
 			g.position = Vector4d(ui.xModelPos->value(),ui.yModelPos->value(),ui.zModelPos->value(),0);
 			g.rotation = Vector4d(ui.xRotationDeg->value(),ui.yRotationDeg->value(),ui.zRotationDeg->value());
+			float radius = ui.radius->value();
 			Vector4d points[] = { 
 				Vector4d(ui.xVert_1->value(),ui.yVert_1->value(),ui.zVert_1->value(),1),
 				Vector4d(ui.xVert_2->value(),ui.yVert_2->value(),ui.zVert_2->value(),1),
 				Vector4d(ui.xVert_3->value(),ui.yVert_3->value(),ui.zVert_3->value(),1),
 			};
 			g.geom->SetProperty(PPoints, points);
+			g.geom->SetProperty(PRadius, &radius);
 		}
 		if (type == 1)
 		{

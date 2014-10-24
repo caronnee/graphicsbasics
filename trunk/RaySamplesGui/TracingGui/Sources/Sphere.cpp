@@ -3,7 +3,7 @@
 
 Sphere::Sphere(float radius) :Geometry()
 {
-	Scale(radius);
+	SetProperty(PRadius, &radius);
 }
 
 template<typename T>
@@ -42,9 +42,9 @@ bool Sphere::Intersect(const Ray & ray, Intersection & sect)
 	if (tca < 0) // behind the ray
 		return false;
 	float d2 = L.Dot(L) - tca * tca;
-	if ( d2 > 1 ) // outside of radius
+	if ( d2 > _radius2 ) // outside of radius
 		return false;
-	float thc = sqrt(1 - d2);
+	float thc = sqrt(_radius2 - d2);
 	float t0 = tca - thc;
 	sect.model = this;
 	sect.t = t0;
@@ -56,7 +56,7 @@ bool Sphere::Intersect(const Ray & ray, Intersection & sect)
 		Vector4d testIntersection = ModelToWorld(sect.positionModel);// ray.origin + ray.direction * t0;
 		Vector4d sphereCenter = ModelToWorld(Vector4d(0,0,0,1));
 		float sz = (sphereCenter - testIntersection ).Size2();;
-		DoAssert(sz-1<=2*EPSILON);
+		DoAssert(sz-_radius2<=2*EPSILON);
 	}
 	return true;
 }
@@ -64,4 +64,21 @@ bool Sphere::Intersect(const Ray & ray, Intersection & sect)
 int Sphere::Type()const
 {
 	return TypeSphere;
+}
+
+void * Sphere::GetProperty(PropertyType type)
+{
+	if ( type == PRadius)
+		return &_radius;
+	return base::GetProperty(type);
+}
+
+void Sphere::SetProperty(PropertyType type, void * value)
+{
+	if ( type == PRadius)
+	{
+		_radius = *(float*)value;
+		_radius2 = _radius*_radius;
+	}
+	base::SetProperty(type,value);
 }
