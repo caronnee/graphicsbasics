@@ -31,6 +31,7 @@ Ray Camera::GetRay(float x, float y)
 	// this is in model space
 	Vector4d w (x,y,0,1);
 	r.direction = RasterToWorld(w) - r.origin; // modelOrigin
+	r.direction.Normalize();
 	return r;
 }
 
