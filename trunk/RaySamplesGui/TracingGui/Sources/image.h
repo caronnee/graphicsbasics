@@ -18,5 +18,6 @@ public:
 	HDRComponent GetComponent(int i, int j);
 	void Clear();
 	void SetSize(int w, int h);
+	void Divide(double inv);
 };
 #endif

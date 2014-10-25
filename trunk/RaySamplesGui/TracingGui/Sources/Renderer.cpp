@@ -14,18 +14,25 @@ bool stop = false;
 
 void Renderer::Render(int iterations, int & mask)
 {
-	GetRendererTrack()->Clear();
-	GetRendererTrack()->SetStages(_image->W());
-	_image->Clear();
-	for ( int x = 0; x < _image->W(); x++)
+	int imageSize =  _image->W()*_image
+	for ( int i =0; i < iterations; i++)
 	{
-		for ( int y = 0; y < _image->H(); y++)
+		GetRendererTrack()->Clear();
+		GetRendererTrack()->SetStages(_image->W());
+		_image->Clear();
+		for ( int x = 0; x < _image->W(); x++)
 		{
-			Vector4d color = RenderPixel(x,y,mask);
-			_image->AddColor(x,y,color);
+			for ( int y = 0; y < _image->H(); y++)
+			{
+				Vector4d color = RenderPixel(x,y,mask);
+				_image->AddColor(x,y,color);
+			}
+			GetRendererTrack()->Update();
 		}
-		GetRendererTrack()->Update();
 	}
+	if ( iterations == 1 )
+		return; // no need to divide
+	_image->Divide(inv);
 }
 
 Renderer::Renderer() :_camera(NULL), _scene(NULL), _image(NULL)

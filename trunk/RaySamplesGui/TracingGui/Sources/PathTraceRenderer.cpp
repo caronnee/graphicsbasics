@@ -6,5 +6,7 @@ Vector4d PathTraceRenderer::RenderPixel(const int &x, const int &y, const int & 
 	Vector4d total;
 	total.Zero();
 	
+	
+
 	return total;
 }

@@ -79,3 +79,11 @@ void Image::SetSize(int w, int h)
 	memset(_buffer,0,sizeof(Vector4d)*size);	
 }
 
+void Image::Divide(double inv)
+{
+	for (int i =0; i <_w*_h; i++)
+	{
+		_buffer[i] *=inv;
+	}
+}
+
