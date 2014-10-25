@@ -14,7 +14,6 @@ bool stop = false;
 
 void Renderer::Render(int iterations, int & mask)
 {
-	int imageSize =  _image->W()*_image
 	for ( int i =0; i < iterations; i++)
 	{
 		GetRendererTrack()->Clear();
@@ -32,6 +31,7 @@ void Renderer::Render(int iterations, int & mask)
 	}
 	if ( iterations == 1 )
 		return; // no need to divide
+	double inv = 1.0f/iterations;
 	_image->Divide(inv);
 }
 
