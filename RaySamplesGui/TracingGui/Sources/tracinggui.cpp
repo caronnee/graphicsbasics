@@ -106,7 +106,7 @@ void GModelObjects::Remove(int index)
 }
 
 TracingGui::TracingGui(QWidget *parent)
-	: QMainWindow(parent), _image(128,128),_gModels(NULL)
+	: QMainWindow(parent), _image(0,0),_gModels(NULL)
 {
 	ui.setupUi(this);
 	// connect(openAct, SIGNAL(triggered()), this, SLOT(open()));
@@ -653,10 +653,11 @@ void TracingGui::RenderSlot()
 		renderer = new PathTraceRenderer();
 		break;
 	default:
-		throw "renderer has unexpected values";
+		throw "Rendered not implemented";
 	}
 	renderer->Init(&_scene,&_image,camera);
-	renderer->Render();
+	int mask = ui.calcType->currentData().toInt();
+	renderer->Render(ui.iterations->value(), mask);
 	// convert Image to label
 	ShowHdr(0);
 }
