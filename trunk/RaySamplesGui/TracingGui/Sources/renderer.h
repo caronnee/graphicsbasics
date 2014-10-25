@@ -10,6 +10,12 @@
 
 TrackProgress * GetRendererTrack();
 
+enum RenderingTypeMask
+{
+	RDirectLight,
+	RIndirectLight,
+};
+
 class Renderer
 {
 protected:
@@ -20,8 +26,8 @@ protected:
 public:
 	Renderer();
 	virtual void Init(Scene * scene, Image * image, Camera * camera);
-	virtual void Render( );
-	virtual Vector4d RenderPixel( const int &x, const int &y ) = 0;
+	void Render(int iterations, int & mask);
+	virtual Vector4d RenderPixel( const int &x, const int &y, const int & type ) = 0;
 	virtual ~Renderer();
 };
 

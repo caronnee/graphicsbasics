@@ -11,7 +11,7 @@ void TestRenderer::Init(Scene * scene, Image * image, Camera * camera)
 extern bool stop;
 #endif
 
-Vector4d TestRenderer::RenderPixel(const int & x, const int & y)
+Vector4d TestRenderer::RenderPixel(const int &x, const int &y, const int & type)
 {
 #if _DEBUG
 	if ( (x == 34) && (y == 63) )

@@ -12,7 +12,7 @@ void Renderer::Init(Scene * scene, Image * image, Camera * camera)
 bool stop = false;
 #endif
 
-void Renderer::Render()
+void Renderer::Render(int iterations, int & mask)
 {
 	GetRendererTrack()->Clear();
 	GetRendererTrack()->SetStages(_image->W());
@@ -21,7 +21,7 @@ void Renderer::Render()
 	{
 		for ( int y = 0; y < _image->H(); y++)
 		{
-			Vector4d color = RenderPixel(x,y);
+			Vector4d color = RenderPixel(x,y,mask);
 			_image->AddColor(x,y,color);
 		}
 		GetRendererTrack()->Update();
