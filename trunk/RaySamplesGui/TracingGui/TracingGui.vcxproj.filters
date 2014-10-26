@@ -74,6 +74,9 @@
     <Filter Include="Source Files\Gui\DoubleIntSpinBoxes">
       <UniqueIdentifier>{830d2998-c39f-4696-9586-96508d1b9548}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Logic\Random">
+      <UniqueIdentifier>{6e4c6540-bd4c-4d47-aa18-bd700fd609b0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GeneratedFiles\Debug\moc_tracinggui.cpp">
@@ -178,6 +181,9 @@
     <ClCompile Include="Sources\PathTraceRenderer.cpp">
       <Filter>Source Files\Logic\Renderer</Filter>
     </ClCompile>
+    <ClCompile Include="Sources\RandomNumber.cpp">
+      <Filter>Source Files\Logic\Random</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="Sources/tracinggui.ui">
@@ -271,6 +277,9 @@
     </ClInclude>
     <ClInclude Include="Sources\PathTraceRenderer.h">
       <Filter>Source Files\Logic\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\RandomNumber.h">
+      <Filter>Source Files\Logic\Random</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
