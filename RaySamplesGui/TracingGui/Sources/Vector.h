@@ -56,6 +56,7 @@ public:
 	float Size()const;
 	void Normalize();
   void Zero();
+  Vector4d Scalar(const Vector4d & illumination);
 };
 
 #endif

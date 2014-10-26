@@ -205,3 +205,11 @@ void Vector4d::Zero()
 {
   memset(_val,0,sizeof(_val));
 }
+
+Vector4d Vector4d::Scalar(const Vector4d & illumination)
+{
+	X() *= illumination.X();
+	Y() *= illumination.Y();
+	Z() *= illumination.Z();
+	W() *= illumination.W();
+}

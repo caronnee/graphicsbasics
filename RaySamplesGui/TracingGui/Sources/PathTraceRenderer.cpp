@@ -10,19 +10,20 @@ Vector4d PathTraceRenderer::RenderPixel(const int &x, const int &y, const int & 
 	if ( _scene->FindIntersection(ray,isec) )
 		return BLACK;
 	
-	if (type & RDirectLight)
+	// sample direct light
+	for (int iLight =0; iLight< _scene->Lights(); iLight++)
 	{
-		// sample direct light
-		for (int iLight =0; iLight< _scene->Lights(); iLight++)
+		Geometry * light = _scene->GetLight(iLight);
+		Vector4d outputVector;
+		float pdf;
+		Vector4d illumination = light->SampleIllumination( isec );
+		Vector4d brdf = isec.model->GetMaterial()->EvalBrdf(-ray.direction, outputVector,pdf);
+		if (type & RDirectLight)
 		{
-			Geometry * light = _scene->GetLight(iLight);
-			Vector4d outputVector;
-			Vector4d illumination = light->SampleIllumination( isec );
-			Vector4d brdf = isec.model->GetMaterial()->EvalBrdf(-ray.direction, outputVector);
-			//total += brdf * illumination;
+			total += brdf.Scalar(illumination);
 		}
 	}
-	
+
 
 	return total;
 }

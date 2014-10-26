@@ -12,7 +12,7 @@ public:
 
 	MaterialDiffuse(const Vector4d & diffuseReflectance,const Vector4d & emmisive);
 	Vector4d GetDiffuse( const Vector4d & input, const Vector4d & output ) const;
-	Vector4d EvalBrdf(const Vector4d & input, const Vector4d & output ) const;
+	Vector4d EvalBrdf(const Vector4d & input, Vector4d & output, float & pdf ) const;
 };
 
 #endif
