@@ -74,7 +74,8 @@ bool DoubleTriangle::Intersect(const Ray & ray, Intersection & sect)
 	if(t > EPSILON) { //ray intersection
 		sect.t = t;
 		sect.model = this;
-		sect.positionModel = o + d * t;
+		sect.worldPosition = ray.origin + ray.direction * t;
+		sect.nrm = ModelToWorld(_edges[0].Cross(_edges[1]));
 		return true;
 	}
 
@@ -85,4 +86,10 @@ bool DoubleTriangle::Intersect(const Ray & ray, Intersection & sect)
 int DoubleTriangle::Type()const
 {
 	return TypeTriangle;
+}
+
+Vector4d DoubleTriangle::SampleIllumination(Intersection &sectio )
+{
+	// TODO
+	throw "Not implemented yet";
 }

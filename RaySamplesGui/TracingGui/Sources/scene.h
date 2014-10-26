@@ -9,6 +9,7 @@ class Scene
 {
 	AmbientLight _ambientLight;
 	std::vector<Geometry *> _geometry;
+	std::vector<Geometry *> _emmiters;
 public:
 	Scene();
 	void AddModel(Geometry * model);
@@ -16,5 +17,7 @@ public:
 	bool FindIntersection(const Ray & ray, Intersection& isect);
 	void CreateCornellBox();
 	void Clear();
+	int Lights();
+	Geometry * GetLight(int iLight);
 };
 #endif

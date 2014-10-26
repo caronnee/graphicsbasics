@@ -13,8 +13,9 @@ bool PointObject::Intersect(const Ray & ray, Intersection & sect)
 	if ( diff.Size2() < EPSILON )
 	{
 		sect.model = this;
-		sect.positionModel = Vector4d(0,0,0,1);
+		sect.worldPosition = worldPos;
 		sect.t = correctDir2.Max()/ray.direction.Max();
+		sect.nrm = Vector4d(0,0,0,0); // point object does not have normal
 		return true;
 	}
 	return false;
@@ -23,4 +24,9 @@ bool PointObject::Intersect(const Ray & ray, Intersection & sect)
 int PointObject::Type() const
 {
 	return TypePoint;
+}
+
+Vector4d PointObject::SampleIllumination(Intersection &section)
+{
+	throw "Not implemented yet";
 }

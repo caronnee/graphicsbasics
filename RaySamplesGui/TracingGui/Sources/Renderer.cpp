@@ -50,7 +50,6 @@ Renderer::~Renderer()
 	Destroy();
 }
 
-
 TrackProgress GTrackProgress;
 
 TrackProgress * GetRendererTrack()

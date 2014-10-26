@@ -5,12 +5,13 @@
 
 class Material
 {
-  Vector4d _emmisive;
+	Vector4d _emmisive;
 public:
-  Material(Vector4d e);
-  bool IsLight() const;
-  Vector4d Emmisive() const;
-	virtual Vector4d GetTotalReflectance(const Vector4d & input, const Vector4d & output ) const =0;
+	Material(Vector4d e);
+	bool IsLight() const;
+	Vector4d Emmisive() const;
+	// calculate brdf according to selected material
+	virtual Vector4d EvalBrdf(const Vector4d & input, const Vector4d & output ) const =0;
 };
 
 enum MaterialType{

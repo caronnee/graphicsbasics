@@ -10,7 +10,8 @@ class Geometry;
 
 struct Intersection
 {
-	Vector4d positionModel;
+	Vector4d nrm;
+	Vector4d worldPosition;
 	float t;
 	Geometry * model;
 };
@@ -83,5 +84,7 @@ public:
 	virtual void * GetProperty(PropertyType type);
 	void Clear( );
 	virtual int Type()const =0;
+	// position to illuminate, return the illumination of the point
+	virtual Vector4d SampleIllumination(Intersection &section ) = 0;
 };
 #endif

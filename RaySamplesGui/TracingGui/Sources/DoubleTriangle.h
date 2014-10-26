@@ -13,6 +13,7 @@ public:
 	void SetPoints(Vector4d * trianglePoints);
 	void SetProperty(PropertyType type, void * values);
 	void * GetProperty(PropertyType type);
+	Vector4d SampleIllumination(Intersection &section );
 	int Type() const;
 };
 

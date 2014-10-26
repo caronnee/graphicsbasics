@@ -25,6 +25,7 @@ public:
 	Vector4d WorldToRaster(const Vector4d& v) const;
 	Vector4d RasterToWorld(const Vector4d& v) const;
 	virtual int Type()const;
+	virtual Vector4d SampleIllumination( const Vector4d & modelPosition );
 };
 
 #endif

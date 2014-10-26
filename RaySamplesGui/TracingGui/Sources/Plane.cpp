@@ -29,7 +29,8 @@ bool Plane::Intersect(const Ray & ray, Intersection & sect)
 		return false;
 	DoAssert( fabs(localCoord.Z()) < EPSILON );
 	sect.model = this;
-	sect.positionModel = localCoord;
+	sect.worldPosition = ray.origin + ray.direction * coef;
 	sect.t = coef;
+	sect.nrm = ModelToWorld(Vector4d(0,0,1,0));
 	return true;
 }

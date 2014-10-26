@@ -48,12 +48,12 @@ bool Sphere::Intersect(const Ray & ray, Intersection & sect)
 	float t0 = tca - thc;
 	sect.model = this;
 	sect.t = t0;
-	sect.positionModel = rayOrigin + rayDirection * t0;
-
+	sect.worldPosition = ray.origin + ray.direction * t0;
+	sect.nrm = rayOrigin + rayDirection * t0 - Vector4d(0,0,0,1);
 	//verify that this works
 	{
-		float dist2 = sect.positionModel.Size2();
-		Vector4d testIntersection = ModelToWorld(sect.positionModel);// ray.origin + ray.direction * t0;
+		float dist2 = WorldToModel(sect.worldPosition).Size2();
+		Vector4d testIntersection = sect.worldPosition;// ray.origin + ray.direction * t0;
 		Vector4d sphereCenter = ModelToWorld(Vector4d(0,0,0,1));
 		float sz = (sphereCenter - testIntersection ).Size2();;
 		DoAssert(sz-_radius2<=2*EPSILON);
@@ -81,4 +81,9 @@ void Sphere::SetProperty(PropertyType type, void * value)
 		_radius2 = _radius*_radius;
 	}
 	base::SetProperty(type,value);
+}
+
+Vector4d Sphere::SampleIllumination(Intersection &section)
+{
+	throw "Not implemented yet";
 }
