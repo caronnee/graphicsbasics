@@ -42,10 +42,27 @@ bool Scene::FindIntersection(const Ray & ray, Intersection& res)
 void Scene::AddModel(Geometry * model)
 {
 	_geometry.push_back(model);
+	if (model->GetMaterial()->IsLight())
+	{
+		_emmiters.push_back(model);
+	}
 }
 
 void Scene::Clear()
 {
 	_ambientLight.SetPower(Vector4d(0,0,0,0));
+	_emmiters.clear();
+	for ( int i =0; i < _geometry.size(); i++)
+		delete _geometry[i];
 	_geometry.clear();
+}
+
+int Scene::Lights()
+{
+	return _emmiters.size();
+}
+
+Geometry * Scene::GetLight(int iLight)
+{
+	return _emmiters[iLight];
 }

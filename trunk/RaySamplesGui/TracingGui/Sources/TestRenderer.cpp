@@ -35,7 +35,7 @@ Vector4d TestRenderer::RenderPixel(const int &x, const int &y, const int & type)
   else
   {
     // eval brdf
-    total = isect.model->GetMaterial()->GetTotalReflectance( isect.positionModel, -ray.direction);
+    total = isect.model->GetMaterial()->EvalBrdf( isect.worldPosition, -ray.direction);
   }
 	return total;
 }

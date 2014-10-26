@@ -17,7 +17,7 @@ Vector4d MaterialSpecular::GetSpecular(const Vector4d & input, const Vector4d & 
 	return v;
 }
 
-Vector4d MaterialSpecular::GetTotalReflectance(const Vector4d & input, const Vector4d & output) const
+Vector4d MaterialSpecular::EvalBrdf(const Vector4d & input, const Vector4d & output) const
 {
 	return GetDiffuse(input,output) + GetSpecular(input,output);
 }

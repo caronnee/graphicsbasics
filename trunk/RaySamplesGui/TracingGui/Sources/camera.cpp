@@ -83,3 +83,10 @@ int Camera::Type() const
 {
 	return TypeCamera;
 }
+
+Vector4d Camera::SampleIllumination(const Vector4d &)
+{
+	Vector4d zero;
+	zero.Zero();
+	return zero;
+}

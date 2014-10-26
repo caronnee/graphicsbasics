@@ -10,7 +10,7 @@ MaterialDiffuse::MaterialDiffuse(const Vector4d & diffuseReflectance, const Vect
 {
 }
 
-Vector4d MaterialDiffuse::GetTotalReflectance(const Vector4d & input, const Vector4d & output) const
+Vector4d MaterialDiffuse::EvalBrdf(const Vector4d & input, const Vector4d & output) const
 {
 	return GetDiffuse(input,output);
 }
