@@ -156,7 +156,7 @@ float Vector4d::Min() const
 	return m2;
 }
 
-Vector4d Vector4d::MultiplyPerElement(Vector4d oper)
+Vector4d Vector4d::MultiplyPerElement(const Vector4d & oper)
 {
 	Vector4d ret;
 	for ( int i = 0; i < DIM; i++)
@@ -204,12 +204,4 @@ Vector4d& Vector4d::operator/=(const float & oper)
 void Vector4d::Zero()
 {
   memset(_val,0,sizeof(_val));
-}
-
-Vector4d Vector4d::Scalar(const Vector4d & illumination)
-{
-	X() *= illumination.X();
-	Y() *= illumination.Y();
-	Z() *= illumination.Z();
-	W() *= illumination.W();
 }

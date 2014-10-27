@@ -31,11 +31,12 @@ Vector4d TestRenderer::RenderPixel(const int &x, const int &y, const int & type)
 	}
   const Material* material = isect.model->GetMaterial();
   if (material->IsLight())
-    total = material->Emmisive();
+    total = BLACK;
   else
   {
+	float pdf;
     // eval brdf
-    total = isect.model->GetMaterial()->EvalBrdf( isect.worldPosition, -ray.direction);
+    total = isect.model->GetMaterial()->EvalBrdf( isect.worldPosition, -ray.direction,pdf);
   }
 	return total;
 }
