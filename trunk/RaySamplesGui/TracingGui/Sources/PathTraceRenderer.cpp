@@ -33,6 +33,10 @@ Vector4d PathTraceRenderer::RenderPixel(const int &x, const int &y, const int & 
 		Vector4d brdf = isec.model->GetMaterial()->EvalBrdf(-ray.direction, outputVector,pdf);
 		if (type & RDirectLight)
 		{
+			if (isec.model->Type() == TypeSphere)
+			{
+				__debugbreak();
+			}
 			total += brdf.MultiplyPerElement(illumination);
 		}
 	}

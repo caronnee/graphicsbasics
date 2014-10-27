@@ -11,7 +11,7 @@ bool PointObject::Intersect(const Ray & ray, Intersection & sect)
 	float test = correctDir2.Max();
 	correctDir2.Normalize();
 	Vector4d diff = correctDir - correctDir2;
-	if ( diff.Size2() < EPSILON )
+	if ( diff.Size2() < 1e-08 )
 	{
 		sect.model = this;
 		sect.worldPosition = worldPos;
@@ -37,5 +37,7 @@ Vector4d PointObject::SampleIllumination(Intersection &section, Vector4d & sampl
 	float r2 = sampledDir.Size2();
 	sampledDir.Normalize();
 	float cosa = sampledDir.Dot(v);
+	if ( cosa < 0 )
+		return Vector4d(0,0,0,0);
 	return intensity*cosa/r2;
 }
