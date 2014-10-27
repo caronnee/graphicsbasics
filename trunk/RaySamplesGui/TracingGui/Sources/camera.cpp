@@ -84,7 +84,7 @@ int Camera::Type() const
 	return TypeCamera;
 }
 
-Vector4d Camera::SampleIllumination(const Vector4d &)
+Vector4d Camera::SampleIllumination(Intersection &section, Vector4d & inputVector, Vector4d & sampledDir)
 {
 	Vector4d zero;
 	zero.Zero();

@@ -185,6 +185,12 @@ TracingGui::TracingGui(QWidget *parent)
 	// renderer
 	ui.rendererType->addItem("TestRenderer",QVariant(0));
 	ui.rendererType->addItem("PathtracerRenderer",QVariant(1));
+
+// what to calculate
+	ui.calcType->addItem("Direct light",QVariant(RDirectLight));
+	ui.calcType->addItem("Indirect light",QVariant(RIndirectLight));
+	ui.calcType->addItem("Direct + Indirect light",QVariant(RIndirectLight | RDirectLight));
+
 }
 
 #include "Sphere.h"
@@ -557,6 +563,7 @@ void TracingGui::CreateScene( Scene & scene)
 	UpdateSelectedModel(ui.treeViewLight->selectionModel()->selectedIndexes(),1);
 	int i =0;
 	GProperties * g;
+	_scene.Clear();
 	while ( g = _gModels->Get(i))
 	{
 		Geometry * geom = g->geom;

@@ -51,12 +51,11 @@ public:
 	Vector4d& operator*=(const float & oper);
 	Vector4d& operator/=(const float & oper);
 
-	Vector4d MultiplyPerElement(Vector4d oper);
+	Vector4d MultiplyPerElement(const Vector4d & oper);
 	float Size2()const;
 	float Size()const;
 	void Normalize();
-  void Zero();
-  Vector4d Scalar(const Vector4d & illumination);
+	void Zero();
 };
 
 #endif

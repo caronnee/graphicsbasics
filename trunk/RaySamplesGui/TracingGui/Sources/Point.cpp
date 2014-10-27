@@ -1,4 +1,5 @@
 #include "Point.h"
+#include "Debug.h"
 
 bool PointObject::Intersect(const Ray & ray, Intersection & sect)
 {
@@ -26,7 +27,15 @@ int PointObject::Type() const
 	return TypePoint;
 }
 
-Vector4d PointObject::SampleIllumination(Intersection &section)
+Vector4d PointObject::SampleIllumination(Intersection &section, Vector4d & sampledDir)
 {
-	throw "Not implemented yet";
+	DoAssert(GetMaterial()->IsLight());
+	Vector4d & intensity = GetMaterial()->Emmisive();
+	Vector4d v = section.nrm;
+	v.Normalize();
+	sampledDir = section.worldPosition - ModelToWorld(Vector4d(0,0,0,1));
+	float r2 = sampledDir.Size2();
+	sampledDir.Normalize();
+	float cosa = sampledDir.Dot(v);
+	return intensity*cosa/r2;
 }

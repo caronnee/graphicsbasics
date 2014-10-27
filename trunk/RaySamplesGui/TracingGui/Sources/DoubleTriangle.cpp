@@ -88,7 +88,7 @@ int DoubleTriangle::Type()const
 	return TypeTriangle;
 }
 
-Vector4d DoubleTriangle::SampleIllumination(Intersection &sectio )
+Vector4d DoubleTriangle::SampleIllumination(Intersection &section, Vector4d & sampledDir )
 {
 	// TODO
 	throw "Not implemented yet";

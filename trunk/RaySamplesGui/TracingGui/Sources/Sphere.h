@@ -9,11 +9,10 @@ class Sphere : public Geometry
 public:
 	Sphere( float radius);
 	virtual bool Intersect( const Ray & ray, Intersection & sect );
-	Vector4d SampleIllumination(const Vector4d & worlsposition);
+	virtual Vector4d SampleIllumination(Intersection &section, Vector4d & sampledDir);
 	int Type()const;
 	void * GetProperty(PropertyType type);
 	void SetProperty(PropertyType type, void * value);
-	virtual Vector4d SampleIllumination(Intersection &section );
 	float _radius;
 	float _radius2;
 };

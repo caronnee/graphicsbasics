@@ -52,8 +52,6 @@ void Scene::Clear()
 {
 	_ambientLight.SetPower(Vector4d(0,0,0,0));
 	_emmiters.clear();
-	for ( int i =0; i < _geometry.size(); i++)
-		delete _geometry[i];
 	_geometry.clear();
 }
 
