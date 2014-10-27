@@ -46,10 +46,13 @@ bool Sphere::Intersect(const Ray & ray, Intersection & sect)
 		return false;
 	float thc = sqrt(_radius2 - d2);
 	float t0 = tca - thc;
+	float t1 = tca + thc;
 	sect.model = this;
+	t0 = t0>0 ? t0:t1;
 	sect.t = t0;
 	sect.worldPosition = ray.origin + ray.direction * t0;
 	sect.nrm = rayOrigin + rayDirection * t0 - Vector4d(0,0,0,1);
+	sect.nrm = ModelToWorld(sect.nrm);
 	//verify that this works
 	{
 		float dist2 = WorldToModel(sect.worldPosition).Size2();
