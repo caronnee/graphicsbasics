@@ -75,7 +75,7 @@ bool DoubleTriangle::Intersect(const Ray & ray, Intersection & sect)
 		sect.t = t;
 		sect.model = this;
 		sect.worldPosition = ray.origin + ray.direction * t;
-		sect.nrm = ModelToWorld(_edges[0].Cross(_edges[1]));
+		sect.nrm = ModelToWorld(_edges[1].Cross(_edges[0]));
 		return true;
 	}
 
@@ -88,7 +88,7 @@ int DoubleTriangle::Type()const
 	return TypeTriangle;
 }
 
-Vector4d DoubleTriangle::SampleIllumination(Intersection &section, Vector4d & sampledDir )
+Vector4d DoubleTriangle::SampleIllumination(Intersection &section, Vector4d & sampledDir, float & len)
 {
 	// TODO
 	throw "Not implemented yet";

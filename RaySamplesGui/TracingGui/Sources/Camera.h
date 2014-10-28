@@ -25,7 +25,7 @@ public:
 	Vector4d WorldToRaster(const Vector4d& v) const;
 	Vector4d RasterToWorld(const Vector4d& v) const;
 	virtual int Type()const;
-	virtual Vector4d SampleIllumination( Intersection &section, Vector4d & inputVector, Vector4d & sampledDir );
+	virtual Vector4d SampleIllumination(Intersection &section, Vector4d & sampledDir, float & sampleLen );
 };
 
 #endif

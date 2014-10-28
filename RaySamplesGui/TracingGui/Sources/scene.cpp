@@ -29,6 +29,8 @@ bool Scene::FindIntersection(const Ray & ray, Intersection& res)
 		
 		if ( geom.Intersect(ray,isect) )
 		{
+			if ( res.t < 0.001)
+				continue;
 			if ( isect.t < res.t ) // the nearest the best
 				res = isect;
 			found = true;
