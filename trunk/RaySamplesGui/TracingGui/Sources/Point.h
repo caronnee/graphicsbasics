@@ -8,6 +8,6 @@ class PointObject : public Geometry
 public:
 	virtual bool Intersect( const Ray & ray, Intersection & sect );
 	int Type()const;
-	Vector4d SampleIllumination(Intersection &section, Vector4d & sampledDir );
+	Vector4d SampleIllumination(Intersection &section, Vector4d & sampledDir, float & sampleLen );
 };
 #endif

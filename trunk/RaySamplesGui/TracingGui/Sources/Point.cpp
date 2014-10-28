@@ -27,16 +27,17 @@ int PointObject::Type() const
 	return TypePoint;
 }
 
-Vector4d PointObject::SampleIllumination(Intersection &section, Vector4d & sampledDir)
+Vector4d PointObject::SampleIllumination(Intersection &section, Vector4d & sampledDir, float & sampleLen)
 {
 	DoAssert(GetMaterial()->IsLight());
 	Vector4d & intensity = GetMaterial()->Emmisive();
-	Vector4d v = section.nrm;
-	v.Normalize();
+	Vector4d norm = section.nrm;
+	norm.Normalize();
 	sampledDir = section.worldPosition - ModelToWorld(Vector4d(0,0,0,1));
 	float r2 = sampledDir.Size2();
 	sampledDir.Normalize();
-	float cosa = sampledDir.Dot(v);
+	float cosa = norm.Dot(-sampledDir);
+	
 	if ( cosa < 0 )
 		return Vector4d(0,0,0,0);
 	return intensity*cosa/r2;
