@@ -30,11 +30,12 @@ Vector4d PathTraceRenderer::RenderPixel(const int &x, const int &y, const int & 
 		float t;
 		Vector4d illumination = light->SampleIllumination( isec, sampledDir,t);
 		Intersection i2;
+		i2.t = t;
 		Ray r2;
 		r2.origin = isec.worldPosition;
 		r2.direction = sampledDir;
 		bool occluded = _scene->FindIntersection(r2, i2);
-		if (occluded && (i2.t < t))
+		if ( occluded && (i2.t < t - 0.001f) )
 			continue;
 		Vector4d brdf = isec.model->GetMaterial()->EvalBrdf(-ray.direction, outputVector,pdf);
 		if (type & RDirectLight)
@@ -42,9 +43,9 @@ Vector4d PathTraceRenderer::RenderPixel(const int &x, const int &y, const int & 
 			total += brdf.MultiplyPerElement(illumination);
 		}
 	}
-//#if _DEBUG
-//	float xx = total.Size2();
-//	DoAssert(xx > 0);
-//#endif
+#if 0 && _DEBUG
+	float xx = total.Size2();
+	DoAssert(xx > 0);
+#endif
 	return total;
 }

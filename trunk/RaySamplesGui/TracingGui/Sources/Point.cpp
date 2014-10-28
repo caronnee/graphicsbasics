@@ -6,6 +6,7 @@ bool PointObject::Intersect(const Ray & ray, Intersection & sect)
 	// rayOrigin + q*rayDirection == point
 	Vector4d worldPos = ModelToWorld(Vector4d(0,0,0,1));
 	Vector4d correctDir = worldPos - ray.origin;
+	sect.t = correctDir.Max()/ray.direction.Max();
 	correctDir.Normalize();
 	Vector4d correctDir2 = ray.direction;
 	float test = correctDir2.Max();
@@ -15,7 +16,6 @@ bool PointObject::Intersect(const Ray & ray, Intersection & sect)
 	{
 		sect.model = this;
 		sect.worldPosition = worldPos;
-		sect.t = correctDir2.Max()/ray.direction.Max();
 		sect.nrm = Vector4d(0,0,0,0); // point object does not have normal
 		return true;
 	}
@@ -33,10 +33,11 @@ Vector4d PointObject::SampleIllumination(Intersection &section, Vector4d & sampl
 	Vector4d & intensity = GetMaterial()->Emmisive();
 	Vector4d norm = section.nrm;
 	norm.Normalize();
-	sampledDir = section.worldPosition - ModelToWorld(Vector4d(0,0,0,1));
+	sampledDir = -section.worldPosition + ModelToWorld(Vector4d(0,0,0,1));
 	float r2 = sampledDir.Size2();
+	sampleLen = sqrt(r2);
 	sampledDir.Normalize();
-	float cosa = norm.Dot(-sampledDir);
+	float cosa = norm.Dot(sampledDir);
 	
 	if ( cosa < 0 )
 		return Vector4d(0,0,0,0);

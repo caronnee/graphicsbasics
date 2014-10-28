@@ -40,7 +40,7 @@ void Camera::SetPerspective(float zFar, float fov)
 	float zProj = 1.0f/tan(fov/2);
 	float zNear = zProj;
 	Vector4d v1(zProj/2.0f,0,0,zProj/2);
-	Vector4d v2(0,zProj/2.0f,0,zProj/2);
+	Vector4d v2(0, -zProj/2.0f,0,zProj/2);
 	float range = zFar - zNear;
 	Vector4d v3(0,0,zFar/range, zFar*zNear/-range);
 	Vector4d v4(0,0,1,0);
