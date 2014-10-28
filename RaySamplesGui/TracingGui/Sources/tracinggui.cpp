@@ -183,14 +183,15 @@ TracingGui::TracingGui(QWidget *parent)
 		this, SLOT(SelectionMaterialChangedSlot(const QItemSelection &, const QItemSelection &)));
 
 	// renderer
+	ui.rendererType->addItem("PathtracerRenderer",QVariant(1));	
 	ui.rendererType->addItem("TestRenderer",QVariant(0));
-	ui.rendererType->addItem("PathtracerRenderer",QVariant(1));
 
 // what to calculate
 	ui.calcType->addItem("Direct light",QVariant(RDirectLight));
 	ui.calcType->addItem("Indirect light",QVariant(RIndirectLight));
 	ui.calcType->addItem("Direct + Indirect light",QVariant(RIndirectLight | RDirectLight));
 
+	LoadSceneSlot();
 }
 
 #include "Sphere.h"
