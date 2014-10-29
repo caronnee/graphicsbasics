@@ -462,8 +462,23 @@ void TracingGui::LoadCamera()
 	ui.fovDeg->setValue(handler.GetInt());
 }
 
+void TracingGui::CreateSceneName()
+{
+
+}
+void TracingGui::CreateMaterialName()
+{
+	//ui->materialName->Ad
+}
+
+void TracingGui::SaveNewSceneSlot()
+{
+	CreateSceneName();
+	SaveSceneSlot();
+}
 void TracingGui::SaveSceneSlot()
 {
+	CreateMaterialName();
 	// saveModels
 	SaveModels();
 	// save camera

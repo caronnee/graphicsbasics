@@ -69,6 +69,7 @@ private slots:
 	void LoadSceneSlot();
 	void DeleteObjectSlot();
 	void AddPointSlot();
+	void SaveNewSceneSlot();
 
 private:
 	Ui::TracingGuiClass ui;
@@ -81,6 +82,8 @@ private:
 	void LoadCamera();
 	void LoadModels();
 	void Test(Camera * camera);
+	void CreateMaterialName();
+	void CreateSceneName();
 };
 
 #endif // TRACINGGUI_H
