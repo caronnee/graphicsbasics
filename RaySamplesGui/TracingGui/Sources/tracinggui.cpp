@@ -105,6 +105,8 @@ void GModelObjects::Remove(int index)
 	_geometries.removeAt(index);
 }
 
+SceneModels GScenes;
+
 TracingGui::TracingGui(QWidget *parent)
 	: QMainWindow(parent), _image(0,0),_gModels(NULL)
 {
@@ -190,6 +192,12 @@ TracingGui::TracingGui(QWidget *parent)
 	ui.calcType->addItem("Direct light",QVariant(RDirectLight));
 	ui.calcType->addItem("Indirect light",QVariant(RIndirectLight));
 	ui.calcType->addItem("Direct + Indirect light",QVariant(RIndirectLight | RDirectLight));
+
+	// scenes selections
+	LoadSceneNames();
+	ui.sceneNames->setModel(&GScenes);
+	connect(ui.sceneNames->selectionModel(), SIGNAL(selectionChanged (const QItemSelection &, const QItemSelection &)),
+		this, SLOT(SelectionSceneChangedSlot(const QItemSelection &, const QItemSelection &)));
 
 	LoadSceneSlot();
 }
@@ -468,7 +476,7 @@ void TracingGui::CreateSceneName()
 }
 void TracingGui::CreateMaterialName()
 {
-	//ui->materialName->Ad
+
 }
 
 void TracingGui::SaveNewSceneSlot()
@@ -714,4 +722,99 @@ void TracingGui::AddPointSlot()
 	Geometry * geom = new PointObject();
 	QModelIndex index = _gModels->Add(geom);
 	ui.treeView->selectionModel()->select(index,QItemSelectionModel::ClearAndSelect);
+}
+
+#include <QDir>
+
+void TracingGui::LoadSceneNames()
+{
+	// find everything that have.scene
+	QStringList sceneFilter("*.scene");
+	QStringList materialFilter("&.material");
+	QDir directory("data/");
+	QString test = directory.absolutePath();
+	QStringList scenefiles = directory.entryList(sceneFilter);
+	GScenes.AddScenes(scenefiles);
+	QStringList materialfiles = directory.entryList(materialFilter);
+	GScenes.AddMaterials(materialfiles);
+}
+
+void TracingGui::SelectionSceneChangedSlot(const QItemSelection &nSel, const QItemSelection & )
+{
+	// we care only about new selection
+	if (nSel.indexes()[0].column() == 0)
+	{
+		ui.sceneName->setText(GScenes.data(nSel.indexes()[0],Qt::DisplayRole).toString());
+	}
+	if (nSel.indexes()[0].column() == 1)
+	{
+		ui.materialName->setText(GScenes.data(nSel.indexes()[0],Qt::DisplayRole).toString());
+	}
+}
+
+QVariant SceneModels::data(const QModelIndex &index, int role) const
+{
+	if ( role != Qt::DisplayRole)
+		return QVariant();
+	if (index.column() == 0)
+	{
+		if (index.row() < _scenes.size())
+			return _scenes[index.row()];
+		return QVariant();
+	}
+	if (index.column() == 1)
+	{
+		if ( index.row() < _materials.size())
+			return _materials[index.row()];
+		return QVariant();
+	}
+	return QVariant();
+}
+
+QVariant SceneModels::headerData(int section, Qt::Orientation o, int role) const
+{
+	if(section == 0)
+		return "Scene";
+	return "Material";
+}
+
+int SceneModels::columnCount(const QModelIndex & model) const
+{
+	return 2;
+}
+
+int SceneModels::rowCount(const QModelIndex & model) const
+{
+	return _scenes.size();
+}
+
+void SceneModels::AddScenes(const QStringList & list)
+{
+	_scenes = list;
+	_materials.clear();
+}
+
+void SceneModels::AddMaterials(const QStringList & list)
+{
+	for ( int iList =0; iList < list.size(); iList++)
+	{
+		int index = -1;
+		int pos = -1;
+		for ( int iScene = 0; iScene < _scenes.size(); iScene++ )
+		{
+			if ( list[iList].startsWith(_scenes[iScene]) )
+			{
+				int len = list[iList].length();
+				/*
+				if ( list[iList][len] != '_')
+					continue;
+				len++;
+				*/
+				index = iScene;
+				pos = len;
+			}
+		}
+		if ( index >= 0)
+			_materials[index].append(list[iList].mid(pos));
+	}
 }
