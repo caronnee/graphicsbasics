@@ -165,11 +165,12 @@ TracingGui::TracingGui(QWidget *parent)
 	// init Values
 	ui.fov->setValue(95);
 
-	// connect buttons to create types
+	// connect button to create export/import
 	connect(ui.exportScene, SIGNAL(clicked(void)),this,SLOT(SaveSceneSlot()));
 	connect(ui.loadScene, SIGNAL(clicked(void)),this,SLOT(LoadSceneSlot()));
+	connect(ui.exportMaterial, SIGNAL(clicked(void)), this, SLOT( SaveMaterialSlot()));
 
-	// connect button to create export/import
+	// connect buttons to create types
 	connect( ui.addSphere, SIGNAL(clicked(void)), this, SLOT(AddSphereSlot()));
 	connect( ui.addTriangle, SIGNAL(clicked(void)), this, SLOT(AddTriangleSlot()));
 	connect( ui.delObject, SIGNAL(clicked(void)), this, SLOT(DeleteObjectSlot()));
@@ -393,6 +394,31 @@ void TracingGui::LoadSceneSlot()
 	LoadCamera();
 }
 
+#define DEFAULT_PATH "../../data"
+
+// saves material to the new slot and picks it
+void TracingGui::SaveMaterialSlot( )
+{
+	FileHandler handler;
+	QString materialName = GScenes.NewMaterialName();
+	materialName.prepend(DEFAULT_PATH);
+	if (handler.Open(materialName.toLocal8Bit().data(),"w") == false)
+		return;
+
+	int i =0;
+	GProperties * g;
+	while ( g = _gModels->Get(i))
+	{
+		// material related
+		handler.Write( &g->material, sizeof (g->material),1 );
+		handler.Write( &g->matDiffuse, sizeof (g->matDiffuse),1 );
+		handler.Write( &g->matSpecular, sizeof (g->matSpecular),1 );
+		handler.Write( &g->matSpecularExp, sizeof (g->matSpecularExp),1 );
+		handler.Write( &g->matEmmisive, sizeof (g->matEmmisive),1 );
+		i++;
+	}
+
+}
 void TracingGui::SaveModels( )
 {
 	UpdateSelectedModel(ui.treeView->selectionModel()->selectedIndexes(),0);
@@ -405,13 +431,10 @@ void TracingGui::SaveModels( )
 	GProperties * g;
 	while ( g = _gModels->Get(i))
 	{
-		GProperties * prop;
 		Geometry * geom = g->geom;
 
 		int tp = geom->Type();
 		handler.Write(&tp,1,sizeof(int));
-
-		GProperties * g = _gModels->Get(i);
 
 		int len = g->name.length();
 		handler.Write(&len,sizeof(int),1);
@@ -425,13 +448,6 @@ void TracingGui::SaveModels( )
 		Vector4d * test = (Vector4d *) geom->GetProperty(PPoints);
 		if (test)
 			handler.Write(test,sizeof(Vector4d),3);	
-		
-		// material related
-		handler.Write( &g->material, sizeof (g->material),1 );
-		handler.Write( &g->matDiffuse, sizeof (g->matDiffuse),1 );
-		handler.Write( &g->matSpecular, sizeof (g->matSpecular),1 );
-		handler.Write( &g->matSpecularExp, sizeof (g->matSpecularExp),1 );
-		handler.Write( &g->matEmmisive, sizeof (g->matEmmisive),1 );
 		i++;
 	}
 }
@@ -817,4 +833,11 @@ void SceneModels::AddMaterials(const QStringList & list)
 		if ( index >= 0)
 			_materials[index].append(list[iList].mid(pos));
 	}
+}
+
+QString SceneModels::NewMaterialName() 
+{
+	QString name = QString("Material_%1.material").arg(_materials.size());
+	_materials.push_front(name);
+	return name;
 }
