@@ -57,6 +57,7 @@ public:
 	int rowCount(const QModelIndex &) const;
 	void AddScenes(const QStringList & list);
 	void AddMaterials(const QStringList & list);
+	QString NewMaterialName();
 };
 
 class TracingGui : public QMainWindow
@@ -86,6 +87,7 @@ private slots:
 	void DeleteObjectSlot();
 	void AddPointSlot();
 	void SaveNewSceneSlot();
+	void SaveMaterialSlot();
 	void SelectionSceneChangedSlot(const QItemSelection &, const QItemSelection &);
 
 private:

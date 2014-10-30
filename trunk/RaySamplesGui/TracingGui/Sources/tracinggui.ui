@@ -979,22 +979,43 @@
         <string>Scene</string>
        </attribute>
        <layout class="QGridLayout" name="gridLayout_7">
-        <item row="1" column="1">
-         <widget class="QPushButton" name="exportScene">
+        <item row="4" column="1">
+         <widget class="QPushButton" name="sceneSave">
           <property name="text">
-           <string>Export</string>
+           <string>Resave scene</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="0" rowspan="7">
+         <widget class="QTableView" name="sceneNames"/>
+        </item>
+        <item row="2" column="1">
+         <widget class="QPushButton" name="exportMaterial">
+          <property name="text">
+           <string>Export Material</string>
           </property>
          </widget>
         </item>
         <item row="0" column="1">
          <widget class="QPushButton" name="loadScene">
           <property name="text">
-           <string>Load</string>
+           <string>Load camera</string>
           </property>
          </widget>
         </item>
-        <item row="0" column="0" rowspan="3">
-         <widget class="QTableView" name="sceneNames"/>
+        <item row="3" column="1">
+         <widget class="QPushButton" name="pushButton">
+          <property name="text">
+           <string>Resave material</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="QPushButton" name="exportScene">
+          <property name="text">
+           <string>Export Scene</string>
+          </property>
+         </widget>
         </item>
        </layout>
       </widget>
