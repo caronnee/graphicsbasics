@@ -43,6 +43,22 @@ public:
 	bool setData(const QModelIndex & index, const QVariant & value, int role);
 };
 
+class SceneModels : public QAbstractListModel
+{
+	Q_OBJECT
+
+	QStringList _scenes;
+	QStringList _materials;
+public:
+	QVariant data(const QModelIndex &index, int role) const;
+	QVariant headerData(int section, Qt::Orientation o, int role) const;
+
+	int columnCount(const QModelIndex &) const;
+	int rowCount(const QModelIndex &) const;
+	void AddScenes(const QStringList & list);
+	void AddMaterials(const QStringList & list);
+};
+
 class TracingGui : public QMainWindow
 {
 	Q_OBJECT
@@ -70,6 +86,7 @@ private slots:
 	void DeleteObjectSlot();
 	void AddPointSlot();
 	void SaveNewSceneSlot();
+	void SelectionSceneChangedSlot(const QItemSelection &, const QItemSelection &);
 
 private:
 	Ui::TracingGuiClass ui;
@@ -84,6 +101,7 @@ private:
 	void Test(Camera * camera);
 	void CreateMaterialName();
 	void CreateSceneName();
+	void LoadSceneNames();
 };
 
 #endif // TRACINGGUI_H
