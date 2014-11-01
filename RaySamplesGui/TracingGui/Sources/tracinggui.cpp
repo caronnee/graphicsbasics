@@ -796,7 +796,7 @@ int SceneModels::columnCount(const QModelIndex & model) const
 
 int SceneModels::rowCount(const QModelIndex & model) const
 {
-	return _scenes.size();
+	return qMax(_scenes.size(),_materials.size());
 }
 
 void SceneModels::AddScenes(const QStringList & list)
@@ -837,7 +837,7 @@ QString SceneModels::NewMaterialName()
 	QModelIndex index = SceneModels::createIndex(0,1, (void*)NULL);
 	int last = qMax(_materials.size()-1,0);
 	QModelIndex index2 = SceneModels::createIndex(_materials.size(),1, (void*)NULL);
-	beginInsertRows(QModelIndex(),0,last);
+	beginInsertRows(QModelIndex(),0,0);
 	_materials.push_front(name);
 	endInsertRows();
 	emit dataChanged(index, index2);
@@ -846,10 +846,14 @@ QString SceneModels::NewMaterialName()
 
 QString SceneModels::NewSceneName()
 {
-	QModelIndex index = SceneModels::createIndex(0,0,(void*)NULL);
-	beginInsertRows(QModelIndex(),0,1);
+	QModelIndex index = SceneModels::createIndex(0,0, (void*)NULL);
+	int last = qMax(_materials.size()-1,0);
+	QModelIndex index2 = SceneModels::createIndex(_materials.size(),0, (void*)NULL);
+
+	beginInsertRows(QModelIndex(),0,0);
 	QString name = QString("Scene_%1.scene").arg(_materials.size());
 	_scenes.push_front(name);
 	endInsertRows();
+	emit dataChanged(index, index2);
 	return name;
 }
