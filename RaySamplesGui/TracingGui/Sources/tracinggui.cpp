@@ -69,7 +69,9 @@ QModelIndex GModelObjects::Add(Geometry * geom)
 	prop.name = typeNames[geom->Type()];
 	_geometries.push_back(prop);
 	endInsertRows();
-	return createIndex(_geometries.size()-1,0);
+	QModelIndex ret = createIndex(_geometries.size()-1,0);
+	emit dataChanged(createIndex(0,0),ret);
+	return ret;
 }
 
 bool GModelObjects::setData(const QModelIndex & index, const QVariant & value, int role)
@@ -833,8 +835,9 @@ QString SceneModels::NewMaterialName()
 	QString name = QString("Material_%1.material").arg(_materials.size());
 
 	QModelIndex index = SceneModels::createIndex(0,1, (void*)NULL);
-	QModelIndex index2 = SceneModels::createIndex(1,1, (void*)NULL);
-	beginInsertRows(index,0,1);
+	int last = qMax(_materials.size()-1,0);
+	QModelIndex index2 = SceneModels::createIndex(_materials.size(),1, (void*)NULL);
+	beginInsertRows(QModelIndex(),0,last);
 	_materials.push_front(name);
 	endInsertRows();
 	emit dataChanged(index, index2);
@@ -844,7 +847,7 @@ QString SceneModels::NewMaterialName()
 QString SceneModels::NewSceneName()
 {
 	QModelIndex index = SceneModels::createIndex(0,0,(void*)NULL);
-	beginInsertRows(index,0,1);
+	beginInsertRows(QModelIndex(),0,1);
 	QString name = QString("Scene_%1.scene").arg(_materials.size());
 	_scenes.push_front(name);
 	endInsertRows();
