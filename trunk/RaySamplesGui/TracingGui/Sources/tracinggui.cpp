@@ -851,7 +851,7 @@ QString SceneModels::NewSceneName()
 	QModelIndex index2 = SceneModels::createIndex(_materials.size(),0, (void*)NULL);
 
 	beginInsertRows(QModelIndex(),0,0);
-	QString name = QString("Scene_%1.scene").arg(_materials.size());
+	QString name = QString("Scene_%1.scene").arg(_scenes.size());
 	_scenes.push_front(name);
 	endInsertRows();
 	emit dataChanged(index, index2);
