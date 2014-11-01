@@ -58,6 +58,7 @@ public:
 	void AddScenes(const QStringList & list);
 	void AddMaterials(const QStringList & list);
 	QString NewMaterialName();
+	QString NewSceneName();
 };
 
 class TracingGui : public QMainWindow
@@ -79,30 +80,32 @@ private slots:
 	void UpdateExposureSlot(double exposure);
 	void UpdateExposureNumberSlot(int exposure);
 	void SaveSceneSlot();
+	void SaveCurrentSceneSlot();
+	void SaveCurrentMaterialSlot();
 	void AddSphereSlot();
-	void SelectionModelChangedSlot(const QItemSelection & newSel, const QItemSelection &oldSel);
-	void SelectionMaterialChangedSlot(const QItemSelection & newSel, const QItemSelection &oldSel);
 	void AddTriangleSlot();
 	void LoadSceneSlot();
 	void DeleteObjectSlot();
 	void AddPointSlot();
 	void SaveNewSceneSlot();
 	void SaveMaterialSlot();
+	void SelectionMaterialChangedSlot(const QItemSelection & newSel, const QItemSelection &oldSel);
+	void SelectionModelChangedSlot(const QItemSelection & newSel, const QItemSelection &oldSel);
 	void SelectionSceneChangedSlot(const QItemSelection &, const QItemSelection &);
 
 private:
 	Ui::TracingGuiClass ui;
 	void ShowHdr(float exponent);
-	void CreateScene( Scene & scene);	
+	void CreateScene( Scene & scene );
 	void CreateFixedScene( Scene & scene);
 	void UpdateSelectedModel( QModelIndexList indexes, int type );
-	void SaveModels( );
+	void SaveModels(const QString & str);
+	void SaveMaterials(const QString & name);
 	void SaveCamera();
+
 	void LoadCamera();
 	void LoadModels();
 	void Test(Camera * camera);
-	void CreateMaterialName();
-	void CreateSceneName();
 	void LoadSceneNames();
 };
 

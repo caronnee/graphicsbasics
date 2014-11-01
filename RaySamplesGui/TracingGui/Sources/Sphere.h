@@ -13,6 +13,8 @@ public:
 	int Type()const;
 	void * GetProperty(PropertyType type);
 	void SetProperty(PropertyType type, void * value);
+	void SaveProperties(FileHandler & handler);
+	void LoadProperties(FileHandler & handler);
 	float _radius;
 	float _radius2;
 };
