@@ -837,9 +837,14 @@ QString SceneModels::NewMaterialName()
 	QModelIndex index = SceneModels::createIndex(0,1, (void*)NULL);
 	int last = qMax(_materials.size()-1,0);
 	QModelIndex index2 = SceneModels::createIndex(_materials.size(),1, (void*)NULL);
-	beginInsertRows(QModelIndex(),0,0);
-	_materials.push_front(name);
-	endInsertRows();
+	if (_materials.size() >= _scenes.size())
+	{
+		beginInsertRows(QModelIndex(),0,0);
+		_materials.push_front(name);
+		endInsertRows();
+	}
+	else
+		_materials.push_front(name);
 	emit dataChanged(index, index2);
 	return name;
 }
@@ -847,13 +852,17 @@ QString SceneModels::NewMaterialName()
 QString SceneModels::NewSceneName()
 {
 	QModelIndex index = SceneModels::createIndex(0,0, (void*)NULL);
-	int last = qMax(_materials.size()-1,0);
-	QModelIndex index2 = SceneModels::createIndex(_materials.size(),0, (void*)NULL);
-
-	beginInsertRows(QModelIndex(),0,0);
+	QModelIndex index2 = SceneModels::createIndex(_scenes.size(),0, (void*)NULL);
 	QString name = QString("Scene_%1.scene").arg(_scenes.size());
-	_scenes.push_front(name);
-	endInsertRows();
+
+	if (_materials.size() < _scenes.size())
+	{
+		beginInsertRows(QModelIndex(),0,0);
+		_scenes.push_front(name);
+		endInsertRows();
+	}
+	else
+		_scenes.push_front(name);
 	emit dataChanged(index, index2);
 	return name;
 }
