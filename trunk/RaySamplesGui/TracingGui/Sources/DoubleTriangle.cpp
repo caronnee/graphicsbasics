@@ -93,3 +93,14 @@ Vector4d DoubleTriangle::SampleIllumination(Intersection &section, Vector4d & sa
 	// TODO
 	throw "Not implemented yet";
 }
+
+void DoubleTriangle::SaveProperties(FileHandler & handler)
+{
+	handler.Write(_points,sizeof(Vector4d),3);	
+}
+
+void DoubleTriangle::LoadProperties(FileHandler & handler)
+{
+	handler.Read(_points,sizeof(Vector4d),3);
+	SetProperty(PPoints,_points);
+}

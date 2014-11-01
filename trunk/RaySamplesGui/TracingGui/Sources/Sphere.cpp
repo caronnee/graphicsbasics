@@ -94,3 +94,14 @@ Vector4d Sphere::SampleIllumination(Intersection &section, Vector4d & sampledDir
 {
 	throw "Not implemented yet";
 }
+
+void Sphere::SaveProperties(FileHandler & handler)
+{
+	handler.Write( &_radius, sizeof (float),1 );
+}
+
+void Sphere::LoadProperties(FileHandler & handler)
+{
+	handler.Read( &_radius,sizeof(_radius),1);
+	SetProperty(PRadius, &_radius);
+}

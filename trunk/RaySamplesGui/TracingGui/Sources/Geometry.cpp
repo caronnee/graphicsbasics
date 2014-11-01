@@ -138,3 +138,13 @@ void * Geometry::GetProperty(PropertyType type)
 {
 	return NULL;
 }
+
+void Geometry::SaveProperties(FileHandler & handler)
+{
+	// nothing
+}
+
+void Geometry::LoadProperties(FileHandler & handler)
+{
+	// nothing
+}

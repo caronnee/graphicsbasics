@@ -14,6 +14,8 @@ public:
 	void SetProperty(PropertyType type, void * values);
 	void * GetProperty(PropertyType type);
 	virtual Vector4d SampleIllumination(Intersection &section, Vector4d & sampledDir, float & len);
+	void SaveProperties(FileHandler & handler);
+	void LoadProperties(FileHandler & handler);
 	int Type() const;
 };
 

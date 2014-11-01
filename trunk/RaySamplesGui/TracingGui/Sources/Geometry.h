@@ -56,6 +56,7 @@ enum TypeId
 };
 
 #include <QString>
+#include "FileHandler.h"
 
 class Geometry
 {
@@ -86,5 +87,7 @@ public:
 	virtual int Type()const =0;
 	// position to illuminate, return the illumination of the point
 	virtual Vector4d SampleIllumination(Intersection &section, Vector4d & sampledDir, float & sampleLen ) = 0;
+	virtual void SaveProperties(FileHandler & handler);
+	virtual void LoadProperties(FileHandler & handler);
 };
 #endif

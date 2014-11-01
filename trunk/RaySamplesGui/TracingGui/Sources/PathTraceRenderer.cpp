@@ -8,6 +8,7 @@ Vector4d PathTraceRenderer::RenderPixel(const int &x, const int &y, const int & 
 	Ray ray = _camera->GetRay(x,y);
 	Vector4d total;
 	total.Zero();
+
 	Intersection isec;
 	if ( !_scene->FindIntersection(ray,isec) )
 	{
