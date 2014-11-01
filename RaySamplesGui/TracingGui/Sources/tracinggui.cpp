@@ -304,6 +304,8 @@ void TracingGui::LoadModels()
 	_gModels->Clear();
 	FileHandler handler;
 	handler.Open(DEFAULT_SCENE,"r");
+	if ( handler.Valid())
+		return;
 	int positionManual = 0;
 
 	while (true)

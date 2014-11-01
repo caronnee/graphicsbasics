@@ -21,6 +21,7 @@ public:
 	void ReadLine();
 	void Read(void * value, int len, int count);
 	int GetInt();
+	bool Valid() const;
 };
 
 #endif

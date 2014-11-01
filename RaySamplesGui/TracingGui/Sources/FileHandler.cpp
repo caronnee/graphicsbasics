@@ -54,6 +54,10 @@ GuiString FileHandler::GetWord()
 	return ret;
 }
 
+bool FileHandler::Valid() const
+{
+	return _file != NULL;
+}
 bool FileHandler::End() const
 {
 	return feof(_file)!=0;
