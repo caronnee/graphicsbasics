@@ -58,19 +58,29 @@ QVariant GModelObjects::data(const QModelIndex &index, int role) const
 	return QVariant();
 }
 
-QModelIndex GModelObjects::Add(Geometry * geom)
+QModelIndex GModelObjects::Add(Geometry * geom, int index)
 {
-	beginInsertRows(QModelIndex(), _geometries.size(), _geometries.size() + 1);
-	GProperties prop;
-	memset(&prop, 0, sizeof(prop) - sizeof(QString));
+	if (index < 0)
+		index = _geometries.size();
+	GProperties* pprop;
+	QModelIndex ret = createIndex(index,0);
+	
+	if(index >= _geometries.size())
+	{
+		beginInsertRows(QModelIndex(), _geometries.size(), _geometries.size() + 1);
+		GProperties tprop;
+		_geometries.push_back(tprop);
+		endInsertRows();
+		emit dataChanged(createIndex(0,0),ret);
+	}
+	else
+		delete _geometries[index].geom;
+	pprop = & _geometries[index];
+	GProperties& prop = *pprop;
 	prop.position = Vector4d(0,0,0,0);
 	prop.matDiffuse = Vector4d(1,1,1,1);
 	prop.geom = geom;
 	prop.name = typeNames[geom->Type()];
-	_geometries.push_back(prop);
-	endInsertRows();
-	QModelIndex ret = createIndex(_geometries.size()-1,0);
-	emit dataChanged(createIndex(0,0),ret);
 	return ret;
 }
 
@@ -105,6 +115,14 @@ void GModelObjects::Clear()
 void GModelObjects::Remove(int index)
 {
 	_geometries.removeAt(index);
+}
+
+void GModelObjects::resize(int i)
+{
+	while ( i< _geometries.size())
+	{
+		_geometries.removeAt(i);
+	}
 }
 
 SceneModels GScenes;
@@ -168,8 +186,6 @@ TracingGui::TracingGui(QWidget *parent)
 	ui.fov->setValue(95);
 
 	// connect button to create export/import
-	connect(ui.loadScene, SIGNAL(clicked(void)),this,SLOT(LoadSceneSlot()));
-
 	connect(ui.exportScene, SIGNAL(clicked(void)),this,SLOT(SaveSceneSlot()));
 	connect(ui.saveScene, SIGNAL(clicked(void)),this,SLOT(SaveCurrentSceneSlot()));
 	connect(ui.exportMaterial, SIGNAL(clicked(void)), this, SLOT( SaveMaterialSlot()));
@@ -204,7 +220,9 @@ TracingGui::TracingGui(QWidget *parent)
 	connect(ui.sceneNames->selectionModel(), SIGNAL(selectionChanged (const QItemSelection &, const QItemSelection &)),
 		this, SLOT(SelectionSceneChangedSlot(const QItemSelection &, const QItemSelection &)));
 
-	LoadSceneSlot();
+	LoadModels(ui.currentScene->text());
+	LoadMaterials(ui.currentMaterial->text());
+	LoadCamera();
 }
 
 #include "Sphere.h"
@@ -280,7 +298,7 @@ void TracingGui::SelectionModelChangedSlot(const QItemSelection & newSel, const 
 void TracingGui::AddSphereSlot()
 {
 	Geometry * geom = new Sphere(1);
-	QModelIndex index = _gModels->Add(geom);
+	QModelIndex index = _gModels->Add(geom,-1);
 	ui.treeView->selectionModel()->select(index,QItemSelectionModel::ClearAndSelect);
 }
 
@@ -289,25 +307,55 @@ void TracingGui::AddSphereSlot()
 void TracingGui::AddTriangleSlot()
 {
 	Geometry * geom = new DoubleTriangle(NULL);
-	QModelIndex index = _gModels->Add(geom);
+	QModelIndex index = _gModels->Add(geom,-1);
 	ui.treeView->selectionModel()->select(index,QItemSelectionModel::ClearAndSelect);
 }
 
 #include "FileHandler.h"
 #define DEFAULT_SCENE "../../data/test.scene"
 #define DEFAULT_CAMERA "../../data/scene.camera"
+#define DEFAULT_PATH "../../data/"
 
-void TracingGui::LoadModels()
+void TracingGui::LoadMaterials(const QString & nname)
 {
 	ui.treeView->selectionModel()->clear();
 	ui.treeViewLight->selectionModel()->clear();
-	_gModels->Clear();
+	QString name = nname;
+	name.prepend(DEFAULT_PATH);
 	FileHandler handler;
-	handler.Open(DEFAULT_SCENE,"r");
+	handler.Open(name.toLocal8Bit().data(),"r");
+	if ( !handler.Valid())
+		return;
+
+	int index = 0;
+	while (true)
+	{
+		GProperties *g = _gModels->Get(index);
+		if (!g)
+			break;
+		index++;
+		handler.Read( &g->material,sizeof (g->material), 1 );
+		handler.Read( &g->matDiffuse, sizeof (g->matDiffuse), 1);
+		handler.Read( &g->matSpecular, sizeof (g->matSpecular), 1);
+		handler.Read( &g->matSpecularExp, sizeof (g->matSpecularExp), 1);
+		handler.Read( &g->matEmmisive, sizeof (g->matEmmisive), 1);
+	}
+}
+
+void TracingGui::LoadModels(const QString & nname)
+{
+	ui.treeView->selectionModel()->clear();
+	ui.treeViewLight->selectionModel()->clear();
+	QString name = nname;
+	name.prepend(DEFAULT_PATH);
+
+	FileHandler handler;
+	handler.Open(name.toLocal8Bit().data(),"r");
 	if ( !handler.Valid())
 		return;
 	int positionManual = 0;
 
+	int i=0;
 	while (true)
 	{
 		int w;
@@ -336,7 +384,8 @@ void TracingGui::LoadModels()
 		{
 			DoAssert(false);
 		}
-		QModelIndex index = _gModels->Add(geom);
+		QModelIndex index = _gModels->Add(geom,i);
+		i++;
 		GProperties * g = _gModels->Get(index.row());
 
 		int l;
@@ -376,21 +425,9 @@ void TracingGui::LoadModels()
 		handler.Read( &g->rotation, sizeof (g->rotation), 1);
 		geom->LoadProperties(handler);
 
-		handler.Read( &g->material,sizeof (g->material), 1 );
-		handler.Read( &g->matDiffuse, sizeof (g->matDiffuse), 1);
-		handler.Read( &g->matSpecular, sizeof (g->matSpecular), 1);
-		handler.Read( &g->matSpecularExp, sizeof (g->matSpecularExp), 1);
-		handler.Read( &g->matEmmisive, sizeof (g->matEmmisive), 1);
 	}
+	_gModels->resize(i);
 }
-
-void TracingGui::LoadSceneSlot()
-{
-	LoadModels();
-	LoadCamera();
-}
-
-#define DEFAULT_PATH "../../data/"
 
 void TracingGui::SaveMaterials(const QString & materialName)
 {
@@ -721,7 +758,7 @@ void TracingGui::DeleteObjectSlot()
 void TracingGui::AddPointSlot()
 {
 	Geometry * geom = new PointObject();
-	QModelIndex index = _gModels->Add(geom);
+	QModelIndex index = _gModels->Add(geom,-1);
 	ui.treeView->selectionModel()->select(index,QItemSelectionModel::ClearAndSelect);
 }
 
@@ -748,10 +785,12 @@ void TracingGui::SelectionSceneChangedSlot(const QItemSelection &nSel, const QIt
 	if (nSel.indexes()[0].column() == 0)
 	{
 		ui.currentScene->setText(GScenes.data(nSel.indexes()[0],Qt::DisplayRole).toString());
+		LoadModels(ui.currentScene->text());
 	}
 	if (nSel.indexes()[0].column() == 1)
 	{
 		ui.currentMaterial->setText(GScenes.data(nSel.indexes()[0],Qt::DisplayRole).toString());
+		LoadMaterials(ui.currentMaterial->text());
 	}
 }
 
