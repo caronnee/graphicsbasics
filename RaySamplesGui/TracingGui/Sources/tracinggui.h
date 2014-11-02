@@ -35,12 +35,13 @@ public:
 	int columnCount(const QModelIndex & /*parent*/) const;
 	QVariant data(const QModelIndex &index, int role) const;
 	QVariant headerData(int section, Qt::Orientation o, int role) const;
-	QModelIndex Add(Geometry * geom);
+	QModelIndex Add(Geometry * geom, int index);
 	GProperties * Get(int row);
 	void Clear();
 	void Remove(int index);
 	Qt::ItemFlags flags(const QModelIndex & /*index*/) const;
 	bool setData(const QModelIndex & index, const QVariant & value, int role);
+	void resize(int i);
 };
 
 class SceneModels : public QAbstractListModel
@@ -84,7 +85,6 @@ private slots:
 	void SaveCurrentMaterialSlot();
 	void AddSphereSlot();
 	void AddTriangleSlot();
-	void LoadSceneSlot();
 	void DeleteObjectSlot();
 	void AddPointSlot();
 	void SaveNewSceneSlot();
@@ -104,9 +104,10 @@ private:
 	void SaveCamera();
 
 	void LoadCamera();
-	void LoadModels();
 	void Test(Camera * camera);
 	void LoadSceneNames();
+	void LoadModels(const QString & name);
+	void LoadMaterials(const QString & name);
 };
 
 #endif // TRACINGGUI_H
