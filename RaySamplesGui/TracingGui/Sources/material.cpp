@@ -9,22 +9,40 @@
 
 class MaterialCreator
 {
-
+  QList<Material *> _materials;
 public:
 	MaterialCreator()
 	{
 	}
+
+  Material * CreateMaterialSpecular( const Vector4d & diffuse, const Vector4d & specular, const float & phong )
+  {
+    Material * m = new MaterialSpecular(diffuse, specular, phong);
+    _materials.push_back(m);
+    return m;
+  }
+
 	Material * CreateMaterialDiffuse( const Vector4d & diff, const Vector4d & emmisive )
 	{
-		return new MaterialDiffuse(diff,emmisive);
+    Material * m = new MaterialDiffuse(diff, emmisive);
+    _materials.push_back(m);
+		return m;
 	}
+  ~MaterialCreator()
+  {
+    for ( int i =0; i < _materials.size(); i++)
+      delete[] _materials[i];
+    _materials.clear();
+  }
 };
 
 static MaterialCreator GMaterialCreator;
 
-Material * CreateMaterial(MaterialType type, const Vector4d & parameters, const Vector4d & emmisive)
+Material * CreateMaterial(int type, const Vector4d * parameters, float phong)
 {
-	return GMaterialCreator.CreateMaterialDiffuse(parameters, emmisive);
+  if (type == MSpecular )
+    return GMaterialCreator.CreateMaterialSpecular(parameters[0],parameters[1], phong);
+	return GMaterialCreator.CreateMaterialDiffuse(parameters[0], parameters[2]);
 }
 
 bool Material::IsLight()const

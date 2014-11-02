@@ -15,9 +15,9 @@ public:
 };
 
 enum MaterialType{
-	MDiffuse
+	MDiffuse,
+  MSpecular
 };
 
-Material * CreateMaterial(MaterialType type, const Vector4d & parameters, const Vector4d & emmisive = Vector4d(0,0,0,0));
-
+Material * CreateMaterial(int type, const Vector4d * parameters, float phong);
 #endif
