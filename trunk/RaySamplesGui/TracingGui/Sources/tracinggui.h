@@ -15,11 +15,9 @@ struct GProperties
 	Vector4d rotation;
 	Vector4d position;
 	// material color
-	Vector4d matDiffuse;
-	Vector4d matSpecular;
-	Vector4d matEmmisive;
+	Vector4d parameters[3];
 	float matSpecularExp;
-	MaterialType material;
+	int material;
 	Geometry * geom;
 	QString name;
 };

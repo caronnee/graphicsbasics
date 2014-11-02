@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>712</width>
+    <width>738</width>
     <height>484</height>
    </rect>
   </property>
@@ -59,7 +59,7 @@
        <enum>QTabWidget::North</enum>
       </property>
       <property name="currentIndex">
-       <number>4</number>
+       <number>2</number>
       </property>
       <widget class="QWidget" name="model">
        <property name="layoutDirection">
@@ -1031,7 +1031,7 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>264</width>
+         <width>266</width>
          <height>289</height>
         </rect>
        </property>
@@ -1155,7 +1155,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>712</width>
+     <width>738</width>
      <height>21</height>
     </rect>
    </property>
