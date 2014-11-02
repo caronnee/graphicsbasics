@@ -304,7 +304,7 @@ void TracingGui::LoadModels()
 	_gModels->Clear();
 	FileHandler handler;
 	handler.Open(DEFAULT_SCENE,"r");
-	if ( handler.Valid())
+	if ( !handler.Valid())
 		return;
 	int positionManual = 0;
 
@@ -731,7 +731,7 @@ void TracingGui::LoadSceneNames()
 {
 	// find everything that have.scene
 	QStringList sceneFilter("*.scene");
-	QStringList materialFilter("&.material");
+	QStringList materialFilter("*.material");
 	QDir directory("data/");
 	QString test = directory.absolutePath();
 	QStringList scenefiles = directory.entryList(sceneFilter);
@@ -811,24 +811,25 @@ void SceneModels::AddMaterials(const QStringList & list)
 {
 	for ( int iList =0; iList < list.size(); iList++)
 	{
-		int index = -1;
-		int pos = -1;
-		for ( int iScene = 0; iScene < _scenes.size(); iScene++ )
-		{
-			if ( list[iList].startsWith(_scenes[iScene]) )
-			{
-				int len = list[iList].length();
-				/*
-				if ( list[iList][len] != '_')
-					continue;
-				len++;
-				*/
-				index = iScene;
-				pos = len;
-			}
-		}
-		if ( index >= 0)
-			_materials[index].append(list[iList].mid(pos));
+		//int index = -1;
+		//int pos = -1;
+		//for ( int iScene = 0; iScene < _scenes.size(); iScene++ )
+		//{
+		//	if ( list[iList].startsWith(_scenes[iScene]) )
+		//	{
+		//		int len = list[iList].length();
+		//		/*
+		//		if ( list[iList][len] != '_')
+		//			continue;
+		//		len++;
+		//		*/
+		//		index = iScene;
+		//		pos = len;
+		//	}
+		//}
+		//if ( index >= 0)
+		//  _materials[index].append(list[iList].mid(pos));
+	    _materials.append(list[iList]);
 	}
 }
 
