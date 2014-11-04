@@ -11,7 +11,7 @@ public:
 	bool IsLight() const;
 	Vector4d Emmisive() const;
 	// calculate brdf according to selected material
-	virtual Vector4d EvalBrdf(const Vector4d & input, Vector4d & output, float & pdf ) const =0;
+	virtual Vector4d EvalBrdf(const Vector4d & input, const Vector4d & normal, Vector4d & outputDir ) const =0;
 };
 
 enum MaterialType{
