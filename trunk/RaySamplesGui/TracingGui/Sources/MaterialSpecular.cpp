@@ -9,15 +9,17 @@ MaterialSpecular::MaterialSpecular(const Vector4d & diffuse, const Vector4d & sp
 }
 
 
-Vector4d MaterialSpecular::GetSpecular(const Vector4d & input, const Vector4d & output) const
+Vector4d MaterialSpecular::GetSpecular(const Vector4d & incoming, const Vector4d & output) const
 {
-	float cosA = input.Dot(output);
+	float cosA = incoming.Dot(output);
+	if (cosA<0)
+		return Vector4d(0,0,0,0);
 	float cosAn = pow(cosA,_phongCoef);
 	Vector4d v = _specularReflectance * (_phongCoef + 2.0f) * cosAn /( 2 * PI);
 	return v;
 }
 
-Vector4d MaterialSpecular::EvalBrdf(const Vector4d & input, Vector4d & output, float & pdf) const
+Vector4d MaterialSpecular::EvalBrdf(const Vector4d & incoming, const Vector4d & normal, Vector4d & output) const
 {
-	return GetDiffuse(input,output) + GetSpecular(input,output);
+	return GetDiffuse(incoming,output) + GetSpecular(incoming,output);
 }

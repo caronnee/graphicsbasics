@@ -34,10 +34,10 @@ Vector4d TestRenderer::RenderPixel(const int &x, const int &y, const int & type)
     total = BLACK;
   else
   {
-	float pdf;
     // eval brdf
-    total = isect.model->GetMaterial()->EvalBrdf( isect.worldPosition, -ray.direction,pdf);
+	  Vector4d output;
+	  total = isect.model->GetMaterial()->EvalBrdf( -ray.direction, isect.nrm, output);
   }
-	return total;
+  return total;
 }
 
