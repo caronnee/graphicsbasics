@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>738</width>
+    <width>712</width>
     <height>484</height>
    </rect>
   </property>
@@ -59,7 +59,7 @@
        <enum>QTabWidget::North</enum>
       </property>
       <property name="currentIndex">
-       <number>2</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="model">
        <property name="layoutDirection">
@@ -463,6 +463,9 @@
          <widget class="QDoubleSpinBox" name="sE">
           <property name="minimum">
            <double>0.100000000000000</double>
+          </property>
+          <property name="maximum">
+           <double>999.899999999999977</double>
           </property>
          </widget>
         </item>
@@ -1031,7 +1034,7 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>266</width>
+         <width>264</width>
          <height>289</height>
         </rect>
        </property>
@@ -1155,7 +1158,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>738</width>
+     <width>712</width>
      <height>21</height>
     </rect>
    </property>
