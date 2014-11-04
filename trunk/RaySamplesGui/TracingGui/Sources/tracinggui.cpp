@@ -187,8 +187,9 @@ TracingGui::TracingGui(QWidget *parent)
 
 	// connect button to create export/import
 	connect(ui.exportScene, SIGNAL(clicked(void)),this,SLOT(SaveSceneSlot()));
-	connect(ui.saveScene, SIGNAL(clicked(void)),this,SLOT(SaveCurrentSceneSlot()));
 	connect(ui.exportMaterial, SIGNAL(clicked(void)), this, SLOT( SaveMaterialSlot()));
+	connect(ui.saveScene, SIGNAL(clicked(void)),this,SLOT(SaveCurrentSceneSlot()));
+	connect(ui.saveMaterial, SIGNAL(clicked(void)),this,SLOT(SaveCurrentMaterialSlot()));
 
 	// connect buttons to create types
 	connect( ui.addSphere, SIGNAL(clicked(void)), this, SLOT(AddSphereSlot()));
@@ -242,18 +243,18 @@ void TracingGui::SelectionMaterialChangedSlot(const QItemSelection & newSel, con
 
 	//ui.MaterialType 
 	ui.dR->setValue(gProp.parameters[0][0] );
-	ui.dB->setValue(gProp.parameters[0][1] );
-	ui.dG->setValue(gProp.parameters[0][2] );
+	ui.dG->setValue(gProp.parameters[0][1] );
+	ui.dB->setValue(gProp.parameters[0][2] );
 
 	ui.sR->setValue(gProp.parameters[1][0] );
-	ui.sB->setValue(gProp.parameters[1][1] );
-	ui.sG->setValue(gProp.parameters[1][2] );
+	ui.sG->setValue(gProp.parameters[1][1] );
+	ui.sB->setValue(gProp.parameters[1][2] );
 	ui.sE->setValue(gProp.matSpecularExp);
 
-  ui.materialType->setCurrentIndex(gProp.material);
+	ui.materialType->setCurrentIndex(gProp.material);
 	ui.eR->setValue(gProp.parameters[2][0] );
-	ui.eB->setValue(gProp.parameters[2][1] );
-	ui.eG->setValue(gProp.parameters[2][2] );
+	ui.eG->setValue(gProp.parameters[2][1] );
+	ui.eB->setValue(gProp.parameters[2][2] );
 }
 void TracingGui::SelectionModelChangedSlot(const QItemSelection & newSel, const QItemSelection &oldSel)
 {
@@ -458,13 +459,13 @@ void TracingGui::SaveMaterialSlot( )
 {
 	QString materialName = GScenes.NewMaterialName();
 	materialName.prepend(DEFAULT_PATH);
+	UpdateSelectedModel(ui.treeViewLight->selectionModel()->selectedIndexes(),1);
 	SaveMaterials(materialName);	
 }
 
 void TracingGui::SaveModels(const QString & str )
 {
 	UpdateSelectedModel(ui.treeView->selectionModel()->selectedIndexes(),0);
-	UpdateSelectedModel(ui.treeViewLight->selectionModel()->selectedIndexes(),1);
 
 	FileHandler handler;
 	handler.Open(str.toLocal8Bit().data(),"w");
@@ -524,12 +525,16 @@ void TracingGui::LoadCamera()
 
 void TracingGui::SaveNewSceneSlot()
 {
-	SaveSceneSlot();
+	UpdateSelectedModel(ui.treeViewLight->selectionModel()->selectedIndexes(),0);
+	QString str = GScenes.NewSceneName();
+	str.prepend(DEFAULT_PATH);
+	SaveModels(str);
 }
 void TracingGui::SaveSceneSlot()
 {
 	// saveModels to the new, separated sceneName
-	QString str = GScenes.NewSceneName();
+	UpdateSelectedModel(ui.treeViewLight->selectionModel()->selectedIndexes(),0);
+	QString str = ui.currentMaterial->text();
 	str.prepend(DEFAULT_PATH);
 	SaveModels(str);
 	// save camera
@@ -621,7 +626,7 @@ void TracingGui::UpdateSelectedModel( QModelIndexList indexes, int type )
 			g.parameters[1] = Vector4d(ui.sR->value(),ui.sG->value(),ui.sB->value());
 			g.matSpecularExp = ui.sE->value();
 			g.parameters[2] = Vector4d(ui.eR->value(),ui.eG->value(),ui.eB->value());
-      g.material = ui.materialType->currentData().toInt();
+			g.material = ui.materialType->currentData().toInt();
 		}
 	}
 }
@@ -803,11 +808,17 @@ void TracingGui::SelectionSceneChangedSlot(const QItemSelection &nSel, const QIt
 
 void TracingGui::SaveCurrentSceneSlot()
 {
-	SaveModels(ui.currentScene->text());
+	UpdateSelectedModel(ui.treeView->selectionModel()->selectedIndexes(),0);
+	QString sceneName = ui.currentScene->text();
+	sceneName.prepend(DEFAULT_PATH);
+	SaveModels(sceneName.toLocal8Bit().data());
 }
 void TracingGui::SaveCurrentMaterialSlot()
 {
-	SaveMaterials(ui.currentScene->text());
+	UpdateSelectedModel(ui.treeViewLight->selectionModel()->selectedIndexes(),1);
+	QString materialName = ui.currentMaterial->text();
+	materialName.prepend(DEFAULT_PATH);
+	SaveMaterials(materialName.toLocal8Bit().data());
 }
 
 
