@@ -38,8 +38,8 @@ Vector4d PathTraceRenderer::RenderPixel(const int &x, const int &y, const int & 
 		bool occluded = _scene->FindIntersection(r2, i2);
 		if ( occluded && (i2.t < t - 0.001f) )
 			continue;
-		if ( isec.model->Type() == TypeSphere )
-			__debugbreak();
+		/*if ( isec.model->Type() == TypeSphere )
+			__debugbreak();*/
 		Vector4d brdf = isec.model->GetMaterial()->EvalBrdf(-ray.direction, isec.nrm, outputVector);
 		if (type & RDirectLight)
 		{

@@ -65,6 +65,7 @@ bool Sphere::Intersect(const Ray & ray, Intersection & sect)
 		float sz = (sphereCenter - testIntersection ).Size2();;
 		DoAssert(sz-_radius2<=2*EPSILON);
 	}
+	sect.nrm.Normalize();
 	return true;
 }
 

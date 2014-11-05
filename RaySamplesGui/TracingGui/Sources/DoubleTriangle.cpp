@@ -76,6 +76,7 @@ bool DoubleTriangle::Intersect(const Ray & ray, Intersection & sect)
 		sect.model = this;
 		sect.worldPosition = ray.origin + ray.direction * t;
 		sect.nrm = ModelToWorld(_edges[1].Cross(_edges[0]));
+		sect.nrm.Normalize();
 		return true;
 	}
 
