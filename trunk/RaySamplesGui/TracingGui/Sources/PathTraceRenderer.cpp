@@ -46,6 +46,16 @@ Vector4d PathTraceRenderer::RenderPixel(const int &x, const int &y, const int & 
 			total += brdf.MultiplyPerElement(illumination);
 		}
 	}
+	{
+		// in the end, try to use also ambient lighting
+		Vector4d outputVector;
+		Vector4d illumination = _scene->Ambient().SampleIllumination(-ray.direction,isec.nrm, outputVector);
+		Vector4d brdf = isec.model->GetMaterial()->EvalBrdf(-ray.direction, isec.nrm, outputVector);
+		if (type & RDirectLight)
+		{
+			total += brdf.MultiplyPerElement(illumination);
+		}
+	}
 #if 0 && _DEBUG
 	float xx = total.Size2();
 	DoAssert(xx > 0);
