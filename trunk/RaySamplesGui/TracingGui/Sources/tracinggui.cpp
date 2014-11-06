@@ -346,6 +346,11 @@ void TracingGui::LoadMaterials(const QString & nname)
 		handler.Read( &g->matSpecularExp, sizeof (g->matSpecularExp), 1);
 		handler.Read( &g->parameters[2], sizeof (g->parameters[2]), 1);
 	}
+	float ambient[3];
+	handler.Read( &ambient, sizeof (float), 3 );
+	ui.aRValue->setValue(ambient[0]);
+	ui.aGValue->setValue(ambient[1]);
+	ui.aBValue->setValue(ambient[2]);
 }
 
 void TracingGui::LoadModels(const QString & nname)
@@ -453,6 +458,8 @@ void TracingGui::SaveMaterials(const QString & materialName)
 		handler.Write( &g->parameters[2], sizeof (g->parameters[2]),1 );
 		i++;
 	}
+	float ambient[]	=	{	ui.aRValue->value(),ui.aGValue->value(),ui.aBValue->value()	};
+	handler.Write( ambient, sizeof (float), 3 );
 }
 // saves material to the new slot and picks it
 void TracingGui::SaveMaterialSlot( )
