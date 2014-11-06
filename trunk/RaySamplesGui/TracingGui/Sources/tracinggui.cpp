@@ -186,7 +186,7 @@ TracingGui::TracingGui(QWidget *parent)
 	ui.fov->setValue(95);
 
 	// connect button to create export/import
-	connect(ui.exportScene, SIGNAL(clicked(void)),this,SLOT(SaveSceneSlot()));
+	connect(ui.exportScene, SIGNAL(clicked(void)),this,SLOT(SaveNewSceneSlot()));
 	connect(ui.exportMaterial, SIGNAL(clicked(void)), this, SLOT( SaveMaterialSlot()));
 	connect(ui.saveScene, SIGNAL(clicked(void)),this,SLOT(SaveCurrentSceneSlot()));
 	connect(ui.saveMaterial, SIGNAL(clicked(void)),this,SLOT(SaveCurrentMaterialSlot()));
@@ -529,16 +529,6 @@ void TracingGui::SaveNewSceneSlot()
 	QString str = GScenes.NewSceneName();
 	str.prepend(DEFAULT_PATH);
 	SaveModels(str);
-}
-void TracingGui::SaveSceneSlot()
-{
-	// saveModels to the new, separated sceneName
-	UpdateSelectedModel(ui.treeViewLight->selectionModel()->selectedIndexes(),0);
-	QString str = ui.currentMaterial->text();
-	str.prepend(DEFAULT_PATH);
-	SaveModels(str);
-	// save camera
-//	SaveCamera();
 }
 
 void TracingGui::UpdateExposureNumberSlot(int exposure)
