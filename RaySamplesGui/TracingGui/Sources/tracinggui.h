@@ -78,7 +78,6 @@ private slots:
 	void ExposureChangedSlot(int value);
 	void UpdateExposureSlot(double exposure);
 	void UpdateExposureNumberSlot(int exposure);
-	void SaveSceneSlot();
 	void SaveCurrentSceneSlot();
 	void SaveCurrentMaterialSlot();
 	void AddSphereSlot();
