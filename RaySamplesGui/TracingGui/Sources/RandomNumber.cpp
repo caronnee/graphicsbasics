@@ -1,5 +1,6 @@
 #include "RandomNumber.h"
 
+Rng james;
 
 Vector4d Rng::GetVec3f()
 {
@@ -13,6 +14,18 @@ Vector4d Rng::GetVec3f()
 float Rng::GetFloat()
 {
 	return mDistFloat(mRng);
+}
+
+Vector4d RandomHemisphereVector()
+{
+	Vector4d ret;
+	int i;
+	for ( i =0; i < 3; i++)
+	{
+		ret[0] = james.GetFloat();
+	}
+	ret[i] = 0;
+	return ret;
 }
 
 Rng::Rng(int aSeed /*= 1234*/) :

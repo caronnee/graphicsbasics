@@ -19,4 +19,6 @@ private:
 	std::uniform_real_distribution<float> mDistFloat;
 };
 
+Vector4d RandomHemisphereVector();
+
 #endif
