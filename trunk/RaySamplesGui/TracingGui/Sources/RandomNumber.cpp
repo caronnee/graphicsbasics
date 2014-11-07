@@ -19,12 +19,12 @@ float Rng::GetFloat()
 Vector4d RandomHemisphereVector()
 {
 	Vector4d ret;
-	int i;
-	for ( i =0; i < 3; i++)
-	{
-		ret[0] = james.GetFloat();
-	}
-	ret[i] = 0;
+	// sample from whole hemisphere
+	ret[0] = james.GetFloat() - 0.5f;
+	ret[1] = james.GetFloat() - 0.5f;
+	ret[2] = james.GetFloat() - 0.5f;
+	ret[3] = 0;
+	ret.Normalize();
 	return ret;
 }
 

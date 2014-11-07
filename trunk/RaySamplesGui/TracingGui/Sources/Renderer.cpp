@@ -14,11 +14,12 @@ bool stop = false;
 
 void Renderer::Render(int iterations, int & mask)
 {
+	_image->Clear();
+	GetRendererTrack()->Clear();
+	GetRendererTrack()->SetStages(iterations * _image.W());
+
 	for ( int i =0; i < iterations; i++)
 	{
-		GetRendererTrack()->Clear();
-		GetRendererTrack()->SetStages(_image->W());
-		_image->Clear();
 		for ( int x = 0; x < _image->W(); x++)
 		{
 			for ( int y = 0; y < _image->H(); y++)
