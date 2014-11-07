@@ -14,6 +14,6 @@ void TrackProgress::Clear()
 
 void TrackProgress::SetStages(float stages)
 {
-	_step = 1/stages;
+	_step = 1.0/stages;
 }
 
