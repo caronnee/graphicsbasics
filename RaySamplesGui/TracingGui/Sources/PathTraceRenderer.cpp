@@ -25,21 +25,18 @@ Vector4d PathTraceRenderer::RenderPixel(const int &x, const int &y, const int & 
 			total += isec.model->GetMaterial()->Emmisive();
 			continue;
 		}
-		Vector4d sampledDir;
-		float pdf;
+		Vector4d lightVector;
 		float t;
-		Vector4d illumination = light->SampleIllumination( isec, sampledDir,t);
-		Vector4d outputVector = sampledDir;		
-		Intersection i2;
-		i2.t = t;
+		Vector4d illumination = light->SampleIllumination( isec, lightVector,t);
+		Vector4d outputVector = lightVector;		
+		Intersection dummySec;
+		dummySec.t = t;
 		Ray r2;
-		r2.origin = isec.worldPosition;
-		r2.direction = sampledDir;
-		bool occluded = _scene->FindIntersection(r2, i2);
-		if ( occluded && (i2.t < t - 0.001f) )
+		r2.origin = isec.worldPosition + lightVector* EPSILON;
+		r2.direction = lightVector;
+		bool occluded = _scene->FindIntersection(r2, dummySec);
+		if ( occluded && ( (dummySec.nrm.Dot(isec.nrm) < 0) ) )
 			continue;
-		/*if ( isec.model->Type() == TypeSphere )
-			__debugbreak();*/
 		Vector4d brdf = isec.model->GetMaterial()->EvalBrdf(-ray.direction, isec.nrm, outputVector);
 		if (type & RDirectLight)
 		{
@@ -50,10 +47,21 @@ Vector4d PathTraceRenderer::RenderPixel(const int &x, const int &y, const int & 
 		// in the end, try to use also ambient lighting
 		Vector4d outputVector;
 		Vector4d illumination = _scene->Ambient().SampleIllumination(-ray.direction,isec.nrm, outputVector);
-		Vector4d brdf = isec.model->GetMaterial()->EvalBrdf(-ray.direction, isec.nrm, outputVector);
-		if (type & RDirectLight)
+		// in case of ambient lighting we might want to consider only those that do not intersect the same model 9 or nothing
+		Ray r2;
+		r2.direction = outputVector;
+		r2.direction.Normalize();
+		r2.origin = isec.worldPosition + r2.direction * EPSILON;
+	
+		Intersection dummySec;
+		dummySec.t = isec.t;
+		if ( !_scene->FindIntersection(r2,dummySec) || (dummySec.nrm.Dot(isec.nrm) >= 0) )
 		{
-			total += brdf.MultiplyPerElement(illumination);
+			Vector4d brdf = isec.model->GetMaterial()->EvalBrdf(-ray.direction, isec.nrm, outputVector);
+			if (type & RDirectLight)
+			{
+				total += brdf.MultiplyPerElement(illumination);
+			}
 		}
 	}
 #if 0 && _DEBUG

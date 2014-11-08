@@ -221,7 +221,7 @@
        <enum>QTabWidget::North</enum>
       </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>3</number>
       </property>
       <widget class="QWidget" name="model">
        <property name="layoutDirection">
@@ -1122,6 +1122,9 @@
           </property>
           <property name="maximum">
            <number>100000</number>
+          </property>
+          <property name="value">
+           <number>100</number>
           </property>
          </widget>
         </item>
