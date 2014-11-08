@@ -13,7 +13,7 @@ Vector4d AmbientLight::SampleIllumination(const Vector4d & incoming,const Vector
 	lightVector = RandomHemisphereVector();
 	//lightVector = l;
 	lightVector.Normalize();
-	float cosA = norm.Dot(lightVector)/(norm.Size()*lightVector.Size());
+	float cosA = norm.Dot(lightVector);
 	if ( cosA < 0 )
 		return Vector4d(0,0,0,0);
 	DoAssert(cosA <=1.01);

@@ -16,7 +16,7 @@ void Renderer::Render(int iterations, int & mask)
 {
 	_image->Clear();
 	GetRendererTrack()->Clear();
-	GetRendererTrack()->SetStages(iterations * _image.W());
+	GetRendererTrack()->SetStages(iterations * _image->W());
 
 	for ( int i =0; i < iterations; i++)
 	{

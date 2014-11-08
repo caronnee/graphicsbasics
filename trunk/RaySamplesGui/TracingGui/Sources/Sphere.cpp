@@ -51,6 +51,8 @@ bool Sphere::Intersect(const Ray & ray, Intersection & sect)
 	t0 = t0>0 ? t0:t1;
 	sect.t = t0;
 	sect.worldPosition = ray.origin + ray.direction * t0;
+	Vector4d modelInder = rayOrigin + rayDirection * t0;
+	Vector4d mmm = ModelToWorld(modelInder);
 	sect.nrm = rayOrigin + rayDirection * t0 - Vector4d(0,0,0,1);
 	sect.nrm = ModelToWorld(sect.nrm);
 	//verify that this works
