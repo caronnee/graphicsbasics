@@ -29,10 +29,11 @@ int PointObject::Type() const
 
 Vector4d PointObject::SampleIllumination(Intersection &section, Vector4d & sampledDir, float & sampleLen)
 {
-	DoAssert(GetMaterial()->IsLight());
+	DoAssert(GetMaterial() && GetMaterial()->IsLight());
 	Vector4d & intensity = GetMaterial()->Emmisive();
 	Vector4d norm = section.nrm;
 	norm.Normalize();
+	// B-A - sample dir is made from th light origin to the intersection
 	sampledDir = -section.worldPosition + ModelToWorld(Vector4d(0,0,0,1));
 	float r2 = sampledDir.Size2();
 	sampleLen = sqrt(r2);

@@ -43,27 +43,6 @@ Vector4d PathTraceRenderer::RenderPixel(const int &x, const int &y, const int & 
 			total += brdf.MultiplyPerElement(illumination);
 		}
 	}
-	{
-		// in the end, try to use also ambient lighting
-		Vector4d outputVector;
-		Vector4d illumination = _scene->Ambient().SampleIllumination(-ray.direction,isec.nrm, outputVector);
-		// in case of ambient lighting we might want to consider only those that do not intersect the same model 9 or nothing
-		Ray r2;
-		r2.direction = outputVector;
-		r2.direction.Normalize();
-		r2.origin = isec.worldPosition + r2.direction * EPSILON;
-	
-		Intersection dummySec;
-		dummySec.t = isec.t;
-		if ( !_scene->FindIntersection(r2,dummySec) || (dummySec.nrm.Dot(isec.nrm) >= 0) )
-		{
-			Vector4d brdf = isec.model->GetMaterial()->EvalBrdf(-ray.direction, isec.nrm, outputVector);
-			if (type & RDirectLight)
-			{
-				total += brdf.MultiplyPerElement(illumination);
-			}
-		}
-	}
 #if 0 && _DEBUG
 	float xx = total.Size2();
 	DoAssert(xx > 0);
