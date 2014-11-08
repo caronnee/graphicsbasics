@@ -2,13 +2,16 @@
 #define __AMBIENT_LIGHT__
 
 #include "Vector.h"
+#include "Geometry.h"
 
-class AmbientLight
+class AmbientLight : public Geometry
 {
 	Vector4d _backColor;
 public:
 	AmbientLight( const Vector4d & watts );
 	void SetPower( const Vector4d & watts );
-	Vector4d SampleIllumination(const Vector4d & incoming,const Vector4d & norm, Vector4d& outputDirection);
+	bool Intersect(const Ray &,Intersection &);
+	Vector4d SampleIllumination(Intersection &section, Vector4d & lightVector, float & len );
+	int Type(void) const;
 };
 #endif

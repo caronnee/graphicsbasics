@@ -15,117 +15,6 @@
   </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QGridLayout" name="gridLayout_4">
-    <item row="11" column="12">
-     <widget class="QPushButton" name="bSave">
-      <property name="text">
-       <string>Save HDR</string>
-      </property>
-     </widget>
-    </item>
-    <item row="11" column="13">
-     <widget class="QLineEdit" name="filename">
-      <property name="text">
-       <string>output.hdr</string>
-      </property>
-      <property name="maxLength">
-       <number>30</number>
-      </property>
-     </widget>
-    </item>
-    <item row="14" column="0" colspan="14">
-     <widget class="QProgressBar" name="renderProgress">
-      <property name="value">
-       <number>0</number>
-      </property>
-     </widget>
-    </item>
-    <item row="11" column="7">
-     <widget class="QLabel" name="label">
-      <property name="text">
-       <string>outputName</string>
-      </property>
-     </widget>
-    </item>
-    <item row="11" column="0">
-     <widget class="QLabel" name="lZoom">
-      <property name="text">
-       <string>Zoom</string>
-      </property>
-     </widget>
-    </item>
-    <item row="6" column="4">
-     <widget class="QPushButton" name="bRender">
-      <property name="text">
-       <string>Render!</string>
-      </property>
-     </widget>
-    </item>
-    <item row="9" column="0">
-     <widget class="QLabel" name="lExposure">
-      <property name="text">
-       <string>Exposure</string>
-      </property>
-     </widget>
-    </item>
-    <item row="11" column="4" colspan="2">
-     <widget class="QSpinBox" name="sZoomNumber">
-      <property name="maximum">
-       <number>10</number>
-      </property>
-     </widget>
-    </item>
-    <item row="6" column="2">
-     <widget class="QLabel" name="currentScene">
-      <property name="text">
-       <string>point.scene</string>
-      </property>
-     </widget>
-    </item>
-    <item row="6" column="3">
-     <widget class="QLabel" name="currentMaterial">
-      <property name="text">
-       <string>specularpoint.material</string>
-      </property>
-     </widget>
-    </item>
-    <item row="8" column="0" colspan="5">
-     <widget class="QScrollArea" name="scrollArea">
-      <property name="widgetResizable">
-       <bool>true</bool>
-      </property>
-      <widget class="QWidget" name="scrollAreaWidgetContents">
-       <property name="geometry">
-        <rect>
-         <x>0</x>
-         <y>0</y>
-         <width>304</width>
-         <height>289</height>
-        </rect>
-       </property>
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <layout class="QHBoxLayout" name="horizontalLayout_4">
-        <item>
-         <widget class="QLabel" name="lImage">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="text">
-           <string>TextLabel</string>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </widget>
-     </widget>
-    </item>
     <item row="6" column="10">
      <widget class="QPushButton" name="saveScene">
       <property name="text">
@@ -133,89 +22,7 @@
       </property>
      </widget>
     </item>
-    <item row="6" column="13">
-     <widget class="QPushButton" name="loadScene">
-      <property name="text">
-       <string>Load camera</string>
-      </property>
-     </widget>
-    </item>
-    <item row="9" column="1" colspan="3">
-     <widget class="QSlider" name="sExposure">
-      <property name="whatsThis">
-       <string>Exposure</string>
-      </property>
-      <property name="minimum">
-       <number>-200</number>
-      </property>
-      <property name="maximum">
-       <number>200</number>
-      </property>
-      <property name="singleStep">
-       <number>1</number>
-      </property>
-      <property name="pageStep">
-       <number>10</number>
-      </property>
-      <property name="orientation">
-       <enum>Qt::Horizontal</enum>
-      </property>
-      <property name="tickPosition">
-       <enum>QSlider::TicksAbove</enum>
-      </property>
-     </widget>
-    </item>
-    <item row="11" column="1" colspan="3">
-     <widget class="QSlider" name="sZoom">
-      <property name="maximum">
-       <number>10</number>
-      </property>
-      <property name="orientation">
-       <enum>Qt::Horizontal</enum>
-      </property>
-      <property name="tickPosition">
-       <enum>QSlider::TicksBelow</enum>
-      </property>
-     </widget>
-    </item>
-    <item row="9" column="4">
-     <widget class="QDoubleSpinBox" name="sExposureNumber">
-      <property name="decimals">
-       <number>1</number>
-      </property>
-      <property name="minimum">
-       <double>-20.000000000000000</double>
-      </property>
-      <property name="maximum">
-       <double>20.000000000000000</double>
-      </property>
-      <property name="singleStep">
-       <double>0.100000000000000</double>
-      </property>
-     </widget>
-    </item>
-    <item row="6" column="7">
-     <widget class="QPushButton" name="exportScene">
-      <property name="text">
-       <string>Export Scene</string>
-      </property>
-     </widget>
-    </item>
-    <item row="6" column="8" colspan="2">
-     <widget class="QPushButton" name="exportMaterial">
-      <property name="text">
-       <string>Export Material</string>
-      </property>
-     </widget>
-    </item>
-    <item row="6" column="11" colspan="2">
-     <widget class="QPushButton" name="saveMaterial">
-      <property name="text">
-       <string>Resave material</string>
-      </property>
-     </widget>
-    </item>
-    <item row="7" column="7" rowspan="3" colspan="7">
+    <item row="9" column="7" rowspan="3" colspan="7">
      <widget class="QTabWidget" name="sceneInformation">
       <property name="tabPosition">
        <enum>QTabWidget::North</enum>
@@ -1140,6 +947,206 @@
         </item>
        </layout>
       </widget>
+     </widget>
+    </item>
+    <item row="13" column="12">
+     <widget class="QPushButton" name="bSave">
+      <property name="text">
+       <string>Save HDR</string>
+      </property>
+     </widget>
+    </item>
+    <item row="13" column="13">
+     <widget class="QLineEdit" name="filename">
+      <property name="text">
+       <string>output.hdr</string>
+      </property>
+      <property name="maxLength">
+       <number>30</number>
+      </property>
+     </widget>
+    </item>
+    <item row="16" column="0" colspan="14">
+     <widget class="QProgressBar" name="renderProgress">
+      <property name="value">
+       <number>0</number>
+      </property>
+     </widget>
+    </item>
+    <item row="13" column="7">
+     <widget class="QLabel" name="label">
+      <property name="text">
+       <string>outputName</string>
+      </property>
+     </widget>
+    </item>
+    <item row="13" column="0">
+     <widget class="QLabel" name="lZoom">
+      <property name="text">
+       <string>Zoom</string>
+      </property>
+     </widget>
+    </item>
+    <item row="11" column="0">
+     <widget class="QLabel" name="lExposure">
+      <property name="text">
+       <string>Exposure</string>
+      </property>
+     </widget>
+    </item>
+    <item row="13" column="4" colspan="2">
+     <widget class="QSpinBox" name="sZoomNumber">
+      <property name="maximum">
+       <number>10</number>
+      </property>
+     </widget>
+    </item>
+    <item row="6" column="2">
+     <widget class="QLabel" name="currentScene">
+      <property name="text">
+       <string>point.scene</string>
+      </property>
+     </widget>
+    </item>
+    <item row="6" column="3">
+     <widget class="QLabel" name="currentMaterial">
+      <property name="text">
+       <string>specularpoint.material</string>
+      </property>
+     </widget>
+    </item>
+    <item row="6" column="13">
+     <widget class="QPushButton" name="loadScene">
+      <property name="text">
+       <string>Load camera</string>
+      </property>
+     </widget>
+    </item>
+    <item row="11" column="1" colspan="3">
+     <widget class="QSlider" name="sExposure">
+      <property name="whatsThis">
+       <string>Exposure</string>
+      </property>
+      <property name="minimum">
+       <number>-200</number>
+      </property>
+      <property name="maximum">
+       <number>200</number>
+      </property>
+      <property name="singleStep">
+       <number>1</number>
+      </property>
+      <property name="pageStep">
+       <number>10</number>
+      </property>
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+      <property name="tickPosition">
+       <enum>QSlider::TicksAbove</enum>
+      </property>
+     </widget>
+    </item>
+    <item row="13" column="1" colspan="3">
+     <widget class="QSlider" name="sZoom">
+      <property name="maximum">
+       <number>10</number>
+      </property>
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+      <property name="tickPosition">
+       <enum>QSlider::TicksBelow</enum>
+      </property>
+     </widget>
+    </item>
+    <item row="11" column="4">
+     <widget class="QDoubleSpinBox" name="sExposureNumber">
+      <property name="decimals">
+       <number>1</number>
+      </property>
+      <property name="minimum">
+       <double>-20.000000000000000</double>
+      </property>
+      <property name="maximum">
+       <double>20.000000000000000</double>
+      </property>
+      <property name="singleStep">
+       <double>0.100000000000000</double>
+      </property>
+     </widget>
+    </item>
+    <item row="6" column="7">
+     <widget class="QPushButton" name="exportScene">
+      <property name="text">
+       <string>Export Scene</string>
+      </property>
+     </widget>
+    </item>
+    <item row="6" column="8" colspan="2">
+     <widget class="QPushButton" name="exportMaterial">
+      <property name="text">
+       <string>Export Material</string>
+      </property>
+     </widget>
+    </item>
+    <item row="6" column="11" colspan="2">
+     <widget class="QPushButton" name="saveMaterial">
+      <property name="text">
+       <string>Resave material</string>
+      </property>
+     </widget>
+    </item>
+    <item row="10" column="0" colspan="6">
+     <widget class="QScrollArea" name="scrollArea">
+      <property name="widgetResizable">
+       <bool>true</bool>
+      </property>
+      <widget class="QWidget" name="scrollAreaWidgetContents">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>343</width>
+         <height>289</height>
+        </rect>
+       </property>
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <layout class="QHBoxLayout" name="horizontalLayout_4">
+        <item>
+         <widget class="QLabel" name="lImage">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="text">
+           <string>TextLabel</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </widget>
+    </item>
+    <item row="6" column="5">
+     <widget class="QPushButton" name="stopRendering">
+      <property name="text">
+       <string>Stop </string>
+      </property>
+     </widget>
+    </item>
+    <item row="6" column="4">
+     <widget class="QPushButton" name="bRender">
+      <property name="text">
+       <string>Render!</string>
+      </property>
      </widget>
     </item>
    </layout>

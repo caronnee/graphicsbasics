@@ -11,8 +11,6 @@ public:
 
 	  float GetFloat();
 
-	  Vector4d GetVec3f();
-
 private:
 
 	std::mt19937_64 mRng;
