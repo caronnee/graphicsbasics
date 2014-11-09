@@ -1,6 +1,7 @@
 #include "AmbientLight.h"
 #include "mathutil.h"
 #include "Debug.h"
+
 AmbientLight::AmbientLight( const Vector4d & watts )
 {
 	SetPower(watts);

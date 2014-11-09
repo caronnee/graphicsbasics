@@ -29,15 +29,22 @@ Vector4d PathTraceRenderer::RenderPixel(const int &x, const int &y, const int & 
 		float t;
 		Vector4d illumination = light->SampleIllumination( isec, lightVector,t);
 		Vector4d outputVector = lightVector;		
-		Intersection dummySec;
-		dummySec.t = t;
+		Intersection occSec;
+		occSec.t = t - EPSILON;
 		Ray r2;
-		r2.origin = isec.worldPosition + lightVector* EPSILON;
+		r2.origin = isec.worldPosition;
 		r2.direction = lightVector;
-		bool occluded = _scene->FindIntersection(r2, dummySec);
-		if ( occluded && ( (dummySec.nrm.Dot(isec.nrm) < 0) ) )
+		bool occluded = _scene->FindIntersection(r2, occSec);
+		
+		// we want to know if the intersection before
+		if ( occluded && ( fabs(occSec.t - t )> EPSILON ) )
 			continue;
+
 		Vector4d brdf = isec.model->GetMaterial()->EvalBrdf(-ray.direction, isec.nrm, outputVector);
+		for ( int xx = 0; xx < 3; xx++)
+		{
+			DoAssert(illumination[xx] >=0);
+		}
 		if (type & RDirectLight)
 		{
 			total += brdf.MultiplyPerElement(illumination);
