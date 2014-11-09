@@ -33,7 +33,7 @@ Vector4d PointObject::SampleIllumination(Intersection &section, Vector4d & sampl
 	Vector4d & intensity = GetMaterial()->Emmisive();
 	Vector4d norm = section.nrm;
 	norm.Normalize();
-	// B-A - sample dir is made from th light origin to the intersection
+	// B-A = AB - sample dir is made from the source to the intersection
 	sampledDir = -section.worldPosition + ModelToWorld(Vector4d(0,0,0,1));
 	float r2 = sampledDir.Size2();
 	sampleLen = sqrt(r2);
