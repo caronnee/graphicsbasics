@@ -15,6 +15,8 @@ void DoubleTriangle::SetPoints(Vector4d * trianglePoints)
 	memcpy(_points, trianglePoints, sizeof(Vector4d) * 3 );
 	_edges[0] = _points[1] -  _points[0];
 	_edges[1] = _points[2] -  _points[0];
+	_normal = _edges[1].Cross(_edges[0]);
+	_normal.Normalize();
 }
 void DoubleTriangle::SetProperty(PropertyType type, void * values)
 {
@@ -75,7 +77,7 @@ bool DoubleTriangle::Intersect(const Ray & ray, Intersection & sect)
 		sect.t = t;
 		sect.model = this;
 		sect.worldPosition = ray.origin + ray.direction * t;
-		sect.nrm = ModelToWorld(_edges[1].Cross(_edges[0]));
+		sect.nrm = ModelToWorld(_normal);
 		sect.nrm.Normalize();
 		return true;
 	}
@@ -89,10 +91,26 @@ int DoubleTriangle::Type()const
 	return TypeTriangle;
 }
 
+#include "RandomNumber.h"
+
 Vector4d DoubleTriangle::SampleIllumination(Intersection &section, Vector4d & sampledDir, float & len)
 {
-	// TODO
-	throw "Not implemented yet";
+	// sample point on the triangle
+	float a1 = GetFloat();
+	float a2 = GetFloat();
+	Vector4d point = _edges[0]*a1*0.5f + _edges[1]*a2*0.5f + _points[0];
+	Vector4d mPoint = ModelToWorld(point);
+	sampledDir = point-section.worldPosition;
+	len = sampledDir.Size();
+	sampledDir.Normalize();
+	float d2 = len * len;
+	float cosA = section.nrm.Dot(sampledDir);
+	float cosB = _normal.Dot(-sampledDir);
+	if ( (cosA <= 0) || (cosB <= 0))
+		return Vector4d(0,0,0,0);
+	float area = 0.5f * _edges[0].Cross(_edges[1]).Size();
+	Vector4d v = GetMaterial()->Emmisive();
+	return v * cosA * cosB *area /d2;
 }
 
 void DoubleTriangle::SaveProperties(FileHandler & handler)
