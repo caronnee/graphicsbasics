@@ -7,6 +7,7 @@ class DoubleTriangle :  public Geometry
 {
 	Vector4d _points[3];
 	Vector4d _edges[2];
+	Vector4d _normal;
 public:
 	DoubleTriangle( Vector4d * trianglePoints );
 	bool Intersect( const Ray & ray, Intersection & sect );

@@ -9,6 +9,11 @@ float Rng::GetFloat()
 
 #include "MathUtil.h"
 
+float GetFloat()
+{
+	return james.GetFloat();
+}
+
 Vector4d RandomHemisphereVector()
 {
 	/* Vector4d ret(0,0,0,0);

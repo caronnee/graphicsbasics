@@ -18,5 +18,5 @@ private:
 };
 
 Vector4d RandomHemisphereVector();
-
+float GetFloat();
 #endif
