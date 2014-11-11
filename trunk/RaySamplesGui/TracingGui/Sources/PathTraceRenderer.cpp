@@ -13,7 +13,6 @@ Vector4d PathTraceRenderer::RenderPixel(const int &x, const int &y, const int & 
 	Intersection isec;
 	if ( !_scene->FindIntersection(ray,isec) )
 	{
-		__debugbreak();
 		return BLACK;
 	}
 	

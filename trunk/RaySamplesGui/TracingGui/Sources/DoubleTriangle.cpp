@@ -16,6 +16,7 @@ void DoubleTriangle::SetPoints(Vector4d * trianglePoints)
 	_edges[0] = _points[1] -  _points[0];
 	_edges[1] = _points[2] -  _points[0];
 	_normal = _edges[1].Cross(_edges[0]);
+	_area = 0.5f*_normal.Size();
 	_normal.Normalize();
 }
 void DoubleTriangle::SetProperty(PropertyType type, void * values)
@@ -108,9 +109,8 @@ Vector4d DoubleTriangle::SampleIllumination(Intersection &section, Vector4d & sa
 	float cosB = _normal.Dot(-sampledDir);
 	if ( (cosA <= 0) || (cosB <= 0))
 		return Vector4d(0,0,0,0);
-	float area = 0.5f * _edges[0].Cross(_edges[1]).Size();
 	Vector4d v = GetMaterial()->Emmisive();
-	return v * cosA * cosB *area /d2;
+	return v * cosA * cosB * _area /d2;
 }
 
 void DoubleTriangle::SaveProperties(FileHandler & handler)
