@@ -1,11 +1,12 @@
 #include "PathTraceRenderer.h"
 
 #include "Debug.h"
+#include "RandomNumber.h"
 
 Vector4d PathTraceRenderer::RenderPixel(const int &x, const int &y, const int & type)
 {
 	// we start at camera
-	Ray ray = _camera->GetRay(x,y);
+	Ray ray = _camera->GetRay(x + GetFloat(),y +GetFloat());
 	Vector4d total;
 	total.Zero();
 

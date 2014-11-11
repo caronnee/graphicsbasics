@@ -50,6 +50,8 @@ QVariant GModelObjects::headerData(int section, Qt::Orientation orientation, int
 
 QVariant GModelObjects::data(const QModelIndex &index, int role) const
 {
+	if (index.row() >= _geometries.size())
+		return QVariant();
 	if (role == Qt::DisplayRole || role == Qt::EditRole )
 	{
 		int rindex = 0;
