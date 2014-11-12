@@ -98,7 +98,9 @@ Vector4d DoubleTriangle::SampleIllumination(Intersection &section, Vector4d & sa
 {
 	// sample point on the triangle
 	float a1 = GetFloat();
-	float a2 = GetFloat() / (1.0f-a1);
+	float a2 = 0;
+	if (a1<1)
+	 a2 = GetFloat() / (1.0f-a1);
 	Vector4d point = _edges[0]*a1 + _edges[1]*a2 + _points[0];
 	Vector4d mPoint = ModelToWorld(point);
 	sampledDir = mPoint-section.worldPosition;
