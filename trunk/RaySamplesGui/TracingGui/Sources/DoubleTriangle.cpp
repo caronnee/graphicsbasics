@@ -98,15 +98,15 @@ Vector4d DoubleTriangle::SampleIllumination(Intersection &section, Vector4d & sa
 {
 	// sample point on the triangle
 	float a1 = GetFloat();
-	float a2 = GetFloat();
-	Vector4d point = _edges[0]*a1*0.5f + _edges[1]*a2*0.5f + _points[0];
+	float a2 = GetFloat() / (1.0f-a1);
+	Vector4d point = _edges[0]*a1 + _edges[1]*a2 + _points[0];
 	Vector4d mPoint = ModelToWorld(point);
-	sampledDir = point-section.worldPosition;
+	sampledDir = mPoint-section.worldPosition;
 	len = sampledDir.Size();
 	sampledDir.Normalize();
 	float d2 = len * len;
 	float cosA = section.nrm.Dot(sampledDir);
-	float cosB = _normal.Dot(-sampledDir);
+	float cosB = -_normal.Dot(sampledDir);
 	if ( (cosA <= 0) || (cosB <= 0))
 		return Vector4d(0,0,0,0);
 	Vector4d v = GetMaterial()->Emmisive();
