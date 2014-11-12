@@ -37,7 +37,7 @@ Vector4d PathTraceRenderer::RenderPixel(const int &x, const int &y, const int & 
 		bool occluded = _scene->FindIntersection(r2, occSec);
 		
 		// we want to know if the intersection before
-		if ( occluded && ( fabs(occSec.t - t )> EPSILON ) )
+		if ( occluded && ( (occSec.t - t )> EPSILON ) )
 			continue;
 
 		Vector4d brdf = isec.model->GetMaterial()->EvalBrdf(-ray.direction, isec.nrm, outputVector);
