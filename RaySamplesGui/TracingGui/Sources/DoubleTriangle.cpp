@@ -94,13 +94,17 @@ int DoubleTriangle::Type()const
 
 #include "RandomNumber.h"
 
+float lasta;
+float lasbB;
 Vector4d DoubleTriangle::SampleIllumination(Intersection &section, Vector4d & sampledDir, float & len)
 {
 	// sample point on the triangle
 	float a1 = GetFloat();
 	float a2 = 0;
 	if (a1<1)
-	 a2 = GetFloat() / (1.0f-a1);
+	 a2 = GetFloat() * (1.0f-a1);
+	lasta = a1;
+	lasbB = a2;
 	Vector4d point = _edges[0]*a1 + _edges[1]*a2 + _points[0];
 	Vector4d mPoint = ModelToWorld(point);
 	sampledDir = mPoint-section.worldPosition;

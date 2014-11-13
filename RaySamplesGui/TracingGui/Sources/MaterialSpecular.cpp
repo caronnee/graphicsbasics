@@ -18,7 +18,12 @@ Vector4d MaterialSpecular::GetSpecular(const Vector4d & incoming, const Vector4d
 #endif
 	Vector4d R = normal*2*normal.Dot(light) - light;
 	R.Normalize();
+	float test = R.Dot(normal);
+	float test2 = light.Dot(normal);
+
 	float cosA = R.Dot(incoming);
+	//if ( cosA > 0.98f)
+	//	__debugbreak();
 	if (cosA<0)
 	{
 		return Vector4d(0,0,0,0);	
