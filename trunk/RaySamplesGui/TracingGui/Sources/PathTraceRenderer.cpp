@@ -6,6 +6,7 @@
 Vector4d PathTraceRenderer::RenderPixel(const int &x, const int &y, const int & type)
 {
 	// we start at camera
+//	int u = 44,v = 89;
 	Ray ray = _camera->GetRay(x + GetFloat(),y +GetFloat());
 	Vector4d total;
 	total.Zero();
@@ -37,7 +38,7 @@ Vector4d PathTraceRenderer::RenderPixel(const int &x, const int &y, const int & 
 		bool occluded = _scene->FindIntersection(r2, occSec);
 		
 		// we want to know if the intersection before
-		if ( occluded && ( (occSec.t - t )> EPSILON ) )
+		if ( occluded && ( fabs(occSec.t - t )> EPSILON ) )
 			continue;
 
 		Vector4d brdf = isec.model->GetMaterial()->EvalBrdf(-ray.direction, isec.nrm, outputVector);
@@ -48,6 +49,8 @@ Vector4d PathTraceRenderer::RenderPixel(const int &x, const int &y, const int & 
 		if (type & RDirectLight)
 		{
 			total += brdf.MultiplyPerElement(illumination);
+			int xx;
+			xx=3;
 		}
 	}
 #if 0 && _DEBUG
