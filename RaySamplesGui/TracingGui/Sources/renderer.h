@@ -19,6 +19,7 @@ enum RenderingTypeMask
 class Renderer
 {
 protected:
+	bool _stop;
 	Scene * _scene;
 	Image * _image;
 	void Destroy();
@@ -31,6 +32,7 @@ public:
 	virtual Vector4d RenderPixel( const int &x, const int &y ) = 0;
 
 	virtual ~Renderer();
+	void Stop();
 };
 
 #endif

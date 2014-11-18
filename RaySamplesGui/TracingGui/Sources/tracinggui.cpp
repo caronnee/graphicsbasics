@@ -691,13 +691,18 @@ void TracingGui::Test(Camera * camera)
 
 void TracingGui::RenderSlot()
 {
+	bool stop = false;
 	for ( int i = 0; _threads[i] && (i < MAXTHREADS); i++)
 		if ( _threads[i]->isRunning() )
 		{
-			ui.bRender->setText("Render!");
-			return;
+			_threads[i]->Stop();
+			stop = true;
 		}
-
+	if ( stop )
+	{
+		ui.bRender->setText("Render!");
+		return;
+	}
 	ui.bRender->setText("Stop!");
 	Vector4d posTranslate ( ui.xPosVal->value(), ui.yPosVal->value() , ui.zPosVal->value(), 1 );
 	posTranslate =  Vector4d(0,0,0,1) - posTranslate;

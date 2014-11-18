@@ -37,3 +37,8 @@ void RenderThread::GetResults(Image & image)
 			image.GetComponent(iDestx,iDesty) = _image.GetComponent(iDestx,iDesty);
 		}
 }
+
+void RenderThread::Stop()
+{
+	_renderer->Stop();
+}
