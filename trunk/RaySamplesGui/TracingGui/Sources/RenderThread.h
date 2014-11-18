@@ -16,6 +16,7 @@ struct RenderContext
 	int end[2];
 	int renderMask;
 	int iterations;
+	int bounces;
 };
 
 // _scene->CreateCamera(posTranslate, oMatrix.GetRow(2), oMatrix.GetRow(1) ,fov);
@@ -27,6 +28,7 @@ class RenderThread : public QThread
 	int _start[2];
 	int _end[2];
 	int _iterations;
+	int _maxBounces;
 
 	// manually created:
 	Renderer * _renderer;
