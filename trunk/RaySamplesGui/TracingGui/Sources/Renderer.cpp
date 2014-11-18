@@ -23,6 +23,8 @@ void Renderer::Render(int iterations)
 		{
 			for ( int y = 0; y < _image->H(); y++)
 			{
+				if (_stop)
+					return;
 				Vector4d color = RenderPixel(x,y);
 				_image->AddColor(x,y,color);
 			}
@@ -35,7 +37,7 @@ void Renderer::Render(int iterations)
 	_image->Divide(inv);
 }
 
-Renderer::Renderer() : _scene(NULL), _image(NULL), _renderMask(0)
+Renderer::Renderer() : _scene(NULL), _image(NULL), _renderMask(0),_stop(false)
 {
 
 }
@@ -48,6 +50,11 @@ void Renderer::Destroy()
 Renderer::~Renderer()
 {
 	Destroy();
+}
+
+void Renderer::Stop()
+{
+	_stop = true;
 }
 
 TrackProgress GTrackProgress;

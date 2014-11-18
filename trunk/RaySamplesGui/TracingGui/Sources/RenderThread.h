@@ -37,6 +37,7 @@ private:
 public:	
 	RenderThread( RenderContext & ctx);
 	void GetResults(Image & image);
+	void Stop();
 };
 
 #endif
