@@ -23,10 +23,13 @@ protected:
 	Image * _image;
 	void Destroy();
 public:
+	int _renderMask;
+
 	Renderer();
 	virtual void Init(Scene * scene, Image * image);
-	void Render(int iterations, int & mask);
-	virtual Vector4d RenderPixel( const int &x, const int &y, const int & type ) = 0;
+	void Render(int iterations);
+	virtual Vector4d RenderPixel( const int &x, const int &y ) = 0;
+
 	virtual ~Renderer();
 };
 

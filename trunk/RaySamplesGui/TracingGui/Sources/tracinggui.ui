@@ -1117,7 +1117,7 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>385</width>
+         <width>310</width>
          <height>289</height>
         </rect>
        </property>
@@ -1143,13 +1143,6 @@
         </item>
        </layout>
       </widget>
-     </widget>
-    </item>
-    <item row="6" column="5">
-     <widget class="QPushButton" name="stopRendering">
-      <property name="text">
-       <string>Stop </string>
-      </property>
      </widget>
     </item>
     <item row="6" column="4">

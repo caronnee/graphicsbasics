@@ -16,7 +16,7 @@ RenderThread::RenderThread(RenderContext & ctx)
 {
 	_scene = ctx.scene;
 	_renderer = CreateRenderer(ctx.renderMask);
-	_mask = ctx.mask;
+	_renderer->_renderMask = ctx.mask;
 	_iterations = ctx.iterations;
 	memcpy(_start,ctx.start,sizeof(_start));
 	memcpy(_end,ctx.end,sizeof(_end));
@@ -26,7 +26,7 @@ void RenderThread::run()
 {
 	_image.SetSize( _end[0], _end[1] );
 	_renderer->Init(_scene, &_image);
-	_renderer->Render(_iterations,_mask);
+	_renderer->Render(_iterations);
 }
 
 void RenderThread::GetResults(Image & image)

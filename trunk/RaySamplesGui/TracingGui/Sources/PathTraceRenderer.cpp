@@ -3,12 +3,10 @@
 #include "Debug.h"
 #include "RandomNumber.h"
 
-Vector4d PathTraceRenderer::RenderPixel(const int &x, const int &y, const int & type)
+#define MAX_BOUNCES 10
+
+Vector4d PathTraceRenderer::RayTrace(const Ray ray, int bounces)
 {
-	// we start at camera
-//	int u = 44,v = 89;
-	Ray ray = _scene->GetRay( x + GetFloat(), y + GetFloat() );
-	
 	Vector4d total;
 	total.Zero();
 
@@ -17,7 +15,7 @@ Vector4d PathTraceRenderer::RenderPixel(const int &x, const int &y, const int & 
 	{
 		return BLACK;
 	}
-	
+
 	// sample direct light
 	for (int iLight =0; iLight< _scene->Lights(); iLight++)
 	{
@@ -37,7 +35,7 @@ Vector4d PathTraceRenderer::RenderPixel(const int &x, const int &y, const int & 
 		r2.origin = isec.worldPosition;
 		r2.direction = lightVector;
 		bool occluded = _scene->FindIntersection(r2, occSec);
-		
+
 		// we want to know if the intersection before
 		if ( occluded && ( fabs(occSec.t - t )> EPSILON ) )
 			continue;
@@ -47,7 +45,7 @@ Vector4d PathTraceRenderer::RenderPixel(const int &x, const int &y, const int & 
 		{
 			DoAssert(illumination[xx] >=0);
 		}
-		if (type & RDirectLight)
+		if ( (_renderMask & RDirectLight) || (bounces > MAX_BOUNCES) )
 		{
 			total += brdf.MultiplyPerElement(illumination);
 		}
@@ -57,4 +55,14 @@ Vector4d PathTraceRenderer::RenderPixel(const int &x, const int &y, const int & 
 	DoAssert(xx > 0);
 #endif
 	return total;
+}
+
+Vector4d PathTraceRenderer::RenderPixel(const int &x, const int &y)
+{
+	// we start at camera
+//	int u = 44,v = 89;
+	Ray ray = _scene->GetRay( x + GetFloat(), y + GetFloat() );
+	
+	Vector4d ill = RayTrace( ray,0 );
+	return ill;
 }

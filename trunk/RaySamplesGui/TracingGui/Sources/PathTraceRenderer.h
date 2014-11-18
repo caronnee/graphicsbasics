@@ -10,7 +10,8 @@ public:
 	{
 
 	}
-	virtual Vector4d RenderPixel( const int &x, const int &y, const int & type );
+	virtual Vector4d RenderPixel( const int &x, const int &y );
+	Vector4d RayTrace(const Ray ray, int bounces);
 protected:
 private:
 };
