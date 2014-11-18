@@ -18,6 +18,7 @@ RenderThread::RenderThread(RenderContext & ctx)
 	_renderer = CreateRenderer(ctx.renderMask);
 	_renderer->_renderMask = ctx.mask;
 	_iterations = ctx.iterations;
+	_maxBounces = ctx.bounces;
 	memcpy(_start,ctx.start,sizeof(_start));
 	memcpy(_end,ctx.end,sizeof(_end));
 }

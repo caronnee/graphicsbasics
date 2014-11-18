@@ -5,7 +5,7 @@
 
 #define MAX_BOUNCES 10
 
-Vector4d PathTraceRenderer::RayTrace(const Ray ray, int bounces)
+Vector4d PathTraceRenderer::RayTrace(const Ray ray)
 {
 	Vector4d total;
 	total.Zero();
@@ -45,7 +45,7 @@ Vector4d PathTraceRenderer::RayTrace(const Ray ray, int bounces)
 		{
 			DoAssert(illumination[xx] >=0);
 		}
-		if ( (_renderMask & RDirectLight) || (bounces > MAX_BOUNCES) )
+		if ( _renderMask & RDirectLight )
 		{
 			total += brdf.MultiplyPerElement(illumination);
 		}
@@ -63,6 +63,10 @@ Vector4d PathTraceRenderer::RenderPixel(const int &x, const int &y)
 //	int u = 44,v = 89;
 	Ray ray = _scene->GetRay( x + GetFloat(), y + GetFloat() );
 	
-	Vector4d ill = RayTrace( ray,0 );
-	return ill;
+	return RayTrace( ray );
+}
+
+PathTraceRenderer::PathTraceRenderer() : Renderer()
+{
+
 }

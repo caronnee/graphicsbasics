@@ -12,8 +12,13 @@ TrackProgress * GetRendererTrack();
 
 enum RenderingTypeMask
 {
+	RNone = 0,
 	RDirectLight = 1,
-	RIndirectLight = 2,
+	RIndirectLightBounced = 1 << 1,
+	RIndirectLightMcBrdf = 1 << 2,
+	RIndirectLightMcLight = 1 << 3,
+	RIndirectLightMIS = 1 << 4,
+	RGlobalIllumination = 1 << 5
 };
 
 class Renderer

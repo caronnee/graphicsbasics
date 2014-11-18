@@ -6,12 +6,10 @@
 class PathTraceRenderer : public Renderer
 {
 public:
-	PathTraceRenderer()  : Renderer()
-	{
-
-	}
+	PathTraceRenderer();
 	virtual Vector4d RenderPixel( const int &x, const int &y );
-	Vector4d RayTrace(const Ray ray, int bounces);
+
+	Vector4d RayTrace(const Ray ray);
 protected:
 private:
 };

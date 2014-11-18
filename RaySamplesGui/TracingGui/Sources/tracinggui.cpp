@@ -215,21 +215,25 @@ TracingGui::TracingGui(QWidget *parent)
   // material
   ui.materialType->addItem("Diffuse",QVariant((int)MDiffuse));
   ui.materialType->addItem("Specular",QVariant((int)MSpecular));
-// what to calculate
-	ui.calcType->addItem("Direct light",QVariant(RDirectLight));
-	ui.calcType->addItem("Indirect light",QVariant(RIndirectLight));
-	ui.calcType->addItem("Direct + Indirect light",QVariant(RIndirectLight | RDirectLight));
+  // what to calculate
+  ui.directType->addItem("None",QVariant(RNone));
+  ui.directType->addItem("Direct light",QVariant(RDirectLight));
+  ui.indirectType->addItem("None",QVariant(RNone));
+  ui.indirectType->addItem("Indirect light ( fixed bounces )",QVariant(RIndirectLightBounced));
+  ui.indirectType->addItem("Indirect light ( MC brdf )",QVariant(RIndirectLightMcBrdf));
+  ui.indirectType->addItem("Indirect light ( MC light )",QVariant(RIndirectLightMcLight));
+  ui.indirectType->addItem("IndirectLight (MIS)",QVariant(RIndirectLightMIS|RIndirectLightMcBrdf|RIndirectLightMcBrdf));
 
-	// scenes selections
-	LoadSceneNames();
-	ui.sceneNames->setModel(&GScenes);
-	connect(ui.sceneNames->selectionModel(), SIGNAL(selectionChanged (const QItemSelection &, const QItemSelection &)),
-		this, SLOT(SelectionSceneChangedSlot(const QItemSelection &, const QItemSelection &)));
+  // scenes selections
+  LoadSceneNames();
+  ui.sceneNames->setModel(&GScenes);
+  connect(ui.sceneNames->selectionModel(), SIGNAL(selectionChanged (const QItemSelection &, const QItemSelection &)),
+	  this, SLOT(SelectionSceneChangedSlot(const QItemSelection &, const QItemSelection &)));
 
-	memset(_threads,0,sizeof(_threads));
-	LoadModels(ui.currentScene->text());
-	LoadMaterials(ui.currentMaterial->text());
-	LoadCamera();
+  memset(_threads,0,sizeof(_threads));
+  LoadModels(ui.currentScene->text());
+  LoadMaterials(ui.currentMaterial->text());
+  LoadCamera();
 }
 
 #include "Sphere.h"
@@ -748,9 +752,10 @@ void TracingGui::RenderSlot()
 	renderCtx.scene = &_scene;
 	renderCtx.end[0] = xDim;
 	renderCtx.end[1] = yDim;
-	renderCtx.mask = ui.calcType->currentData().toInt();
+	renderCtx.mask = ui.directType->currentData().toInt() | ui.indirectType->currentData().toInt();
 	renderCtx.renderMask = ui.rendererType->currentData().toInt();
 	renderCtx.iterations = ui.iterations->value();
+	renderCtx.bounces = ui.bounces->value();
 
 	for ( int i =0; i < MAXTHREADS; i++)
 	{
