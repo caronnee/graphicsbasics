@@ -4,14 +4,13 @@
 void TestRenderer::Init(Scene * scene, Image * image)
 {
 	Renderer::Init(scene,image);
-	_bounces = 1 + COEF *0;
 }
 
 #if _DEBUG
 extern bool stop;
 #endif
 
-Vector4d TestRenderer::RenderPixel(const int &x, const int &y, const int & type)
+Vector4d TestRenderer::RenderPixel(const int &x, const int &y)
 {
 #if _DEBUG
 	if ( (x == 34) && (y == 63) )

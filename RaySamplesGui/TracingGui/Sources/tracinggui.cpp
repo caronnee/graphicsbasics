@@ -693,8 +693,12 @@ void TracingGui::RenderSlot()
 {
 	for ( int i = 0; _threads[i] && (i < MAXTHREADS); i++)
 		if ( _threads[i]->isRunning() )
+		{
+			ui.bRender->setText("Render!");
 			return;
+		}
 
+	ui.bRender->setText("Stop!");
 	Vector4d posTranslate ( ui.xPosVal->value(), ui.yPosVal->value() , ui.zPosVal->value(), 1 );
 	posTranslate =  Vector4d(0,0,0,1) - posTranslate;
 	Matrix4d oMatrix;
@@ -763,10 +767,12 @@ void TracingGui::FetchResultsSlot()
 	_image.Clear();
 	for ( int i =0; i < MAXTHREADS; i++)
 	{
-		if (_threads[i])
-			_threads[i]->GetResults(_image);
+		if ( !_threads[i]->isFinished())
+			return;
+		_threads[i]->GetResults(_image);
 	}
 	ui.sExposureNumber->setValue(0);
+	ui.bRender->setText("Render!");
 	ShowHdr(0);
 }
 TracingGui::~TracingGui()

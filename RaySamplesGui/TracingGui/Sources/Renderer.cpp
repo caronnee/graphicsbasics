@@ -11,7 +11,7 @@ void Renderer::Init( Scene * scene, Image * image )
 bool stop = false;
 #endif
 
-void Renderer::Render(int iterations, int & mask)
+void Renderer::Render(int iterations)
 {
 	_image->Clear();
 	GetRendererTrack()->Clear();
@@ -23,7 +23,7 @@ void Renderer::Render(int iterations, int & mask)
 		{
 			for ( int y = 0; y < _image->H(); y++)
 			{
-				Vector4d color = RenderPixel(x,y,mask);
+				Vector4d color = RenderPixel(x,y);
 				_image->AddColor(x,y,color);
 			}
 			GetRendererTrack()->Update();
@@ -35,7 +35,7 @@ void Renderer::Render(int iterations, int & mask)
 	_image->Divide(inv);
 }
 
-Renderer::Renderer() : _scene(NULL), _image(NULL)
+Renderer::Renderer() : _scene(NULL), _image(NULL), _renderMask(0)
 {
 
 }
