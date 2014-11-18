@@ -60,6 +60,9 @@ public:
 	QString NewSceneName();
 };
 
+#include "RenderThread.h"
+#define MAXTHREADS 1
+
 class TracingGui : public QMainWindow
 {
 	Q_OBJECT
@@ -67,6 +70,7 @@ class TracingGui : public QMainWindow
 	Image _image;
 	GModelObjects * _gModels;
 	Scene _scene;
+	RenderThread * _threads[MAXTHREADS];
 
 public:
 	TracingGui(QWidget *parent = 0);
@@ -89,6 +93,7 @@ private slots:
 	void SelectionMaterialChangedSlot(const QItemSelection & newSel, const QItemSelection &oldSel);
 	void SelectionModelChangedSlot(const QItemSelection & newSel, const QItemSelection &oldSel);
 	void SelectionSceneChangedSlot(const QItemSelection &, const QItemSelection &);
+	void FetchResultsSlot();
 
 private:
 	Ui::TracingGuiClass ui;

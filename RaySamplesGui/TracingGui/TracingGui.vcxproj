@@ -125,6 +125,7 @@
     <ClCompile Include="Sources\Point.cpp" />
     <ClCompile Include="Sources\RandomNumber.cpp" />
     <ClCompile Include="Sources\Renderer.cpp" />
+    <ClCompile Include="Sources\RenderThread.cpp" />
     <ClCompile Include="Sources\scene.cpp" />
     <ClCompile Include="Sources\Sphere.cpp" />
     <ClCompile Include="Sources\GuiString.cpp" />
@@ -190,6 +191,7 @@
     <ClInclude Include="Sources\Point.h" />
     <ClInclude Include="Sources\RandomNumber.h" />
     <ClInclude Include="Sources\renderer.h" />
+    <ClInclude Include="Sources\RenderThread.h" />
     <ClInclude Include="Sources\scene.h" />
     <ClInclude Include="Sources\Sphere.h" />
     <ClInclude Include="Sources\GuiString.h" />

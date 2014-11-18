@@ -130,7 +130,7 @@ void GModelObjects::resize(int i)
 SceneModels GScenes;
 
 TracingGui::TracingGui(QWidget *parent)
-	: QMainWindow(parent), _image(0,0),_gModels(NULL)
+	: QMainWindow(parent), _image(),_gModels(NULL)
 {
 	ui.setupUi(this);
 	// connect(openAct, SIGNAL(triggered()), this, SLOT(open()));
@@ -226,6 +226,7 @@ TracingGui::TracingGui(QWidget *parent)
 	connect(ui.sceneNames->selectionModel(), SIGNAL(selectionChanged (const QItemSelection &, const QItemSelection &)),
 		this, SLOT(SelectionSceneChangedSlot(const QItemSelection &, const QItemSelection &)));
 
+	memset(_threads,0,sizeof(_threads));
 	LoadModels(ui.currentScene->text());
 	LoadMaterials(ui.currentMaterial->text());
 	LoadCamera();
@@ -686,13 +687,13 @@ void TracingGui::Test(Camera * camera)
 }
 
 #include "PathTraceRenderer.h"
+#include "RenderThread.h"
 
 void TracingGui::RenderSlot()
 {
-	int xDim = ui.xDim->value();
-	int yDim = ui.yDim->value();
-	_image.Clear();
-	_image.SetSize(xDim,yDim);
+	for ( int i = 0; _threads[i] && (i < MAXTHREADS); i++)
+		if ( _threads[i]->isRunning() )
+			return;
 
 	Vector4d posTranslate ( ui.xPosVal->value(), ui.yPosVal->value() , ui.zPosVal->value(), 1 );
 	posTranslate =  Vector4d(0,0,0,1) - posTranslate;
@@ -711,37 +712,63 @@ void TracingGui::RenderSlot()
 	float angle = direction.Dot(directionOriginal);
 	angle = acos(angle);
 	oMatrix.RotateAxis(axis,angle);
-	
-	float fov = ui.fovRad->value();
-	Camera * camera = Camera::CreateCamera(posTranslate, oMatrix.GetRow(2), oMatrix.GetRow(1) ,fov);
 
-	camera->SetResolution(ui.xDim->value(),ui.yDim->value());
-		
+	// init scene
+	CameraContext ctx;
+	ctx.axis[0] = oMatrix.GetRow(2);
+	ctx.axis[1] = oMatrix.GetRow(1);
+	ctx.position = posTranslate;
+	ctx.fov = ui.fovRad->value();
+	int xDim = ui.xDim->value();
+	int yDim = ui.yDim->value();
+
+	ctx.resolution[0] = xDim;
+	ctx.resolution[1] = yDim;
+
 	_scene.Clear();
+	_scene.CreateCamera(ctx);
 	CreateScene(_scene);
-	
-	Test(camera);
 
-	QVariant val = ui.rendererType->currentData();
-	Renderer * renderer;
-	switch (val.toInt())
+	_image.SetSize(xDim,yDim);
+	_image.Clear();
+
+	// init threads
+	//_threa
+	RenderContext renderCtx;
+	memset(renderCtx.start,0,sizeof(renderCtx.start));
+	renderCtx.scene = &_scene;
+	renderCtx.end[0] = xDim;
+	renderCtx.end[1] = yDim;
+	renderCtx.mask = ui.calcType->currentData().toInt();
+	renderCtx.renderMask = ui.rendererType->currentData().toInt();
+	renderCtx.iterations = ui.iterations->value();
+
+	for ( int i =0; i < MAXTHREADS; i++)
 	{
-	case 0:
-		renderer=new TestRenderer();
-		break;
-	case 1:
-		renderer = new PathTraceRenderer();
-		break;
-	default:
-		throw "Rendered not implemented";
+		if (_threads[i])
+			delete _threads[i];
+		_threads[i] = new RenderThread(renderCtx);
+		QObject::connect(_threads[i], SIGNAL(finished()), this, SLOT(FetchResultsSlot()));
+		_threads[i]->start();
 	}
-	renderer->Init(&_scene,&_image,camera);
-	int mask = ui.calcType->currentData().toInt();
-	renderer->Render(ui.iterations->value(), mask);
 	// convert Image to label
-	ShowHdr(0);
+	
+// TODO
+	// on thread finished
 }
 
+void TracingGui::FetchResultsSlot()
+{
+	// fetch result from each thread
+	_image.Clear();
+	for ( int i =0; i < MAXTHREADS; i++)
+	{
+		if (_threads[i])
+			_threads[i]->GetResults(_image);
+	}
+	ui.sExposureNumber->setValue(0);
+	ShowHdr(0);
+}
 TracingGui::~TracingGui()
 {
 	if ( _gModels )

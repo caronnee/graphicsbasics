@@ -3,10 +3,11 @@
 #include <math.h>
 #include <intrin.h>
 
-Image::Image(int w, int h)
+Image::Image()
 {
 	_buffer = NULL;
-	SetSize(w,h);
+	_w = 0;
+	_h = 0;
 }
 
 Image::~Image()
@@ -58,7 +59,7 @@ void Image::SaveHdr(const char * name)
 	}
 }
 
-HDRComponent Image::GetComponent(int i, int j)
+HDRComponent& Image::GetComponent(int i, int j)
 {
 	return _buffer[ j*_w + i];
 }

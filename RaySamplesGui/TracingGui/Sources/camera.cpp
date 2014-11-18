@@ -1,6 +1,6 @@
 #include "Camera.h"
 
-Camera::Camera()
+Camera::Camera() 
 {
 }
 
@@ -10,19 +10,6 @@ void Camera::SetResolution(float resx, float resy)
 	_worldToRaster.GetRow(1) *= resy;
 	_rasterToWorld = _worldToRaster.Invert();
 }
-
-Camera * Camera::CreateCamera(const Vector4d & toCenter, const Vector4d& direction,const Vector4d& up, float fov)
-{
-	Camera * c = new Camera();
-	c->Clear();
-	c->SetMatrix(direction,up);
-	c->Translate(toCenter);
-	float zFar = 1000;
-	c->SetPerspective(zFar,fov);
-	// Vector4d r = c->RasterToWorld(Vector4d(0.5,0.5,0,1));
-	return c;
-}
-
 
 Ray Camera::GetRay(float x, float y)
 {

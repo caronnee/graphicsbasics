@@ -77,6 +77,9 @@
     <Filter Include="Source Files\Logic\Random">
       <UniqueIdentifier>{6e4c6540-bd4c-4d47-aa18-bd700fd609b0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Gui\Thread">
+      <UniqueIdentifier>{ffd813e7-fc9d-443c-a21e-c6ec93a6c20e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GeneratedFiles\Debug\moc_tracinggui.cpp">
@@ -184,6 +187,9 @@
     <ClCompile Include="Sources\RandomNumber.cpp">
       <Filter>Source Files\Logic\Random</Filter>
     </ClCompile>
+    <ClCompile Include="Sources\RenderThread.cpp">
+      <Filter>Source Files\Gui\Thread</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="Sources/tracinggui.ui">
@@ -280,6 +286,9 @@
     </ClInclude>
     <ClInclude Include="Sources\RandomNumber.h">
       <Filter>Source Files\Logic\Random</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\RenderThread.h">
+      <Filter>Source Files\Gui\Thread</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

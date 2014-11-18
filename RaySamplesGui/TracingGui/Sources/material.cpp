@@ -42,7 +42,7 @@ Material * CreateMaterial(int type, const Vector4d * parameters, float phong)
 {
   if (type == MSpecular )
     return GMaterialCreator.CreateMaterialSpecular(parameters[0],parameters[1], phong);
-	return GMaterialCreator.CreateMaterialDiffuse(parameters[0], parameters[2]);
+  return GMaterialCreator.CreateMaterialDiffuse(parameters[0], parameters[2]);
 }
 
 bool Material::IsLight()const

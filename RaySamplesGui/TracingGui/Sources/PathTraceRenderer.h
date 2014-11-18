@@ -1,4 +1,6 @@
-#include "Vector.h"
+#ifndef __PATHRENDERER__
+#define __PATHRENDERER__
+
 #include "renderer.h"
 
 class PathTraceRenderer : public Renderer
@@ -12,3 +14,5 @@ public:
 protected:
 private:
 };
+
+#endif
