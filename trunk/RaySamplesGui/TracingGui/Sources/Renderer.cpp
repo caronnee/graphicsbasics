@@ -1,11 +1,10 @@
 #include "renderer.h"
 #include "Debug.h"
 
-void Renderer::Init(Scene * scene, Image * image, Camera * camera)
+void Renderer::Init( Scene * scene, Image * image )
 {
 	_image = image;
 	_scene = scene;
-	_camera = camera;
 }
 
 #if _DEBUG
@@ -36,7 +35,7 @@ void Renderer::Render(int iterations, int & mask)
 	_image->Divide(inv);
 }
 
-Renderer::Renderer() :_camera(NULL), _scene(NULL), _image(NULL)
+Renderer::Renderer() : _scene(NULL), _image(NULL)
 {
 
 }

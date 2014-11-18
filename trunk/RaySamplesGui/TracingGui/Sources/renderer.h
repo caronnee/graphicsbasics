@@ -20,12 +20,11 @@ class Renderer
 {
 protected:
 	Scene * _scene;
-	Camera * _camera;
 	Image * _image;
 	void Destroy();
 public:
 	Renderer();
-	virtual void Init(Scene * scene, Image * image, Camera * camera);
+	virtual void Init(Scene * scene, Image * image);
 	void Render(int iterations, int & mask);
 	virtual Vector4d RenderPixel( const int &x, const int &y, const int & type ) = 0;
 	virtual ~Renderer();

@@ -7,7 +7,7 @@ AmbientLight& Scene::Ambient()
 	return _ambientLight;
 }
 
-Scene::Scene() :_ambientLight(NULL)
+Scene::Scene() :_ambientLight(NULL), _camera(NULL)
 {
 
 }
@@ -39,6 +39,42 @@ bool Scene::FindIntersection(const Ray & ray, Intersection& res)
 	return found;
 }
 
+void Scene::DeleteModel(Geometry * geometry)
+{
+	int index = 0;
+	while ( index < _geometry.size() )
+	{
+		if (_geometry[index] == geometry)
+		{
+			_geometry[index] = _geometry.back();
+			_geometry.pop_back();
+		}
+		else
+			index++;
+	}
+}
+
+void Scene::CreateCamera( CameraContext & ctx)
+{
+	Camera * c = new Camera();
+	c->Clear();
+	c->SetMatrix(ctx.axis[0],ctx.axis[1]);
+	c->Translate(ctx.position);
+	float zFar = 1000;
+	c->SetPerspective(zFar,ctx.fov);
+	// Vector4d r = c->RasterToWorld(Vector4d(0.5,0.5,0,1));
+	if (_camera)
+	{
+		DeleteModel(_camera);
+		delete _camera;
+	}
+	_camera =c;
+	Vector4d v[] = {Vector4d(0,0,0,0),Vector4d(0,0,0,0)};
+	_camera->SetMaterial(CreateMaterial(MDiffuse,v,0));
+	_camera->SetResolution(ctx.resolution[0],ctx.resolution[1]);
+	AddModel(_camera);
+}
+
 #include "AmbientLight.h"
 
 void Scene::AddModel(Geometry * model)
@@ -66,4 +102,9 @@ int Scene::Lights()
 Geometry * Scene::GetLight(int iLight)
 {
 	return _emmiters[iLight];
+}
+
+Ray Scene::GetRay(float x,float y)
+{
+	return _camera->GetRay(x,y);
 }

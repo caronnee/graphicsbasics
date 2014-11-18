@@ -9,13 +9,13 @@ class Image
 	int _w,_h;
 	HDRComponent * _buffer;
 public:
-	Image(int w, int h);
+	Image();
 	~Image();
 	void AddColor(int x, int y, const Vector4d & color);
 	void SaveHdr(const char * name);
 	int W() const { return _w;}
 	int H() const { return _h;}
-	HDRComponent GetComponent(int i, int j);
+	HDRComponent& GetComponent(int i, int j);
 	void Clear();
 	void SetSize(int w, int h);
 	void Divide(double inv);

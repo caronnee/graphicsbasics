@@ -1,9 +1,9 @@
 #include "TestRenderer.h"
 
 
-void TestRenderer::Init(Scene * scene, Image * image, Camera * camera)
+void TestRenderer::Init(Scene * scene, Image * image)
 {
-	Renderer::Init(scene,image,camera);
+	Renderer::Init(scene,image);
 	_bounces = 1 + COEF *0;
 }
 
@@ -19,7 +19,7 @@ Vector4d TestRenderer::RenderPixel(const int &x, const int &y, const int & type)
 	else
 		stop = false;
 #endif
-	Ray ray = _camera->GetRay((float)x +0.5,(float)y +0.5);
+	Ray ray = _scene->GetRay((float)x +0.5,(float)y +0.5);
 	Vector4d total = Vector4d(0,0,0,0);
 	// so far only ambient
 	Intersection isect;
