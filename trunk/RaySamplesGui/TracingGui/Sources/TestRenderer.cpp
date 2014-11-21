@@ -1,9 +1,9 @@
 #include "TestRenderer.h"
 
 
-void TestRenderer::Init(Scene * scene, Image * image)
+void TestRenderer::Init(Scene * scene, Image * image, int bounces)
 {
-	Renderer::Init(scene,image);
+	Renderer::Init(scene,image, bounces);
 }
 
 #if _DEBUG

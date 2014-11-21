@@ -1,7 +1,8 @@
 #include "renderer.h"
 #include "Debug.h"
+#include "RandomNumber.h"
 
-void Renderer::Init( Scene * scene, Image * image )
+void Renderer::Init( Scene * scene, Image * image, int maxBounces )
 {
 	_image = image;
 	_scene = scene;
@@ -62,4 +63,33 @@ TrackProgress GTrackProgress;
 TrackProgress * GetRendererTrack()
 {
 	return &GTrackProgress;
+}
+
+FiniteBouncer::FiniteBouncer(int bounces)
+{
+	_maxBounces = bounces;
+}
+
+void FiniteBouncer::Init()
+{
+	_counter = _maxBounces;
+}
+
+bool FiniteBouncer::Stop(Ray & ray, Intersection & section, Vector4d & throughput)
+{
+	_counter--;
+	throughput *= 1.0f / (_maxBounces +1);
+	return  _counter < 0;
+}
+
+Ray FiniteBouncer::Bounce(Ray & ray, Intersection & section)
+{
+	Ray ret;
+	ret.origin = section.worldPosition;
+	Matrix4d cvrt;
+	cvrt.CreateFromZ(section.nrm);
+	Vector4d direction = SampleHemisphere();
+	ret.direction = cvrt * direction;
+	ret.direction.Normalize();
+	return ret;
 }

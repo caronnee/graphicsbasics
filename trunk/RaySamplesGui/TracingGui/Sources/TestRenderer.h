@@ -6,7 +6,7 @@
 class TestRenderer : public Renderer
 {
 public:	
-	virtual void Init(Scene * scene, Image * image);	
+	virtual void Init(Scene * scene, Image * image, int bounces);
 	Vector4d RenderPixel( const int &x, const int &y );
 };
 

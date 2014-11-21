@@ -5,17 +5,10 @@
 
 #define MAX_BOUNCES 10
 
-Vector4d PathTraceRenderer::RayTrace(const Ray ray)
+Vector4d PathTraceRenderer::SampleLight(Ray & ray, Intersection & isec)
 {
-	Vector4d total;
-	total.Zero();
-
-	Intersection isec;
-	if ( !_scene->FindIntersection(ray,isec) )
-	{
-		return BLACK;
-	}
-
+	Vector4d total (0,0,0,0);
+	
 	// sample direct light
 	for (int iLight =0; iLight< _scene->Lights(); iLight++)
 	{
@@ -45,11 +38,52 @@ Vector4d PathTraceRenderer::RayTrace(const Ray ray)
 		{
 			DoAssert(illumination[xx] >=0);
 		}
-		if ( _renderMask & RDirectLight )
-		{
-			total += brdf.MultiplyPerElement(illumination);
-		}
+		total += brdf.MultiplyPerElement(illumination);		
 	}
+	return total;
+}
+
+// bounce logic
+Vector4d PathTraceRenderer::Bounced(Ray & xray, Intersection & xsection )
+{
+	Vector4d total(0,0,0,0);
+	Vector4d throughput(1,1,1,1);
+	Ray ray = xray;
+	Intersection isec = xsection;
+	while (true)
+	{
+		if ( _bouncer->Stop(ray,isec,throughput) ) 
+			break; 
+
+		// calculate indirect light
+		total += SampleLight(ray,isec).MultiplyPerElement(throughput);
+		
+		ray = _bouncer->Bounce(ray, isec);
+		isec.t = FLT_MAX;
+		if ( !_scene->FindIntersection(ray,isec) )
+			break;
+	}
+	return total;
+}
+
+Vector4d PathTraceRenderer::RayTrace(Ray ray)
+{
+	Vector4d total;
+	total.Zero();
+
+	// forst hit is common
+	Intersection isec;
+	if ( !_scene->FindIntersection(ray,isec) )
+	{
+		return BLACK;
+	}
+
+	if ( _renderMask & RIndirectLightBounced)
+		total += Bounced(ray,isec);
+
+	if ( _renderMask & RDirectLight )
+		total += SampleLight(ray,isec);
+
 #if 0 && _DEBUG
 	float xx = total.Size2();
 	DoAssert(xx > 0);
@@ -61,12 +95,27 @@ Vector4d PathTraceRenderer::RenderPixel(const int &x, const int &y)
 {
 	// we start at camera
 //	int u = 44,v = 89;
+	if (_bouncer)
+		_bouncer->Init();
 	Ray ray = _scene->GetRay( x + GetFloat(), y + GetFloat() );
-	
 	return RayTrace( ray );
 }
 
-PathTraceRenderer::PathTraceRenderer() : Renderer()
+PathTraceRenderer::PathTraceRenderer() : Renderer(), _bouncer(NULL)
 {
 
+}
+
+void PathTraceRenderer::Init(Scene * scene, Image * image, int bounces)
+{
+	base::Init(scene,image,bounces);
+	if ( _renderMask & RIndirectMask )
+	{
+		if (_renderMask & RIndirectLightBounced )
+			_bouncer = new FiniteBouncer(bounces);
+		else 
+		{
+			throw "Not implemented";
+		}
+	}
 }

@@ -12,7 +12,7 @@ AmbientLight::AmbientLight( const Vector4d & watts )
 Vector4d AmbientLight::SampleIllumination(Intersection &section, Vector4d & lightVector, float & len )
 {
 	len = 1e36;
-	lightVector = RandomHemisphereVector();
+	lightVector = SampleSphere();
 	//lightVector = l;
 	lightVector.Normalize();
 	float cosA = section.nrm.Dot(lightVector);
