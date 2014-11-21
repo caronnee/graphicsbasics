@@ -38,6 +38,7 @@ public:
 	float Get(int i, int j) const;
 	float & Get(int i, int j);
 	float SubDeterminant(int i, int j) const;
+	Matrix4d & CreateFromZ(const Vector4d & nrm);
 };
 
 #endif

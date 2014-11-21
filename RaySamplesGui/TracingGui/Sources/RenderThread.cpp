@@ -26,7 +26,7 @@ RenderThread::RenderThread(RenderContext & ctx)
 void RenderThread::run()
 {
 	_image.SetSize( _end[0], _end[1] );
-	_renderer->Init(_scene, &_image);
+	_renderer->Init(_scene, &_image, _maxBounces);
 	_renderer->Render(_iterations);
 }
 

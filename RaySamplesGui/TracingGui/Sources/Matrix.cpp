@@ -251,5 +251,20 @@ float Matrix4d::SubDeterminant(int a, int b) const
 	if ( (a + b)%2 )
 		ret *= -1;
 	return ret;
+}
 
+Matrix4d & Matrix4d::CreateFromZ(const Vector4d & nrm)
+{
+#if _DEBUG
+	float nn = nrm.Size2();
+	DoAssert( fabs(nn - 1) < EPSILON );
+#endif
+	Vector4d aside = (fabs(nrm.X()) > 0.99f) ? Vector4d(0,1,0) : Vector4d(1,0,0);
+	Vector4d direction = nrm;
+	Vector4d up = aside.Cross(direction);
+
+	Direction() = direction;
+	Up() = up;
+	Aside() = Up().Cross(Direction());
+	return *this;
 }

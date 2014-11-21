@@ -14,7 +14,24 @@ float GetFloat()
 	return james.GetFloat();
 }
 
-Vector4d RandomHemisphereVector()
+Vector4d SampleHemisphere()
+{
+	float alpha = james.GetFloat() * 2 * PI;
+	float beta = james.GetFloat() * PI;
+	float cosA = cos(alpha);
+	float cosB = cos(beta);
+	float sinA = sin(alpha);
+	float sinB = sin(beta);
+	Vector4d ret;
+	ret[0] = cosA* cosB;
+	ret[1] = sinA;
+	ret[2] = cosA * sinB;
+	ret[3] = 0;
+	ret.Normalize();
+	return ret;
+}
+
+Vector4d SampleSphere()
 {
 	/* Vector4d ret(0,0,0,0);
 	do

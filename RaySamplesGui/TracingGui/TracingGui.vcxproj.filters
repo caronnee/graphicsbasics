@@ -291,9 +291,4 @@
       <Filter>Source Files\Gui\Thread</Filter>
     </ClInclude>
   </ItemGroup>
-  <ItemGroup>
-    <None Include="todo.txt">
-      <Filter>Source Files</Filter>
-    </None>
-  </ItemGroup>
 </Project>
