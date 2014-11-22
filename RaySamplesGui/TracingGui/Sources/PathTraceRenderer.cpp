@@ -54,14 +54,17 @@ Vector4d PathTraceRenderer::Bounced(Ray & xray, Intersection & xsection )
 	{
 		if ( _bouncer->Stop(ray,isec,throughput) ) 
 			break; 
-
-		// calculate indirect light
-		total += SampleLight(ray,isec).MultiplyPerElement(throughput);
 		
 		ray = _bouncer->Bounce(ray, isec);
 		isec.t = FLT_MAX;
 		if ( !_scene->FindIntersection(ray,isec) )
+    {
+      DoAssert(false);
 			break;
+    }
+
+    // calculate indirect light
+    total += SampleLight(ray,isec).MultiplyPerElement(throughput);
 	}
 	return total;
 }

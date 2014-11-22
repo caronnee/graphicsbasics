@@ -77,6 +77,8 @@ void FiniteBouncer::Init()
 
 bool FiniteBouncer::Stop(Ray & ray, Intersection & section, Vector4d & throughput)
 {
+  if( section.model->GetMaterial()->IsLight())
+    return true;
 	_counter--;
 	throughput *= 1.0f / (_maxBounces +1);
 	return  _counter < 0;
