@@ -14,17 +14,20 @@ float GetFloat()
 	return james.GetFloat();
 }
 
+#include "Debug.h"
+
 Vector4d SampleHemisphere()
 {
-	float alpha = james.GetFloat() * 2 * PI;
-	float beta = james.GetFloat() * PI;
-	float cosA = cos(alpha);
-	float cosB = cos(beta);
-	float sinA = sin(alpha);
-	float sinB = sin(beta);
+	float azimuthAngle = james.GetFloat() * 2 * PI;
+	float elevationAngle = james.GetFloat() * PI;
+	float cosA = cos(elevationAngle);
+	float cosB = cos(azimuthAngle);
+	float sinA = sin(elevationAngle);
+	float sinB = sin(azimuthAngle);
 	Vector4d ret;
 	ret[0] = cosA* cosB;
 	ret[1] = sinA;
+  DoAssert(sinA > 0);
 	ret[2] = cosA * sinB;
 	ret[3] = 0;
 	ret.Normalize();
