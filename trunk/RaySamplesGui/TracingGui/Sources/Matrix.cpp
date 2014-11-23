@@ -259,10 +259,12 @@ Matrix4d & Matrix4d::CreateFromZ(const Vector4d & nrm)
 	float nn = nrm.Size2();
 	DoAssert( fabs(nn - 1) < EPSILON );
 #endif
-	Vector4d aside = (fabs(nrm.X()) > 0.99f) ? Vector4d(0,1,0) : Vector4d(1,0,0);
+  Identity();
+	Vector4d aside = (fabs(nrm.X()) > 0.99f) ? Vector4d(0,0,1) : Vector4d(1,0,0);
 	Vector4d direction = nrm;
-	Vector4d up = aside.Cross(direction);
+	Vector4d up = direction.Cross(aside);
 
+  up.Normalize();
 	Direction() = direction;
 	Up() = up;
 	Aside() = Up().Cross(Direction());
