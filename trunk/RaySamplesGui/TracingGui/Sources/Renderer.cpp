@@ -20,6 +20,8 @@ void Renderer::Render(int iterations)
 
 	for ( int i =0; i < iterations; i++)
 	{
+    //Vector4d color = RenderPixel(25,25);
+    //_image->AddColor(25,25,color);
 		for ( int x = 0; x < _image->W(); x++)
 		{
 			for ( int y = 0; y < _image->H(); y++)
@@ -80,8 +82,16 @@ bool FiniteBouncer::Stop(Ray & ray, Intersection & section, Vector4d & throughpu
   if( section.model->GetMaterial()->IsLight())
     return true;
 	_counter--;
-	throughput *= 1.0f / (_maxBounces +1);
-	return  _counter < 0;
+  if (_counter <0)
+    return true;
+  Vector4d v(1,1,1,1);
+  v *= 1.0f / ( _maxBounces +1 );
+	throughput -= v;
+  for ( int i =0; i < DIM; i++)
+  {
+    DoAssert(throughput[i] >=0);
+  }
+	return false;
 }
 
 Ray FiniteBouncer::Bounce(Ray & ray, Intersection & section)
