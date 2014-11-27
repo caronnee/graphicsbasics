@@ -10,19 +10,15 @@
 
 TrackProgress * GetRendererTrack();
 
-enum RenderingTypeMask
-{
-	RNone = 0,
-	RDirectLight = 1,
-	RIndirectLightBounced = 1 << 1,
-	RIndirectLightMcBrdf = 1 << 2,
-	RIndirectLightMcLight = 1 << 3,
-	RIndirectLightMIS = 1 << 4,
-	RGlobalIllumination = 1 << 5,
-	RTotal = (1 << 6) 
-};
-
-#define RIndirectMask (RTotal - 2)
+#define RNone 0
+#define RDirectLight 1
+#define RDirectBRDF 2
+#define RIndirectOffset 2
+#define RIndirectLightBounced ( 1 << RIndirectOffset )
+#define RIndirectLightMcBrdf ( 2 << RIndirectOffset )
+#define RIndirectLightMcLight ( 4 << RIndirectOffset )
+#define RIndirectLightMIS ( 8 << RIndirectOffset )
+#define RGlobalIllumination ( 16 << RIndirectOffset )
 
 class Bouncer
 {
@@ -31,10 +27,8 @@ public:
 	virtual void Init() = 0;
 
 	// return new direction
-	virtual Ray Bounce(Ray & ray, Intersection & section) = 0;
+  virtual bool Bounce(Ray & ray, Intersection & section, Vector4d& throughput, float & pdf) = 0;
 
-	// checks whether the bouncing should stop or not
-	virtual bool Stop(Ray & ray, Intersection & section, Vector4d & throughput) = 0;
 };
 
 class FiniteBouncer : public Bouncer
@@ -44,8 +38,7 @@ class FiniteBouncer : public Bouncer
 public:
 	FiniteBouncer( int bounces );
 	void Init();
-	bool Stop(Ray & ray, Intersection & section, Vector4d & throughput);
-	Ray Bounce(Ray & ray, Intersection & section);
+  bool Bounce( Ray & ray, Intersection & section, Vector4d& throughput, float & pdf);
 };
 
 class Renderer
