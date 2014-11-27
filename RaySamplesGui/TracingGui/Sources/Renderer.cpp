@@ -77,31 +77,19 @@ void FiniteBouncer::Init()
 	_counter = _maxBounces;
 }
 
-bool FiniteBouncer::Stop(Ray & ray, Intersection & section, Vector4d & throughput)
+
+bool FiniteBouncer::Bounce(Ray & ret, Intersection & section, Vector4d& throughput, float & pdf)
 {
-  if( section.model->GetMaterial()->IsLight())
-    return true;
-	_counter--;
   if (_counter <0)
     return true;
-  Vector4d v(1,1,1,1);
-  v *= 1.0f / ( _maxBounces +1 );
-	throughput -= v;
-  for ( int i =0; i < DIM; i++)
-  {
-    DoAssert(throughput[i] >=0);
-  }
-	return false;
-}
-
-Ray FiniteBouncer::Bounce(Ray & ray, Intersection & section)
-{
-	Ray ret;
+  _counter --;
+  pdf = 1.0f/_maxBounces;
+  throughput *= pdf;
 	ret.origin = section.worldPosition;
 	Matrix4d cvrt;
 	cvrt.CreateFromZ(section.nrm);
 	Vector4d direction = SampleHemisphere();
 	ret.direction = cvrt * direction;
 	ret.direction.Normalize();
-	return ret;
+	return false;
 }

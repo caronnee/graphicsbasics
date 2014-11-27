@@ -52,18 +52,20 @@ Vector4d PathTraceRenderer::Bounced(Ray & xray, Intersection & xsection )
 	Intersection isec = xsection;
   while (true)
 	{
-		if ( _bouncer->Stop(ray,isec,throughput) ) 
-			break; 
+    float pdf;
+    // we can always bounce, ray is now bounced ray
+    if (!_bouncer->Bounce(ray, isec,throughput, pdf))
+      break;
 
-		ray = _bouncer->Bounce(ray, isec);
-		isec.t = FLT_MAX;
-		if ( !_scene->FindIntersection(ray,isec) )
-		{
-			//DoAssert(false);
-			break;
-		}
+    isec.t = FLT_MAX;
+    if ( !_scene->FindIntersection(ray,isec) )
+    {
+      //DoAssert(false);
+      break;
+    }
 
 		// calculate indirect light
+    // this is shadow ray
 		total += SampleLight(ray,isec).MultiplyPerElement(throughput);
 	}
 	return total;
@@ -112,13 +114,8 @@ PathTraceRenderer::PathTraceRenderer() : Renderer(), _bouncer(NULL)
 void PathTraceRenderer::Init(Scene * scene, Image * image, int bounces)
 {
 	base::Init(scene,image,bounces);
-	if ( _renderMask & RIndirectMask )
+	if ( _renderMask & RIndirectLightBounced )
 	{
-		if (_renderMask & RIndirectLightBounced )
 			_bouncer = new FiniteBouncer(bounces);
-		else 
-		{
-			throw "Not implemented";
-		}
 	}
 }
