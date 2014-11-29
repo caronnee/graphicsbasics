@@ -86,8 +86,10 @@ public:
 	void Clear( );
 	virtual int Type()const =0;
 	// position to illuminate, return the illumination of the point
-	virtual Vector4d SampleIllumination(Intersection &section, Vector4d & sampledDir, float & sampleLen ) = 0;
-	virtual void SaveProperties(FileHandler & handler);
+  virtual Vector4d SampleIllumination(Intersection &section, Vector4d & sampledDir, float & sampleLen ) = 0;
+	//virtual Vector4d Illumination(Vector4d & sampledDir, float & sampleLen ) = 0;
+
+  virtual void SaveProperties(FileHandler & handler);
 	virtual void LoadProperties(FileHandler & handler);
 };
 #endif
