@@ -88,6 +88,8 @@ Vector4d PathTraceRenderer::RayTrace(Ray ray)
 
 	if ( _renderMask & RDirectLight )
 		total += SampleLight(ray,isec);
+  if ( _renderMask & RDirectBRDF )
+    total += SampleBrdf(ray,isec);
 
 #if 0 && _DEBUG
 	float xx = total.Size2();
@@ -118,4 +120,25 @@ void PathTraceRenderer::Init(Scene * scene, Image * image, int bounces)
 	{
 			_bouncer = new FiniteBouncer(bounces);
 	}
+}
+
+Vector4d PathTraceRenderer::SampleBrdf(const Ray & ray, const Intersection & isec)
+{
+  // generate the ray according to BRDF
+  const Material * m = isec.model->GetMaterial();
+  if ( m->IsLight() )
+    return Vector4d(1,1,1,1);
+  float pdf;
+  Vector4d sampledDir = m->SampleBrdf( ray.direction, isec.nrm, pdf );
+  Ray r;
+  r.origin = isec.worldPosition;
+  r.direction = sampledDir;
+  Intersection isec2;
+  if ( !_scene->FindIntersection( r, isec2 ) )
+    return Vector4d(0,0,0,0); // did not intersect anything
+  Vector4d illumination = isec2.model->GetMaterial()->Illumination(sampledDir);
+  Vector4d output;
+  Vector4d brdf = isec2.model->GetMaterial()->EvalBrdf(sampledDir,isec.nrm,output);
+  Vector4d ret = illumination.MultiplyPerElement( brdf );
+  return ret;
 }

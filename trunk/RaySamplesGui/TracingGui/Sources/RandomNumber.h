@@ -18,7 +18,7 @@ private:
 };
 
 Vector4d SampleSphere();
-Vector4d SampleHemisphere();
+Vector4d SampleHemisphere(int exponentRange = 1);
 float GetFloat();
 
 #endif

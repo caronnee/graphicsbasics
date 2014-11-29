@@ -16,20 +16,21 @@ float GetFloat()
 
 #include "Debug.h"
 
-Vector4d SampleHemisphere()
+Vector4d SampleHemisphere(int exponentRange /* 1 */)
 {
-	float azimuthAngle = james.GetFloat() * 2 * PI;
-	float elevationAngle = james.GetFloat() * PI;
-	float cosA = cos(elevationAngle);
-	float cosB = cos(azimuthAngle);
-	float sinA = sin(elevationAngle);
-	float sinB = sin(azimuthAngle);
+  //create cos = e^(1/(n+1)
+  float e1 = james.GetFloat();
+  float e2 = james.GetFloat();
 	Vector4d ret;
-	ret[0] = cosA* cosB;
-	ret[1] = sinA;
-  DoAssert(sinA > 0);
-	ret[2] = cosA * sinB;
-	ret[3] = 0;
+  float aizmuth = 2* e1 * PI;
+  float cosEl = pow(e1,exponentRange+1);
+  float sinEl = sqrt(1 - cosEl*cosEl);
+  float cosAz = cos(e2);
+  float sinAz = sin(e2);
+
+  ret[0] = cosAz * sinEl;
+  ret[2] = cosEl;
+  ret[1] = cosAz * cosEl;
 	ret.Normalize();
 	return ret;
 }

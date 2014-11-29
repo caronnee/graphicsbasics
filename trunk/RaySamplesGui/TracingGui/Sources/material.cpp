@@ -59,3 +59,8 @@ Vector4d Material::Emmisive() const
 {
   return _emmisive;
 }
+
+Vector4d Material::Illumination(Vector4d & sampledDir) const
+{
+  return _emmisive;
+}
