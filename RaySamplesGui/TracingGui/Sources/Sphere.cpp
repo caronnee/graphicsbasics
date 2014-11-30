@@ -37,7 +37,7 @@ bool Sphere::Intersect(const Ray & ray, Intersection & sect)
 	//	return false;
 
 	//// geometric solution
-	DoAssert( 1 - rayDirection.Size2() <  EPSILON);
+	DoAssert( fabs(1 - rayDirection.Size2()) <  EPSILON);
 	float tca = L.Dot(rayDirection);
 	if (tca < 0) // behind the ray
 		return false;
