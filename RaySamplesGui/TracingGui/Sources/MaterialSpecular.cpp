@@ -16,7 +16,7 @@ Vector4d MaterialSpecular::GetSpecular(const Vector4d & incoming, const Vector4d
 	float te = normal.Size();
 	DoAssert( fabs(te - 1) < EPSILON );
 #endif
-	Vector4d R = Reflected(incoming,normal);
+	Vector4d R = Reflected(light,normal);
 	float cosA = R.Dot(incoming);
 
 	if (cosA<0)
