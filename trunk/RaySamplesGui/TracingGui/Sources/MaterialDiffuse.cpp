@@ -25,6 +25,7 @@ Vector4d MaterialDiffuse::SampleBrdf(const Vector4d & input,const Vector4d &norm
   Vector4d sample = d * SampleHemisphere();
   float cosA = normal.Dot(input);
   pdf = cosA / PI;
+  sample.Normalize();
   return sample;
 }
 

@@ -41,6 +41,8 @@ Vector4d MaterialSpecular::SampleBrdf(const Vector4d & input,const Vector4d &nor
   // sample according to specular BRDF
   Vector4d ret = SampleHemisphere(_phongCoef);
   Vector4d reflected = Reflected( input,normal);
+  DoAssert( (reflected.Size2() - 1) < EPSILON );
+  DoAssert( (ret.Size2() - 1) < EPSILON );
   float cosAn = input.Dot(reflected);
   cosAn = pow(cosAn,_phongCoef);
   Matrix4d sample;

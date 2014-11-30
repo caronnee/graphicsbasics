@@ -56,8 +56,12 @@ float& Vector4d::W()
 	return _val[3];
 }
 
+#include "Debug.h"
+
 float Vector4d::Dot(const Vector4d& vec) const
 {
+//  DoAssert((Size2() -1) < EPSILON);
+//  DoAssert((vec.Size2() -1) < EPSILON);
 	return X()*vec.X() + Y()*vec.Y() + Z()*vec.Z() + W()*vec.W();
 }
 
