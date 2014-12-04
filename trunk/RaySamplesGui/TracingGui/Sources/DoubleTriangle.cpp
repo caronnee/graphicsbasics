@@ -96,6 +96,7 @@ int DoubleTriangle::Type()const
 
 float lasta;
 float lasbB;
+
 Vector4d DoubleTriangle::SampleIllumination(Intersection &section, Vector4d & sampledDir, float & len)
 {
 	// sample point on the triangle
@@ -107,7 +108,7 @@ Vector4d DoubleTriangle::SampleIllumination(Intersection &section, Vector4d & sa
 	lasbB = a2;
 	Vector4d point = _edges[0]*a1 + _edges[1]*a2 + _points[0];
 	Vector4d mPoint = ModelToWorld(point);
-	sampledDir = mPoint-section.worldPosition;
+	sampledDir = mPoint - section.worldPosition;
 	len = sampledDir.Size();
 	sampledDir.Normalize();
 	float d2 = len * len;

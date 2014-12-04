@@ -17,15 +17,24 @@ Vector4d MaterialDiffuse::EvalBrdf(const Vector4d & input,const Vector4d & norma
 
 #include "Matrix.h"
 #include "RandomNumber.h"
+#include "debug.h"
 
 Vector4d MaterialDiffuse::SampleBrdf(const Vector4d & input,const Vector4d &normal,float &pdf) const
 {
   Matrix4d d;
   d.CreateFromZ(normal);
-  Vector4d sample = d * SampleHemisphere();
+  d = d.Invert();
+  Vector4d t = SampleHemisphere();
+  Vector4d sample = d * t;
   float cosA = normal.Dot(input);
+  DoAssert(normal.Dot(sample) > 0);
   pdf = cosA / PI;
   sample.Normalize();
   return sample;
+}
+
+Vector4d MaterialDiffuse::Illumination(Vector4d & sampledDir, const Vector4d & normal, const int &len) const
+{
+  return Vector4d(0,0,0,0);
 }
 

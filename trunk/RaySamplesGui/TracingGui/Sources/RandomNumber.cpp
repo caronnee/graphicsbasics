@@ -23,14 +23,14 @@ Vector4d SampleHemisphere(int exponentRange /* 1 */)
   float e2 = james.GetFloat();
 	Vector4d ret;
   float aizmuth = 2* e1 * PI;
-  float cosEl = pow(e1,exponentRange+1);
+  float cosEl = pow(e1, 1.0f/(exponentRange+1));
   float sinEl = sqrt(1 - cosEl*cosEl);
   float cosAz = cos(e2);
   float sinAz = sin(e2);
 
   ret[0] = cosAz * sinEl;
-  ret[2] = cosEl;
   ret[1] = cosAz * cosEl;
+  ret[2] = cosEl;
   ret[3] = 0;
 	ret.Normalize();
 	return ret;
