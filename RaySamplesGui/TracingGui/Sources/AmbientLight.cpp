@@ -15,12 +15,7 @@ Vector4d AmbientLight::SampleIllumination(Intersection &section, Vector4d & ligh
 	lightVector = SampleSphere();
 	//lightVector = l;
 	lightVector.Normalize();
-	float cosA = section.nrm.Dot(lightVector);
-	if ( cosA < 0 )
-		return Vector4d(0,0,0,0);
-	DoAssert(cosA <=1.01);
-	// sample hemisphere
-	return _backColor * cosA * 4 * PI;
+  return Illumination(lightVector,section.nrm,len);
 }
 
 int AmbientLight::Type(void) const
@@ -35,4 +30,14 @@ void AmbientLight::SetPower(const Vector4d & watts)
 bool AmbientLight::Intersect(const Ray &,Intersection &)
 {
 	return false;
+}
+
+Vector4d AmbientLight::Illumination(const Vector4d & lightVector, const Vector4d & nrm, const int & dist)
+{
+  float cosA = nrm.Dot(lightVector);
+  if ( cosA < 0 )
+    return Vector4d(0,0,0,0);
+  DoAssert(cosA <=1.01);
+  // sample hemisphere
+  return _backColor * cosA * 4 * PI; 
 }

@@ -47,7 +47,7 @@ Vector4d MaterialSpecular::SampleBrdf(const Vector4d & input,const Vector4d &nor
   cosAn = pow(cosAn,_phongCoef);
   Matrix4d sample;
   sample.CreateFromZ(normal);
-  // TODO why?
+  // TODO why,why?
   pdf = (_phongCoef + 1)*cosAn/(2*PI);
   if ( ret.Dot(reflected) < 0 )
     return Vector4d(0,0,0,0);

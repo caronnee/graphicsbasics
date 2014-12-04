@@ -93,7 +93,7 @@ void Sphere::SetProperty(PropertyType type, void * value)
 
 Vector4d Sphere::SampleIllumination(Intersection &section, Vector4d & sampledDir, float & len)
 {
-	throw "Not implemented yet";
+	throw "Not implemented yet. And maybe won't be ever...";
 }
 
 void Sphere::SaveProperties(FileHandler & handler)

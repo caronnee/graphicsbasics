@@ -49,7 +49,7 @@ Matrix4d Matrix4d::Invert()const
 			float t =SubDeterminant(j,i);
 			d.Get(i,j) = SubDeterminant(j,i);
 		}
-	float det = d.Get(0,0)*Get(0,0) + d.Get(1,0)*Get(1,0) + d.Get(2,0)*Get(2,0) + d.Get(3,0)*Get(3,0);
+	float det = d.Get(0,0)*Get(0,0) + d.Get(0,1)*Get(1,0) + d.Get(0,2)*Get(2,0) + d.Get(0,3)*Get(3,0);
 	if (fabs(det) < 0.001)
 	{
 		d.Zero();
@@ -57,6 +57,21 @@ Matrix4d Matrix4d::Invert()const
 	}
 	for (int i =0; i < DIM; i++)
 		d.GetRow(i)/=det;
+#if _DEBUG
+  Matrix4d test = *this * d;
+  for ( int i =0; i < DIM; i++)
+    for ( int j =0; j < DIM; j++)
+    {
+      if ( j == i)
+      {
+        DoAssert(fabs(test.Get(i,j) - 1) < EPSILON);
+      }
+      else
+      {
+        DoAssert(fabs(test.Get(i,j)) < EPSILON);
+      }
+    }
+#endif
 	return d;
 }
 
@@ -260,7 +275,7 @@ Matrix4d & Matrix4d::CreateFromZ(const Vector4d & nrm)
 	DoAssert( fabs(nn - 1) < EPSILON );
 #endif
   Identity();
-	Vector4d aside = (fabs(nrm.X()) > 0.99f) ? Vector4d(0,0,1) : Vector4d(1,0,0);
+	Vector4d aside = (fabs(nrm.X()) > 0.99f) ? Vector4d(0,1,0,0) : Vector4d(1,0,0,0);
 	Vector4d direction = nrm;
 	Vector4d up = direction.Cross(aside);
 
