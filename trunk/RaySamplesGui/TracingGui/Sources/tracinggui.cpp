@@ -568,6 +568,7 @@ void TracingGui::ShowHdr(float exponent)
 		for ( int j =0; j < _image.H(); j++)
 		{
 			HDRComponent comp = _image.GetComponent(i,j);
+      comp.SetUnit();
 			int r,g,b;
 			r = toneMapper.ToneMap(comp.X());
 			g = toneMapper.ToneMap(comp.Y());
@@ -705,6 +706,7 @@ void TracingGui::RenderSlot()
 		}
 	if ( stop )
 	{
+    FetchResultsSlot();
 		ui.bRender->setText("Render!");
 		return;
 	}

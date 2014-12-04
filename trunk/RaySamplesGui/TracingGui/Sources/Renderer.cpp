@@ -34,10 +34,6 @@ void Renderer::Render(int iterations)
 			GetRendererTrack()->Update();
 		}
 	}
-	if ( iterations == 1 )
-		return; // no need to divide
-	double inv = 1.0f/iterations;
-	_image->Divide(inv);
 }
 
 Renderer::Renderer() : _scene(NULL), _image(NULL), _renderMask(0),_stop(false)

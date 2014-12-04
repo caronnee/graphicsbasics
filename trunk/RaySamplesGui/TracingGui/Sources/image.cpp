@@ -18,7 +18,8 @@ Image::~Image()
 void Image::AddColor(int x, int y, const Vector4d & color)
 {
 	int index = y*_w + x;
-	_buffer[index] += color;
+	_buffer[index].Add(color);
+
 }
 
 #include "FileHandler.h"

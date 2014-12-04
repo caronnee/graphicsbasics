@@ -22,9 +22,26 @@ void HDRComponent::Normalize()
 
 HDRComponent::HDRComponent()
 {
+  _weight = 0;
 	for ( int i=0; i <4; i++) _val[i] = 0;
 }
 HDRComponent::HDRComponent( const HDRComponent & comp )
 {
+  _weight = comp._weight;
 	Vector4d::operator=(comp);
+}
+
+HDRComponent & HDRComponent::Add(const Vector4d & val)
+{
+  base::operator+=(val);
+  _weight+=1;
+  return *this;
+}
+
+void HDRComponent::SetUnit()
+{
+  if ( _weight == 0)
+    return;// nothing was there
+  base::operator/=(_weight);
+  _weight = 1;
 }

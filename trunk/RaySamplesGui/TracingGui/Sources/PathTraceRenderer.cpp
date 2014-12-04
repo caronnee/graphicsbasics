@@ -137,7 +137,6 @@ Vector4d PathTraceRenderer::SampleLightBrdf(const Ray & ray, const Intersection 
 // first try ambient light;
   Vector4d output;
   Vector4d brdf = isec.model->GetMaterial()->EvalBrdf(sampledDir,isec.nrm,output); 
-  Vector4d ret = _scene->Ambient().Illumination(sampledDir,isec.nrm, 1e36f).MultiplyPerElement(brdf);
 
   Ray r;
   r.origin = isec.worldPosition;
@@ -145,8 +144,10 @@ Vector4d PathTraceRenderer::SampleLightBrdf(const Ray & ray, const Intersection 
 
   Intersection isec2;
   if ( !_scene->FindIntersection( r, isec2 ) )
-    return ret; // did not intersect anything
+    return Vector4d(0,0,0,0); // did not intersect anything
   
+  Vector4d ret = _scene->Ambient().Illumination(sampledDir,isec.nrm, 1e36f).MultiplyPerElement(brdf);
+
   Vector4d illumination = isec2.model->GetMaterial()->Illumination( sampledDir,isec.nrm, isec2.t  );
   ret += illumination.MultiplyPerElement( brdf );
   return ret;

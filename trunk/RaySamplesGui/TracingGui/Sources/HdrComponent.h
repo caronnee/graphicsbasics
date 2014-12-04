@@ -5,9 +5,13 @@
 
 class HDRComponent: public Vector4d
 {
+  typedef Vector4d base;
+  int _weight;
 public:
 	HDRComponent();
 	HDRComponent( const HDRComponent & comp );
 	void Normalize();
+  HDRComponent & Add(const Vector4d & val);
+  void SetUnit();
 };
 #endif
