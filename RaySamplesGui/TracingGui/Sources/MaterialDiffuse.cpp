@@ -35,6 +35,6 @@ Vector4d MaterialDiffuse::SampleBrdf(const Vector4d & input,const Vector4d &norm
 
 Vector4d MaterialDiffuse::Illumination(Vector4d & sampledDir, const Vector4d & normal, const int &len) const
 {
-  return Vector4d(0,0,0,0);
+  return Emmisive();
 }
 

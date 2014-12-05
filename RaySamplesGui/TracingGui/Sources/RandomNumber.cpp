@@ -20,9 +20,8 @@ Vector4d SampleHemisphere(int exponentRange /* 1 */)
 {
   //create cos = e^(1/(n+1)
   float e1 = james.GetFloat();
-  float e2 = james.GetFloat();
+  float e2 = james.GetFloat()* 2 * PI;
 	Vector4d ret;
-  float aizmuth = 2* e1 * PI;
   float cosEl = pow(e1, 1.0f/(exponentRange+1));
   float sinEl = sqrt(1 - cosEl*cosEl);
   float cosAz = cos(e2);

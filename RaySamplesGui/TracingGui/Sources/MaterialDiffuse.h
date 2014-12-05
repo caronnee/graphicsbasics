@@ -7,7 +7,6 @@ class MaterialDiffuse : public Material
 {
   typedef Material base;
   Vector4d _diffuseReflectance;
-  Vector4d _emmisive;
 public:
 
 	MaterialDiffuse(const Vector4d & diffuseReflectance,const Vector4d & emmisive);
