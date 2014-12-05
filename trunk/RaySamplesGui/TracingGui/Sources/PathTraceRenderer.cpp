@@ -32,7 +32,7 @@ Vector4d PathTraceRenderer::SampleLight(Ray & ray, Intersection & isec)
 		// we want to know if the intersection before
 		if ( occluded && ( fabs(occSec.t - t )> EPSILON ) )
 			continue;
-
+    // there is intersection that 
 		Vector4d brdf = isec.model->GetMaterial()->EvalBrdf(-ray.direction, isec.nrm, outputVector);
 		for ( int xx = 0; xx < 3; xx++)
 		{
@@ -129,26 +129,41 @@ Vector4d PathTraceRenderer::SampleLightBrdf(const Ray & ray, const Intersection 
   if ( m->IsLight() )
     return Vector4d(1,1,1,1);
   float pdf;
+  //if ( (isec.model->Type() != TypeSphere) && (isec.nrm[2] < 0 ) )
+  //  __debugbreak();
   Vector4d sampledDir = m->SampleBrdf( -ray.direction, isec.nrm, pdf );
   DoAssert(sampledDir.Dot(isec.nrm) > 0);
-  if (sampledDir.Size2() == 0) 
+  if ( sampledDir.Size2() == 0 ) 
     return Vector4d(0,0,0,0); 
 
-// first try ambient light;
-  Vector4d output;
-  Vector4d brdf = isec.model->GetMaterial()->EvalBrdf(sampledDir,isec.nrm,output); 
-
   Ray r;
+  // 
   r.origin = isec.worldPosition;
+
+  // already direction towards outside of the sphere
   r.direction = sampledDir;
 
   Intersection isec2;
-  if ( !_scene->FindIntersection( r, isec2 ) )
-    return Vector4d(0,0,0,0); // did not intersect anything
-  
-  Vector4d ret = _scene->Ambient().Illumination(sampledDir,isec.nrm, 1e36f).MultiplyPerElement(brdf);
+  bool hitSomething = _scene->FindIntersection(r, isec2);
 
-  Vector4d illumination = isec2.model->GetMaterial()->Illumination( sampledDir,isec.nrm, isec2.t  );
-  ret += illumination.MultiplyPerElement( brdf );
+  Vector4d ret(0,0,0,0);
+  // if it hits something, better for that to be a light...
+  if ( hitSomething )
+  {
+    //if ( isec.model->Type() == TypeSphere )
+    //  __debugbreak();
+    // definitely not occluded, skip occlusion thing
+    Vector4d illuminationComing = isec2.model->GetMaterial()->Illumination( sampledDir,isec.nrm, isec2.t );
+    Vector4d dummy;
+    Vector4d brdf = m->EvalBrdf( sampledDir, isec.nrm, dummy );
+    ret = illuminationComing.MultiplyPerElement(brdf);
+  }
+  
+  //// we want to know if the intersection before
+  //if ( occluded && ( fabs( isec2.t - isec.t )> EPSILON ) )
+  //  return _scene->Ambient().Illumination(sampledDir,isec.nrm, 1e36f).MultiplyPerElement(brdf);
+
+  //Vector4d illumination = isec2.model->GetMaterial()->Illumination( sampledDir,isec.nrm, (isec2.worldPosition - isec.worldPosition).Size()  );
+  //ret += illumination.MultiplyPerElement( brdf );
   return ret;
 }
