@@ -5,8 +5,6 @@
 
 #define MAX_BOUNCES 10
 
-Vector4d maxTotal;
-
 Vector4d PathTraceRenderer::SampleLight(Ray & ray, Intersection & isec)
 {
 	Vector4d total (0,0,0,0);
@@ -41,13 +39,7 @@ Vector4d PathTraceRenderer::SampleLight(Ray & ray, Intersection & isec)
 			DoAssert(illumination[xx] >=0);
 		}
 		total += brdf.MultiplyPerElement(illumination);		
-}	
-  if ( total[0] > 8000 )
-  {
-    //__debugbreak();
   }
-  if ( total.Size2()  > maxTotal.Size2() )
-    maxTotal = total;
 	return total;
 }
 
@@ -124,7 +116,17 @@ Vector4d PathTraceRenderer::RenderPixel(const int &x, const int &y)
 {
 	// we start at camera
   int u = x,v=y;
-  /*Intersection s1,s2;
+  /*u = 121;  
+  v=121;*/
+  //if ( y < 256 )
+  //{
+  //  u = 121;
+  //}
+  //else
+  //{
+  //  u = 401;
+  //}
+  /*Intersection s1,s2; 
   if ( y > 256 )
   {
     v = y - 256;
@@ -142,7 +144,7 @@ Vector4d PathTraceRenderer::RenderPixel(const int &x, const int &y)
   return TrackShine(s2,s1);*/
 	if (_bouncer)
 		_bouncer->Init();
-	Ray ray = _scene->GetRay( u , v );
+	Ray ray = _scene->GetRay( u,v );
   return RayTrace( ray );
 }
 
