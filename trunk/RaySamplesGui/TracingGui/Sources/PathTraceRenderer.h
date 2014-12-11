@@ -18,6 +18,7 @@ private:
 	Vector4d Bounced(Ray & ray, Intersection & section );
 	Vector4d SampleLight(Ray & ray, Intersection & section);
   Vector4d SampleLightBrdf(const Ray & ray, const Intersection & isec);
+  Vector4d TrackShine( const Intersection & lightSection, const Intersection & testSection );
 };
 
 #endif

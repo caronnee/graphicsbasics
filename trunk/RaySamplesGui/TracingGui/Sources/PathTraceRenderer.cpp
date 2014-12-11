@@ -5,6 +5,8 @@
 
 #define MAX_BOUNCES 10
 
+Vector4d maxTotal;
+
 Vector4d PathTraceRenderer::SampleLight(Ray & ray, Intersection & isec)
 {
 	Vector4d total (0,0,0,0);
@@ -34,12 +36,18 @@ Vector4d PathTraceRenderer::SampleLight(Ray & ray, Intersection & isec)
 			continue;
     // there is intersection that 
 		Vector4d brdf = isec.model->GetMaterial()->EvalBrdf(-ray.direction, isec.nrm, outputVector);
-		for ( int xx = 0; xx < 3; xx++)
+    for ( int xx = 0; xx < 3; xx++)
 		{
 			DoAssert(illumination[xx] >=0);
 		}
 		total += brdf.MultiplyPerElement(illumination);		
-	}
+}	
+  if ( total[0] > 8000 )
+  {
+    //__debugbreak();
+  }
+  if ( total.Size2()  > maxTotal.Size2() )
+    maxTotal = total;
 	return total;
 }
 
@@ -83,6 +91,8 @@ Vector4d PathTraceRenderer::RayTrace(Ray ray)
 		return BLACK;
 	}
 
+  Vector4d vv = GetCamera()->WorldToViewport(isec.worldPosition);
+
 	if ( _renderMask & RIndirectLightBounced)
 		total += Bounced(ray,isec);
 
@@ -98,14 +108,42 @@ Vector4d PathTraceRenderer::RayTrace(Ray ray)
 	return total;
 }
 
+Vector4d PathTraceRenderer::TrackShine( const Intersection & lightSection, const Intersection & testSection )
+{
+  Vector4d ret(0,0,0,0);
+  if (!lightSection.model->GetMaterial()->IsLight())
+    return 0;
+  // sampleVector
+  Vector4d dirToLight = lightSection.worldPosition - testSection.worldPosition;
+  // a1, a2;
+  float len;
+  return lightSection.model->Evaluate( testSection.nrm, dirToLight, len);
+}
+
 Vector4d PathTraceRenderer::RenderPixel(const int &x, const int &y)
 {
 	// we start at camera
-	// int u = 56,v = 56;
+  int u = x,v=y;
+  /*Intersection s1,s2;
+  if ( y > 256 )
+  {
+    v = y - 256;
+    Ray r = _scene->GetRay(401,121);
+    _scene->FindIntersection(r,s1);
+  }
+  else
+  {
+    v=y;
+    Ray r = _scene->GetRay(121,121);
+    _scene->FindIntersection(r,s1);
+  }
+  Ray r = _scene->GetRay(x,v);
+  _scene->FindIntersection(r,s2);
+  return TrackShine(s2,s1);*/
 	if (_bouncer)
 		_bouncer->Init();
-	Ray ray = _scene->GetRay( x + GetFloat(), y + GetFloat() );
-	return RayTrace( ray );
+	Ray ray = _scene->GetRay( u , v );
+  return RayTrace( ray );
 }
 
 PathTraceRenderer::PathTraceRenderer() : Renderer(), _bouncer(NULL)
@@ -158,6 +196,8 @@ Vector4d PathTraceRenderer::SampleLightBrdf(const Ray & ray, const Intersection 
     Vector4d brdf = m->EvalBrdf( sampledDir, isec.nrm, dummy );
     ret = illuminationComing.MultiplyPerElement(brdf);
   }
+  // use ambient lighting
+  //if (!hitSomething || )
   
   //// we want to know if the intersection before
   //if ( occluded && ( fabs( isec2.t - isec.t )> EPSILON ) )

@@ -17,17 +17,19 @@ Ray Camera::GetRay(float x, float y)
 	r.origin = ModelToWorld( Vector4d(0,0,0,1) );
 	// this is in model space
 	Vector4d w (x,y,0,1);
-	r.direction = RasterToWorld(w) - r.origin; // modelOrigin
-	r.direction.Normalize();
+  Vector4d tt = RasterToWorld(w);
+	r.direction = RasterToWorld(w) - r.origin; // 
+  r.direction.Normalize();
+  Vector4d test = WorldToRaster( r.direction );
 	return r;
 }
 
 void Camera::SetPerspective(float zFar, float fov)
 {
-	float zProj = 1.0f/tan(fov/2);
-	float zNear = zProj;
-	Vector4d v1(zProj/2.0f,0,0,zProj/2);
-	Vector4d v2(0, -zProj/2.0f,0,zProj/2);
+	_zProj = 1.0f/tan(fov/2);
+	float zNear = _zProj;
+	Vector4d v1(_zProj/2.0f,0,0,_zProj/2);
+	Vector4d v2(0, -_zProj/2.0f,0,_zProj/2);
 	float range = zFar - zNear;
 	Vector4d v3(0,0,zFar/range, zFar*zNear/-range);
 	Vector4d v4(0,0,1,0);
@@ -43,7 +45,6 @@ void Camera::SetPerspective(float zFar, float fov)
 	//_worldToRaster.Scale(Vector4d(0.5,0.5,1,1));
 
 	_rasterToWorld = _worldToRaster.Invert();
-	Matrix4d res = _worldToRaster*_rasterToWorld;
 }
 #include "debug.h"
 
@@ -76,4 +77,24 @@ Vector4d Camera::SampleIllumination(Intersection &section, Vector4d & sampledDir
 	Vector4d zero;
 	zero.Zero();
 	return zero;
+}
+
+Vector4d Camera::WorldToViewport(const Vector4d & mPoint)
+{
+  Vector4d test = WorldToRaster(mPoint);
+  Vector4d o = ModelToWorld(Vector4d(0,0,0,1));
+  Vector4d testDir = test - WorldToRaster(o);
+  testDir *= test[2] / testDir[2];//normalize Z
+  test -= testDir;
+  Vector4d ret = test;
+#if _DEBUG
+  Vector4d th = RasterToWorld(Vector4d(ret[0],ret[1],0,1));
+  Vector4d dir0 = th - mPoint;
+  dir0.Normalize();
+  Vector4d dir1 = ModelToWorld(Vector4d(0,0,0,1)) - mPoint;
+  dir1.Normalize();
+  DoAssert(dir0 == dir0);
+  DoAssert(dir0 == dir1);
+#endif
+  return ret;
 }
