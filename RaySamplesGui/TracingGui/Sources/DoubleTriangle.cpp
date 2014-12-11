@@ -103,7 +103,7 @@ Vector4d DoubleTriangle::Evaluate( const Vector4d& secNormal,Vector4d & sampledD
   len = sampledDir.Size();
   sampledDir.Normalize();
   float d2 = len * len;
-#if 0 &&( _DEBUG )
+#if ( 0 &&_DEBUG )
   if ( d2 < 0.006f )
     __debugbreak();
 #endif
@@ -124,13 +124,21 @@ Vector4d DoubleTriangle::Evaluate( const Vector4d& secNormal,Vector4d & sampledD
 #include "Camera.h"
 #include "debug.h"
 
+Vector4d maxShine;
+Vector4d maxCoordsLight;
+Vector4d minShine(100,100,100,100);
+Vector4d minCoordsLight;
+
 Vector4d DoubleTriangle::SampleIllumination(Intersection &section, Vector4d & sampledDir, float & len)
 {
 	// sample point on the triangle
 	float a1 = GetFloat();
-	float a2 = 0;
-	if (a1<1)
-	 a2 = GetFloat() * (1.0f-a1);
+  float a2 = GetFloat();
+  if ( a2 > (1 - a1) )
+  {
+    a1 = 1-a1;
+    a2 = 1-a2;
+  }
 	lasta = a1;
 	lastb = a2;
 	Vector4d point = _edges[0]*a1 + _edges[1]*a2 + _points[0];
@@ -140,8 +148,20 @@ Vector4d DoubleTriangle::SampleIllumination(Intersection &section, Vector4d & sa
   DoAssert(raster[1] < 600);
   DoAssert(raster[1] > -30);
   DoAssert(raster[0] > -30);
-    sampledDir = mPoint - section.worldPosition;
-  return Evaluate( section.nrm, sampledDir, len);
+  sampledDir = mPoint - section.worldPosition;
+  Vector4d total = Evaluate( section.nrm, sampledDir, len);
+
+  if ( total.Size2()  > maxShine.Size2() )
+  {
+    maxCoordsLight =  GetCamera()->WorldToViewport(point);
+    maxShine = total;
+  }
+  if ( total.Size2()  < minShine.Size2() )
+  {
+    minShine = total;
+    minCoordsLight = GetCamera()->WorldToViewport(point);
+  }
+  return total;
 }
 
 void DoubleTriangle::SaveProperties(FileHandler & handler)

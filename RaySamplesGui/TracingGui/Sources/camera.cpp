@@ -93,7 +93,6 @@ Vector4d Camera::WorldToViewport(const Vector4d & mPoint)
   dir0.Normalize();
   Vector4d dir1 = ModelToWorld(Vector4d(0,0,0,1)) - mPoint;
   dir1.Normalize();
-  DoAssert(dir0 == dir0);
   DoAssert(dir0 == dir1);
 #endif
   return ret;
