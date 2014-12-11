@@ -54,6 +54,12 @@ void Scene::DeleteModel(Geometry * geometry)
 	}
 }
 
+Camera * GCamera;
+Camera * GetCamera()
+{
+  return GCamera;
+}
+
 void Scene::CreateCamera( CameraContext & ctx)
 {
 	Camera * c = new Camera();
@@ -68,6 +74,8 @@ void Scene::CreateCamera( CameraContext & ctx)
 		DeleteModel(_camera);
 		delete _camera;
 	}
+  GCamera = c;
+  c->RasterToWorld(Vector4d(256,256));
 	_camera =c;
 	Vector4d v[] = {Vector4d(0,0,0,0),Vector4d(0,0,0,0)};
 	_camera->SetMaterial(CreateMaterial(MDiffuse,v,0));

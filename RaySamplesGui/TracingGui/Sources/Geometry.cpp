@@ -148,3 +148,9 @@ void Geometry::LoadProperties(FileHandler & handler)
 {
 	// nothing
 }
+
+Vector4d Geometry::Evaluate(const Vector4d& secNormal,Vector4d & sampledDir, float & len)
+{
+  throw "not implemented";
+  return Vector4d(0,0,0,0);
+}

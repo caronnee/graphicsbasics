@@ -16,6 +16,7 @@ class Camera : public PointObject
 	Matrix4d _worldToRaster;
 	Matrix4d _rasterToWorld;
 	std::function<Vector4d (float&, float &y)> _jittering;
+  double _zProj;
 public:
 	Camera();
 	void SetResolution( float x, float y);
@@ -25,6 +26,9 @@ public:
 	Vector4d RasterToWorld(const Vector4d& v) const;
 	virtual int Type()const;
 	virtual Vector4d SampleIllumination(Intersection &section, Vector4d & sampledDir, float & sampleLen );
+  Vector4d WorldToViewport(const Vector4d & mPoint);
 };
+
+Camera * GetCamera();
 
 #endif

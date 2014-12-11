@@ -95,7 +95,34 @@ int DoubleTriangle::Type()const
 #include "RandomNumber.h"
 
 float lasta;
-float lasbB;
+float lastb;
+float mmm = 100;
+
+Vector4d DoubleTriangle::Evaluate( const Vector4d& secNormal,Vector4d & sampledDir, float & len )
+{
+  len = sampledDir.Size();
+  sampledDir.Normalize();
+  float d2 = len * len;
+#if 0 &&( _DEBUG )
+  if ( d2 < 0.006f )
+    __debugbreak();
+#endif
+  float cosA = secNormal.Dot(sampledDir);
+  float cosB = -_normal.Dot(sampledDir);
+  if ( (cosA <= 0) || (cosB <= 0))
+    return Vector4d(0,0,0,0);
+  Vector4d v = GetMaterial()->Emmisive();
+  float coef = cosA * cosB * _area /d2;
+  if ( coef < 2e-8)
+  {
+    mmm = coef;
+    //__debugbreak();
+  }
+  return v * cosA * cosB * _area /d2;
+}
+
+#include "Camera.h"
+#include "debug.h"
 
 Vector4d DoubleTriangle::SampleIllumination(Intersection &section, Vector4d & sampledDir, float & len)
 {
@@ -105,19 +132,16 @@ Vector4d DoubleTriangle::SampleIllumination(Intersection &section, Vector4d & sa
 	if (a1<1)
 	 a2 = GetFloat() * (1.0f-a1);
 	lasta = a1;
-	lasbB = a2;
+	lastb = a2;
 	Vector4d point = _edges[0]*a1 + _edges[1]*a2 + _points[0];
 	Vector4d mPoint = ModelToWorld(point);
-	sampledDir = mPoint - section.worldPosition;
-	len = sampledDir.Size();
-	sampledDir.Normalize();
-	float d2 = len * len;
-	float cosA = section.nrm.Dot(sampledDir);
-	float cosB = -_normal.Dot(sampledDir);
-	if ( (cosA <= 0) || (cosB <= 0))
-		return Vector4d(0,0,0,0);
-	Vector4d v = GetMaterial()->Emmisive();
-	return v * cosA * cosB * _area /d2;
+  Vector4d raster = GetCamera()->WorldToViewport(mPoint);
+  DoAssert(raster[0] < 600);
+  DoAssert(raster[1] < 600);
+  DoAssert(raster[1] > -30);
+  DoAssert(raster[0] > -30);
+    sampledDir = mPoint - section.worldPosition;
+  return Evaluate( section.nrm, sampledDir, len);
 }
 
 void DoubleTriangle::SaveProperties(FileHandler & handler)

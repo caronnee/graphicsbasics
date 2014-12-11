@@ -22,17 +22,17 @@ void Renderer::Render(int iterations)
 	{
     //Vector4d color = RenderPixel(25,25);
     //_image->AddColor(25,25,color);
-		for ( int x = 0; x < _image->W(); x++)
-		{
-			for ( int y = 0; y < _image->H(); y++)
-			{
-				if (_stop)
-					return;
-				Vector4d color = RenderPixel(x,y);
-				_image->AddColor(x,y,color);
-			}
-			GetRendererTrack()->Update();
-		}
+    for ( int y = 0; y < _image->H(); y++)
+    {
+      for ( int x = 0; x < _image->W(); x++)
+      {
+        if (_stop)
+          return;
+        Vector4d color = RenderPixel(x,y);
+        _image->AddColor(x,y,color);
+      }
+      GetRendererTrack()->Update();
+    }
 	}
 }
 
