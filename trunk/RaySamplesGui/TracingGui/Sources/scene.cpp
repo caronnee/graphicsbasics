@@ -25,9 +25,9 @@ bool Scene::FindIntersection(const Ray & ray, Intersection& res)
 	for (size_t i =0; i<_geometry.size(); i++)
 	{
 		Intersection isect;
-		Geometry & geom = * _geometry[i];
+		Geometry * geom = _geometry[i];
 		
-		if ( geom.Intersect(ray,isect) )
+		if ( geom->Intersect(ray,isect) )
 		{
 			if ( res.t < 0.001)
 				continue;

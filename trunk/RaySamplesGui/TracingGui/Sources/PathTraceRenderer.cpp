@@ -116,8 +116,8 @@ Vector4d PathTraceRenderer::RenderPixel(const int &x, const int &y)
 {
 	// we start at camera
   int u = x,v=y;
-  /*u = 121;  
-  v=121;*/
+  //u = 133;  
+  //v=345;
   //if ( y < 256 )
   //{
   //  u = 121;
@@ -197,6 +197,10 @@ Vector4d PathTraceRenderer::SampleLightBrdf(const Ray & ray, const Intersection 
     Vector4d dummy;
     Vector4d brdf = m->EvalBrdf( sampledDir, isec.nrm, dummy );
     ret = illuminationComing.MultiplyPerElement(brdf);
+  }
+  else
+  {
+    //DoAssert(false);
   }
   // use ambient lighting
   //if (!hitSomething || )
