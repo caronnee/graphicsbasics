@@ -105,6 +105,7 @@
     <ClCompile Include="GeneratedFiles\Release\moc_TrackProgress.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="Sources\Debug.cpp" />
     <ClCompile Include="Sources\DoubleIntSpinBox.cpp" />
     <ClCompile Include="Sources\DoubleTriangle.cpp" />
     <ClCompile Include="Sources\main.cpp" />

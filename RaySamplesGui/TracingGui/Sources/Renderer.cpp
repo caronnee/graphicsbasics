@@ -12,6 +12,8 @@ void Renderer::Init( Scene * scene, Image * image, int maxBounces )
 bool stop = false;
 #endif
 
+extern Vector4d GCoord;
+
 void Renderer::Render(int iterations)
 {
 	_image->Clear();
@@ -29,7 +31,10 @@ void Renderer::Render(int iterations)
         if (_stop)
           return;
         Vector4d color = RenderPixel(x,y);
-        _image->AddColor(x,y,color);
+        if ( GCoord [0] > 0)
+          _image->AddColor(GCoord[0],GCoord[1],Vector4d(1,1,1,1));
+        else
+          _image->AddColor(x,y,color);
       }
       GetRendererTrack()->Update();
     }

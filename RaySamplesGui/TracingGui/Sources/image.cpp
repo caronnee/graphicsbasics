@@ -17,6 +17,8 @@ Image::~Image()
 
 void Image::AddColor(int x, int y, const Vector4d & color)
 {
+  if ( (x >= _w) || (y >= _h) || (x < 0) || (y < 0)  )
+    return;
 	int index = y*_w + x;
 	_buffer[index].Add(color);
 

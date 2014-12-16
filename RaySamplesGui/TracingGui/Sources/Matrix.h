@@ -28,6 +28,10 @@ public:
 	bool operator==(Matrix4d & oper);
 	bool operator!=(Matrix4d & oper);
 	void Zero();
+  Vector4d InSpace(Vector4d & vector)
+  {
+    return Aside()*vector[0] + Up()*vector[1]+Direction()*vector[2];
+  }
 	void Translate(const Vector4d & trans);
 	void RotateX(const float & angle);
 	void RotateY(const float & angle);
