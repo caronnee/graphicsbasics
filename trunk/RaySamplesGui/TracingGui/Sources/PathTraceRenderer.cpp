@@ -91,7 +91,11 @@ Vector4d PathTraceRenderer::RayTrace(Ray ray)
 	if ( _renderMask & RDirectLight )
 		total += SampleLight(ray,isec);
   if ( _renderMask & RDirectBRDF )
+  {
+    //isec.nrm = Vector4d(0,0,1,0);
+    //isec.worldPosition = Vector4d(0,0,-1.25);
     total += SampleLightBrdf(ray,isec);
+  }
 
 #if 0 && _DEBUG
 	float xx = total.Size2();
@@ -116,16 +120,17 @@ Vector4d PathTraceRenderer::RenderPixel(const int &x, const int &y)
 {
 	// we start at camera
   int u = x,v=y;
-  //u = 133;  
-  //v=345;
-  //if ( y < 256 )
-  //{
-  //  u = 121;
-  //}
+  //v = 121;  
+  //if ( y < 128 )
+  {
+   // u = 60;
+  }
   //else
-  //{
-  //  u = 401;
-  //}
+  {
+  //  u = 190;
+  }
+//  u = v = 128;
+//  v=250;
   /*Intersection s1,s2; 
   if ( y > 256 )
   {
@@ -162,8 +167,11 @@ void PathTraceRenderer::Init(Scene * scene, Image * image, int bounces)
 	}
 }
 
+Vector4d GCoord;
+
 Vector4d PathTraceRenderer::SampleLightBrdf(const Ray & ray, const Intersection & isec)
 {
+  GCoord = Vector4d(-1,-1,-1,-1);
   // generate the ray according to BRDF
   const Material * m = isec.model->GetMaterial();
   if ( m->IsLight() )
@@ -172,7 +180,11 @@ Vector4d PathTraceRenderer::SampleLightBrdf(const Ray & ray, const Intersection 
   //if ( (isec.model->Type() != TypeSphere) && (isec.nrm[2] < 0 ) )
   //  __debugbreak();
   Vector4d sampledDir = m->SampleBrdf( -ray.direction, isec.nrm, pdf );
-  DoAssert(sampledDir.Dot(isec.nrm) > 0);
+#if _DEBUG
+  float cc = sampledDir.Dot(isec.nrm);
+  //ShowDebugMessage("angle %f\n",cc);
+  DoAssert( cc >= 0);
+#endif
   if ( sampledDir.Size2() == 0 ) 
     return Vector4d(0,0,0,0); 
 
@@ -182,7 +194,6 @@ Vector4d PathTraceRenderer::SampleLightBrdf(const Ray & ray, const Intersection 
 
   // already direction towards outside of the sphere
   r.direction = sampledDir;
-
   Intersection isec2;
   bool hitSomething = _scene->FindIntersection(r, isec2);
 
@@ -190,10 +201,14 @@ Vector4d PathTraceRenderer::SampleLightBrdf(const Ray & ray, const Intersection 
   // if it hits something, better for that to be a light...
   if ( hitSomething )
   {
+    //GCoord = GetCamera()->WorldToViewport(isec2.worldPosition);
     //if ( isec.model->Type() == TypeSphere )
     //  __debugbreak();
     // definitely not occluded, skip occlusion thing
+    bool t = isec2.model->GetMaterial()->IsLight();
     Vector4d illuminationComing = isec2.model->GetMaterial()->Illumination( sampledDir,isec.nrm, isec2.t );
+    illuminationComing[2] = 0;
+    DoAssert(t && illuminationComing.Size2()>0)
     Vector4d dummy;
     Vector4d brdf = m->EvalBrdf( sampledDir, isec.nrm, dummy );
     ret = illuminationComing.MultiplyPerElement(brdf);
@@ -203,13 +218,6 @@ Vector4d PathTraceRenderer::SampleLightBrdf(const Ray & ray, const Intersection 
     //DoAssert(false);
   }
   // use ambient lighting
-  //if (!hitSomething || )
-  
-  //// we want to know if the intersection before
-  //if ( occluded && ( fabs( isec2.t - isec.t )> EPSILON ) )
-  //  return _scene->Ambient().Illumination(sampledDir,isec.nrm, 1e36f).MultiplyPerElement(brdf);
 
-  //Vector4d illumination = isec2.model->GetMaterial()->Illumination( sampledDir,isec.nrm, (isec2.worldPosition - isec.worldPosition).Size()  );
-  //ret += illumination.MultiplyPerElement( brdf );
   return ret;
 }

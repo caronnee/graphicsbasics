@@ -47,9 +47,6 @@
     <Filter Include="Source Files\Logic\Debug">
       <UniqueIdentifier>{eed0c16d-654e-466d-92bc-2457502c4ee8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Logic\Debug\Scene">
-      <UniqueIdentifier>{7d719dd5-e4bc-4179-a215-8fb2241b5e25}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Logic\File">
       <UniqueIdentifier>{925a6746-ed1d-43b1-a6e0-7cccca16d304}</UniqueIdentifier>
     </Filter>
@@ -79,6 +76,9 @@
     </Filter>
     <Filter Include="Source Files\Gui\Thread">
       <UniqueIdentifier>{ffd813e7-fc9d-443c-a21e-c6ec93a6c20e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Logic\Scene">
+      <UniqueIdentifier>{7d719dd5-e4bc-4179-a215-8fb2241b5e25}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -134,7 +134,7 @@
       <Filter>Source Files\Logic\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="Sources\scene.cpp">
-      <Filter>Source Files\Logic\Debug\Scene</Filter>
+      <Filter>Source Files\Logic\Scene</Filter>
     </ClCompile>
     <ClCompile Include="Sources\vector.cpp">
       <Filter>Source Files\Logic\Math</Filter>
@@ -189,6 +189,9 @@
     </ClCompile>
     <ClCompile Include="Sources\RenderThread.cpp">
       <Filter>Source Files\Gui\Thread</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Debug.cpp">
+      <Filter>Source Files\Logic\Debug</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -258,7 +261,7 @@
       <Filter>Source Files\Logic\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="Sources\scene.h">
-      <Filter>Source Files\Logic\Debug\Scene</Filter>
+      <Filter>Source Files\Logic\Scene</Filter>
     </ClInclude>
     <ClInclude Include="Sources\Vector.h">
       <Filter>Source Files\Logic\Math</Filter>

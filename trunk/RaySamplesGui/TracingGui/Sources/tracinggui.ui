@@ -841,10 +841,13 @@
         <item row="2" column="3">
          <widget class="QSpinBox" name="yDim">
           <property name="minimum">
-           <number>512</number>
+           <number>128</number>
           </property>
           <property name="maximum">
            <number>1024</number>
+          </property>
+          <property name="value">
+           <number>256</number>
           </property>
          </widget>
         </item>
@@ -885,10 +888,13 @@
         <item row="2" column="2">
          <widget class="QSpinBox" name="xDim">
           <property name="minimum">
-           <number>512</number>
+           <number>128</number>
           </property>
           <property name="maximum">
            <number>1024</number>
+          </property>
+          <property name="value">
+           <number>256</number>
           </property>
          </widget>
         </item>

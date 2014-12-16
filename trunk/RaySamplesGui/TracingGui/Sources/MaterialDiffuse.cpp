@@ -23,9 +23,8 @@ Vector4d MaterialDiffuse::SampleBrdf(const Vector4d & input,const Vector4d &norm
 {
   Matrix4d d;
   d.CreateFromZ(normal);
-  d = d.Invert();
   Vector4d t = SampleHemisphere();
-  Vector4d sample = d * t;
+  Vector4d sample = d.InSpace(t);
   float cosA = normal.Dot(input);
   DoAssert(normal.Dot(sample) > 0);
   pdf = cosA / PI;

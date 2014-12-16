@@ -28,7 +28,7 @@ Vector4d SampleHemisphere(int exponentRange /* 1 */)
   float sinAz = sin(e2);
 
   ret[0] = cosAz * sinEl;
-  ret[1] = cosAz * cosEl;
+  ret[1] = sinAz * sinEl;
   ret[2] = cosEl;
   ret[3] = 0;
 	ret.Normalize();
