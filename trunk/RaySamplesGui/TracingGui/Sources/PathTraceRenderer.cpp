@@ -207,7 +207,6 @@ Vector4d PathTraceRenderer::SampleLightBrdf(const Ray & ray, const Intersection 
     // definitely not occluded, skip occlusion thing
     bool t = isec2.model->GetMaterial()->IsLight();
     Vector4d illuminationComing = isec2.model->GetMaterial()->Illumination( sampledDir,isec.nrm, isec2.t );
-    illuminationComing[2] = 0;
     DoAssert(t && illuminationComing.Size2()>0)
     Vector4d dummy;
     Vector4d brdf = m->EvalBrdf( sampledDir, isec.nrm, dummy );
