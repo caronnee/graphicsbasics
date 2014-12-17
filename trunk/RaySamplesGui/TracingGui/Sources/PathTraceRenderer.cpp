@@ -21,7 +21,6 @@ Vector4d PathTraceRenderer::SampleLight(Ray & ray, Intersection & isec)
 		Vector4d lightVector;
 		float t;
 		Vector4d illumination = light->SampleIllumination( isec, lightVector,t);
-		Vector4d outputVector = lightVector;		
 		Intersection occSec;
 		occSec.t = t - EPSILON;
 		Ray r2;
@@ -33,7 +32,7 @@ Vector4d PathTraceRenderer::SampleLight(Ray & ray, Intersection & isec)
 		if ( occluded && ( fabs(occSec.t - t )> EPSILON ) )
 			continue;
     // there is intersection that 
-		Vector4d brdf = isec.model->GetMaterial()->EvalBrdf(-ray.direction, isec.nrm, outputVector);
+		Vector4d brdf = isec.model->GetMaterial()->EvalBrdf(-ray.direction, isec.nrm, lightVector);
     for ( int xx = 0; xx < 3; xx++)
 		{
 			DoAssert(illumination[xx] >=0);
@@ -208,8 +207,12 @@ Vector4d PathTraceRenderer::SampleLightBrdf(const Ray & ray, const Intersection 
     bool t = isec2.model->GetMaterial()->IsLight();
     Vector4d illuminationComing = isec2.model->GetMaterial()->Illumination( sampledDir,isec.nrm, isec2.t );
     DoAssert(t && illuminationComing.Size2()>0)
+    /*  if (illuminationComing.Size2()>0)
+      {
+        __debugbreak();
+      }*/
     Vector4d dummy;
-    Vector4d brdf = m->EvalBrdf( sampledDir, isec.nrm, dummy );
+    Vector4d brdf = m->EvalBrdf( -ray.direction, isec.nrm, sampledDir );
     ret = illuminationComing.MultiplyPerElement(brdf);
   }
   else

@@ -34,7 +34,7 @@ Vector4d TestRenderer::RenderPixel(const int &x, const int &y)
   else
   {
     // eval brdf
-	  Vector4d output;
+	  Vector4d output(0,0,0,0);
 	  total = isect.model->GetMaterial()->EvalBrdf( -ray.direction, isect.nrm, output);
   }
   return total;

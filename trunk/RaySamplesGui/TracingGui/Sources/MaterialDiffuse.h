@@ -5,6 +5,7 @@
 
 class MaterialDiffuse : public Material
 {
+protected:
   typedef Material base;
   Vector4d _diffuseReflectance;
 public:
