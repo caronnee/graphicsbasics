@@ -38,6 +38,10 @@ Vector4d MaterialSpecular::EvalBrdf(const Vector4d & incoming, const Vector4d & 
 
 Vector4d MaterialSpecular::SampleBrdf(const Vector4d & input,const Vector4d &normal,float &pdf) const
 {
+  float sum = _diffuseReflectance.Max()+_specularReflectance.Max();
+  float test = GetFloat()*sum;
+  if ( test < _diffuseReflectance.Max())
+    return MaterialDiffuse::SampleBrdf(input,normal,pdf);
   // sample according to specular BRDF
   Vector4d ret = SampleHemisphere(_phongCoef);
   Vector4d reflected = Reflected( input,normal);
@@ -47,6 +51,7 @@ Vector4d MaterialSpecular::SampleBrdf(const Vector4d & input,const Vector4d &nor
   cosAn = pow(cosAn,_phongCoef);
   Matrix4d sample;
   sample.CreateFromZ(normal);
+  ret = sample.InSpace(ret);
   // TODO why,why?
   pdf = (_phongCoef + 1)*cosAn/(2*PI);
   if ( ret.Dot(reflected) < 0 )
