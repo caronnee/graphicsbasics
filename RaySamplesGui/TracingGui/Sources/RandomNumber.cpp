@@ -53,7 +53,7 @@ Vector4d SampleSphere()
 	float sinB = sin(beta);
 	Vector4d ret;
   ret[0] = cosA * sinB;
-  ret[1] = cosA * cosB;
+  ret[1] = sinA * sinB;
   ret[2] = cosB;
   ret[3] = 0;
 	ret.Normalize();
