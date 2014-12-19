@@ -34,6 +34,7 @@ bool AmbientLight::Intersect(const Ray &,Intersection &)
 
 Vector4d AmbientLight::Illumination(const Vector4d & lightVector, const Vector4d & nrm, const int & dist)
 {
+  DoAssert( fabs(lightVector.Size2() - 1 ) < EPSILON );
   float cosA = nrm.Dot(lightVector);
   if ( cosA < 0 )
     return Vector4d(0,0,0,0);

@@ -197,6 +197,7 @@ Vector4d PathTraceRenderer::SampleLightBrdf(const Ray & ray, const Intersection 
   bool hitSomething = _scene->FindIntersection(r, isec2);
 
   Vector4d ret(0,0,0,0);
+  Vector4d brdf = m->EvalBrdf( -ray.direction, isec.nrm, sampledDir );  
   // if it hits something, better for that to be a light...
   if ( hitSomething )
   {
@@ -211,15 +212,14 @@ Vector4d PathTraceRenderer::SampleLightBrdf(const Ray & ray, const Intersection 
       {
         __debugbreak();
       }*/
-    Vector4d dummy;
-    Vector4d brdf = m->EvalBrdf( -ray.direction, isec.nrm, sampledDir );
     ret = illuminationComing.MultiplyPerElement(brdf);
   }
   else
   {
-    //DoAssert(false);
+    // use ambient lighting
+    int len;
+    ret += _scene->Ambient().Illumination(sampledDir,isec.nrm,len).MultiplyPerElement(brdf);
   }
-  // use ambient lighting
 
   return ret;
 }
