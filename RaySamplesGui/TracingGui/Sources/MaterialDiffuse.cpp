@@ -23,7 +23,7 @@ Vector4d MaterialDiffuse::SampleBrdf(const Vector4d & input,const Vector4d &norm
 {
   Matrix4d d;
   d.CreateFromZ(normal);
-  Vector4d t = SampleHemisphere();
+  Vector4d t = SampleHemisphereWeighted();
   Vector4d sample = d.InSpace(t);
   float cosA = normal.Dot(input);
   DoAssert(normal.Dot(sample) > 0);

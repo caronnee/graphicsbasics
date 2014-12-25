@@ -14,9 +14,33 @@ float GetFloat()
 	return james.GetFloat();
 }
 
+#include "Matrix.h"
+
+Vector4d SampleUniform(const Vector4d & input,const Vector4d &normal, float &pdf)
+{
+  float alpha = james.GetFloat() *2*PI;
+  float beta = james.GetFloat() * PI;
+  float cosA = cos(alpha);
+  float cosB = cos(beta);
+  float sinA = sin(alpha);
+  float sinB = sin(beta);
+  Vector4d ret;
+  ret[0] = cosA * sinB;
+  ret[1] = sinA * sinB;
+  //elevation
+  ret[2] = cosB;
+  ret[3] = 0;
+  ret.Normalize();
+
+  Matrix4d m;
+  m.CreateFromZ(normal); 
+  pdf = 0.5/PI;
+  return m.InSpace(ret);
+} 
+
 #include "Debug.h"
 
-Vector4d SampleHemisphere(int exponentRange /* 1 */)
+Vector4d SampleHemisphereWeighted(int exponentRange /* 1 */)
 {
   //create cos = e^(1/(n+1)
   float e1 = james.GetFloat();

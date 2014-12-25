@@ -219,6 +219,7 @@ TracingGui::TracingGui(QWidget *parent)
   ui.directType->addItem("None",QVariant(RNone));
   ui.directType->addItem("Direct light",QVariant(RDirectLight));
   ui.directType->addItem("Direct light BRDF",QVariant(RDirectBRDF));
+  ui.directType->addItem("Direct light Uniform",QVariant(RDirectUniform));
   ui.indirectType->addItem("None",QVariant(RNone));
   ui.indirectType->addItem("Indirect light ( fixed bounces )",QVariant(RIndirectLightBounced));
   ui.indirectType->addItem("Indirect light ( MC brdf )",QVariant(RIndirectLightMcBrdf));
