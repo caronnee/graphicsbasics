@@ -43,7 +43,7 @@ Vector4d MaterialSpecular::SampleBrdf(const Vector4d & input,const Vector4d &nor
   if ( test < _diffuseReflectance.Max())
     return MaterialDiffuse::SampleBrdf(input,normal,pdf);
   // sample according to specular BRDF
-  Vector4d ret = SampleHemisphere(_phongCoef);
+  Vector4d ret = SampleHemisphereWeighted(_phongCoef);
   Vector4d reflected = Reflected( input,normal);
   DoAssert( (reflected.Size2() - 1) < EPSILON );
   DoAssert( (ret.Size2() - 1) < EPSILON );
