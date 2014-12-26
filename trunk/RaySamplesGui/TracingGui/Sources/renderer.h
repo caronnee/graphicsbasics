@@ -17,10 +17,7 @@ TrackProgress * GetRendererTrack();
 
 #define RIndirectOffset 4
 #define RIndirectLightBounced ( 1 << RIndirectOffset )
-#define RIndirectLightMcBrdf ( 2 << RIndirectOffset )
-#define RIndirectLightMcLight ( 4 << RIndirectOffset )
-#define RIndirectLightMIS ( 8 << RIndirectOffset )
-#define RGlobalIllumination ( 16 << RIndirectOffset )
+#define RGlobalIllumination ( 2 << RIndirectOffset )
 
 class Bouncer
 {
