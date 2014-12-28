@@ -220,9 +220,11 @@ TracingGui::TracingGui(QWidget *parent)
   ui.directType->addItem("Direct light",QVariant(RDirectLight));
   ui.directType->addItem("Direct light BRDF",QVariant(RDirectBRDF));
   ui.directType->addItem("Direct light Uniform",QVariant(RDirectUniform));
+  ui.directType->addItem("Direct light MIS",QVariant(RDirectMIS));
+
   ui.indirectType->addItem("None",QVariant(RNone));
-  ui.indirectType->addItem("Indirect light ( fixed bounces )",QVariant(RIndirectLightBounced));
-  ui.indirectType->addItem("Indirect light ( Global llumination )",QVariant(RGlobalIllumination));
+  ui.indirectType->addItem("Indirect light ( Fixed bounces )",QVariant(RIndirectLightBounced));
+  ui.indirectType->addItem("Indirect light ( Global illumination )",QVariant(RGlobalIllumination));
 
   // scenes selections
   LoadSceneNames();

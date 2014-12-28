@@ -17,3 +17,8 @@ void TrackProgress::SetStages(float stages)
 	_step = 1.0/stages;
 }
 
+void TrackProgress::Finish()
+{
+  emit Progress(100);
+}
+

@@ -12,12 +12,15 @@ Vector4d PathTraceRenderer::SampleLight(Ray & ray, Intersection & isec)
 	// sample direct light
 	for (int iLight =0; iLight< _scene->Lights(); iLight++)
 	{
-		Geometry * light = _scene->GetLight(iLight);
-		if ( light == isec.model )
+       // sample from light
+       Geometry * light = _scene->GetLight(iLight);
+		
+       if ( light == isec.model )
 		{
 			total += isec.model->GetMaterial()->Emmisive();
 			continue;
 		}
+
 		Vector4d lightVector;
 		float t;
 		Vector4d illumination = light->SampleIllumination( isec, lightVector,t);
@@ -82,8 +85,6 @@ Vector4d PathTraceRenderer::RayTrace(Ray ray)
 		return BLACK;
 	}
 
-  Vector4d vv = GetCamera()->WorldToViewport(isec.worldPosition);
-
 	if ( _renderMask & RIndirectLightBounced)
 		total += Bounced(ray,isec);
 
@@ -96,6 +97,8 @@ Vector4d PathTraceRenderer::RayTrace(Ray ray)
     //isec.worldPosition = Vector4d(0,0,-1.25);
     total += SampleLightBrdf(ray,isec);
   }
+  if ( _renderMask & RDirectMIS )
+    total += SampleMIS(ray,isec);
 
 #if 0 && _DEBUG
 	float xx = total.Size2();
@@ -120,7 +123,8 @@ Vector4d PathTraceRenderer::RenderPixel(const int &x, const int &y)
 {
 	// we start at camera
   int u = x,v=y;
-  //v = 121;  
+  //u = 89;
+  //v = 158;  
   //if ( y < 128 )
   {
    // u = 60;
@@ -171,6 +175,33 @@ Vector4d GCoord;
 
 #include "MathUtil.h"
 
+Vector4d PathTraceRenderer::SampleMIS(const Ray & ray, const Intersection & isec)
+{
+  Vector4d ret;
+  const Material * m = isec.model->GetMaterial();
+  if ( m->IsLight() )
+    return Vector4d(1,1,1,1);
+
+  float test = GetFloat();
+
+  float pdf;
+  Vector4d sampledDir;
+  if ( test < .5 )
+  {
+    // sample from light
+    int i = GetFloat() * _scene->Lights();
+    sampledDir;// = SampleLight(i,-ray.direction, isec.nrm, pdf);
+  }
+  else
+  {
+    //sample from brdf
+    sampledDir = m->SampleBrdf( -ray.direction, isec.nrm, pdf );  
+  }
+  ret = m->EvalBrdf( -ray.direction, isec.nrm, sampledDir);
+  
+  return ret;
+}
+
 Vector4d PathTraceRenderer::SampleLightBrdf(const Ray & ray, const Intersection & isec)
 {
   GCoord = Vector4d(-1,-1,-1,-1);
@@ -179,8 +210,6 @@ Vector4d PathTraceRenderer::SampleLightBrdf(const Ray & ray, const Intersection 
   if ( m->IsLight() )
     return Vector4d(1,1,1,1);
   float pdf;
-  //if ( (isec.model->Type() != TypeSphere) && (isec.nrm[2] < 0 ) )
-  //  __debugbreak();
   Vector4d sampledDir ;
   if ( _renderMask & RDirectBRDF )
     sampledDir = m->SampleBrdf( -ray.direction, isec.nrm, pdf );
@@ -195,7 +224,6 @@ Vector4d PathTraceRenderer::SampleLightBrdf(const Ray & ray, const Intersection 
     return Vector4d(0,0,0,0); 
 
   Ray r;
-  // 
   r.origin = isec.worldPosition;
 
   // already direction towards outside of the sphere
@@ -216,9 +244,8 @@ Vector4d PathTraceRenderer::SampleLightBrdf(const Ray & ray, const Intersection 
   else
   {
     // use ambient lighting
-    int len;
-    ret += _scene->Ambient().Illumination(sampledDir,isec.nrm,len).MultiplyPerElement(brdf);
+    int dummy;
+    ret += _scene->Ambient().Illumination(sampledDir,isec.nrm,dummy).MultiplyPerElement(brdf);
   }
-
-  return ret;
+  return ret/pdf;
 }

@@ -39,6 +39,7 @@ void Renderer::Render(int iterations)
       GetRendererTrack()->Update();
     }
 	}
+  GetRendererTrack()->Finish();
 }
 
 Renderer::Renderer() : _scene(NULL), _image(NULL), _renderMask(0),_stop(false)
