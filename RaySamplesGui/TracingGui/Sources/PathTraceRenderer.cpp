@@ -11,15 +11,14 @@ Vector4d PathTraceRenderer::SampleLight(Ray & ray, Intersection & isec)
 
 	// sample direct light
 	for (int iLight =0; iLight< _scene->Lights(); iLight++)
-	{
-       // sample from light
-       Geometry * light = _scene->GetLight(iLight);
-		
-       if ( light == isec.model )
-		{
-			total += isec.model->GetMaterial()->Emmisive();
-			continue;
-		}
+  {
+    // sample from light
+    Geometry * light = _scene->GetLight(iLight);
+    if ( light == isec.model )
+    {
+      total += isec.model->GetMaterial()->Emmisive();
+      continue;
+    }
 
 		Vector4d lightVector;
 		float t;
@@ -237,7 +236,7 @@ Vector4d PathTraceRenderer::SampleLightBrdf(const Ray & ray, const Intersection 
   if ( hitSomething )
   {
     bool t = isec2.model->GetMaterial()->IsLight();
-    Vector4d illuminationComing = isec2.model->GetMaterial()->Illumination( sampledDir,isec.nrm, isec2.t );
+    Vector4d illuminationComing = isec2.model->Evaluate( isec.nrm, sampledDir, isec2.t );
     DoAssert(t && illuminationComing.Size2()>0)
     ret = illuminationComing.MultiplyPerElement(brdf);
   }
