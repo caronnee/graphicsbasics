@@ -93,15 +93,18 @@ int DoubleTriangle::Type()const
 }
 
 #include "RandomNumber.h"
+#include "Debug.h"
 
 float lasta;
 float lastb;
 float mmm = 100;
 
-Vector4d DoubleTriangle::Evaluate( const Vector4d& secNormal,Vector4d & sampledDir, float & len )
+Vector4d DoubleTriangle::Evaluate( const Vector4d& secNormal,const Vector4d & sampledDir, const float & len )
 {
-  len = sampledDir.Size();
-  sampledDir.Normalize();
+#if _DEBUG
+  float size = sampledDir.Size2();
+  DoAssert( fabs( size - 1) < EPSILON);
+#endif
   float d2 = len * len;
 #if ( 0 &&_DEBUG )
   if ( d2 < 0.006f )
@@ -149,6 +152,8 @@ Vector4d DoubleTriangle::SampleIllumination(Intersection &section, Vector4d & sa
   DoAssert(raster[1] > -30);
   DoAssert(raster[0] > -30);
   sampledDir = mPoint - section.worldPosition;
+  len = sampledDir.Size();
+  sampledDir.Normalize();
   Vector4d total = Evaluate( section.nrm, sampledDir, len);
 
   if ( total.Size2()  > maxShine.Size2() )
