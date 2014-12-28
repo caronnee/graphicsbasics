@@ -17,6 +17,7 @@ public:
 	void Update();
 	void Clear();
 	void SetStages(float stages);
+  void Finish();
 };
 
 #endif

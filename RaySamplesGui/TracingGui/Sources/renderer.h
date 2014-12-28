@@ -14,6 +14,7 @@ TrackProgress * GetRendererTrack();
 #define RDirectLight 1
 #define RDirectBRDF 2
 #define RDirectUniform 4
+#define RDirectMIS 4
 
 #define RIndirectOffset 4
 #define RIndirectLightBounced ( 1 << RIndirectOffset )

@@ -18,11 +18,9 @@ Vector4d MaterialSpecular::GetSpecular(const Vector4d & incoming, const Vector4d
 #endif
 	Vector4d R = Reflected(light,normal);
 	float cosA = R.Dot(incoming);
-
-	if (cosA<0)
-	{
+	// not in the quarter where reflected ray is, thus cannot be evaluated 
+  if (cosA<0)
 		return Vector4d(0,0,0,0);	
-	}
 	float cosAn = pow(cosA,_phongCoef);
 	Vector4d v = _specularReflectance * (_phongCoef + 2.0f) * cosAn /( 2 * PI);
 	return v;
@@ -38,23 +36,32 @@ Vector4d MaterialSpecular::EvalBrdf(const Vector4d & incoming, const Vector4d & 
 
 Vector4d MaterialSpecular::SampleBrdf(const Vector4d & input,const Vector4d &normal,float &pdf) const
 {
-  float sum = _diffuseReflectance.Max()+_specularReflectance.Max();
+  float pd = _diffuseReflectance.Max();
+  float ps = _specularReflectance.Max();
+  float sum = pd + ps;
   float test = GetFloat()*sum;
-  if ( test < _diffuseReflectance.Max())
-    return MaterialDiffuse::SampleBrdf(input,normal,pdf);
+  if ( test < pd )
+  {
+    Vector4d ret = MaterialDiffuse::SampleBrdf(input,normal,pdf);
+    pdf = pdf * pd/sum;
+    return ret;
+  }
+
+  Vector4d reflected = Reflected( input, normal );
+  float cosAn = normal.Dot(reflected);
+
   // sample according to specular BRDF
   Vector4d ret = SampleHemisphereWeighted(_phongCoef);
-  Vector4d reflected = Reflected( input,normal);
   DoAssert( (reflected.Size2() - 1) < EPSILON );
   DoAssert( (ret.Size2() - 1) < EPSILON );
-  float cosAn = input.Dot(reflected);
   cosAn = pow(cosAn,_phongCoef);
   Matrix4d sample;
-  sample.CreateFromZ(normal);
+  sample.CreateFromZ(reflected);
   ret = sample.InSpace(ret);
   // TODO why,why?
   pdf = (_phongCoef + 1)*cosAn/(2*PI);
-  if ( ret.Dot(reflected) < 0 )
+  if ( ret.Dot(reflected) < 0 || (pdf < EPSILON))
     return Vector4d(0,0,0,0);
+  pdf = pdf * ps/sum;
   return ret;
 }
