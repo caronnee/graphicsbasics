@@ -208,7 +208,7 @@ Vector4d PathTraceRenderer::SampleLightBrdf(const Ray & ray, const Intersection 
   // generate the ray according to BRDF
   const Material * m = isec.model->GetMaterial();
   if ( m->IsLight() )
-    return Vector4d(1,1,1,1);
+    return m->Emmisive();
   float pdf;
   Vector4d sampledDir ;
   if ( _renderMask & RDirectBRDF )
