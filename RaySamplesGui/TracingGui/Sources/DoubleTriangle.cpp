@@ -99,7 +99,7 @@ float lasta;
 float lastb;
 float mmm = 100;
 
-Vector4d DoubleTriangle::Evaluate( const Vector4d& secNormal,const Vector4d & sampledDir, const float & len )
+Vector4d DoubleTriangle::Evaluate( const Vector4d& secNormal,const Vector4d & sampledDir, const float & len, float pdf )
 {
 #if _DEBUG
   float size = sampledDir.Size2();
@@ -115,13 +115,7 @@ Vector4d DoubleTriangle::Evaluate( const Vector4d& secNormal,const Vector4d & sa
   if ( (cosA <= 0) || (cosB <= 0))
     return Vector4d(0,0,0,0);
   Vector4d v = GetMaterial()->Emmisive();
-  float coef = cosA * cosB * _area /d2;
-  if ( coef < 2e-8)
-  {
-    mmm = coef;
-    //__debugbreak();
-  }
-  return v * cosA * cosB * _area /d2;
+  return v * cosA * cosB /(d2*pdf);
 }
 
 #include "Camera.h"
@@ -154,7 +148,7 @@ Vector4d DoubleTriangle::SampleIllumination(Intersection &section, Vector4d & sa
   sampledDir = mPoint - section.worldPosition;
   len = sampledDir.Size();
   sampledDir.Normalize();
-  Vector4d total = Evaluate( section.nrm, sampledDir, len);
+  Vector4d total = Evaluate( section.nrm, sampledDir, len,1.0/_area);
 
   if ( total.Size2()  > maxShine.Size2() )
   {

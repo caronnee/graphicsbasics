@@ -17,6 +17,6 @@ public:
 	int Type(void) const;
   
   // weighted illumination
-  Vector4d Illumination(const Vector4d & sampledDir, const Vector4d & nrm, const int & dist);
+  Vector4d Illumination(const Vector4d & lightVector, const Vector4d & nrm, const int & dummy, float pdf);
 };
 #endif

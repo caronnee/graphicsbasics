@@ -91,7 +91,6 @@ public:
 
   virtual void SaveProperties(FileHandler & handler);
 	virtual void LoadProperties(FileHandler & handler);
-
-  virtual Vector4d Evaluate( const Vector4d& secNormal,const Vector4d & sampledDir, const float & len );
+  virtual Vector4d Evaluate(const Vector4d& secNormal,const Vector4d & sampledDir, const float & len, float pdf);
 };
 #endif
