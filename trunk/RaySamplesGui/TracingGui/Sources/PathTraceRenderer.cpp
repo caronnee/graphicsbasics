@@ -115,7 +115,8 @@ Vector4d PathTraceRenderer::TrackShine( const Intersection & lightSection, const
   Vector4d dirToLight = lightSection.worldPosition - testSection.worldPosition;
   // a1, a2;
   float len;
-  return lightSection.model->Evaluate( testSection.nrm, dirToLight, len);
+  // todo change
+  return lightSection.model->Evaluate( testSection.nrm, dirToLight, len,1);
 }
 
 Vector4d PathTraceRenderer::RenderPixel(const int &x, const int &y)
@@ -236,15 +237,16 @@ Vector4d PathTraceRenderer::SampleLightBrdf(const Ray & ray, const Intersection 
   if ( hitSomething )
   {
     bool t = isec2.model->GetMaterial()->IsLight();
-    Vector4d illuminationComing = isec2.model->Evaluate( isec.nrm, sampledDir, isec2.t );
+    Vector4d illuminationComing = isec2.model->Evaluate( isec.nrm, sampledDir, isec2.t,pdf );
     DoAssert(t && illuminationComing.Size2()>0)
     ret = illuminationComing.MultiplyPerElement(brdf);
   }
   else
   {
+    // was not occluded
     // use ambient lighting
     int dummy;
-    ret += _scene->Ambient().Illumination(sampledDir,isec.nrm,dummy).MultiplyPerElement(brdf);
+    ret += _scene->Ambient().Illumination(sampledDir,isec.nrm,dummy,pdf).MultiplyPerElement(brdf);
   }
-  return ret/pdf;
+  return ret;
 }

@@ -19,7 +19,7 @@ public:
 	void SaveProperties(FileHandler & handler);
 	void LoadProperties(FileHandler & handler);
 	int Type() const;
-  Vector4d Evaluate( const Vector4d& secNormal,const Vector4d & sampledDir, const float & len );
+  Vector4d Evaluate( const Vector4d& secNormal,const Vector4d & sampledDir, const float & len, float pdf );
 };
 
 #endif
