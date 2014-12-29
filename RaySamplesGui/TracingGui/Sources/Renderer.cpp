@@ -91,7 +91,7 @@ bool FiniteBouncer::Bounce(Ray & ret, Intersection & section, Vector4d& throughp
 	Matrix4d cvrt;
 	cvrt.CreateFromZ(section.nrm);
 	Vector4d direction = SampleHemisphereWeighted();
-	ret.direction = cvrt * direction;
+	ret.direction = cvrt.InSpace(direction);
 	ret.direction.Normalize();
 	return false;
 }

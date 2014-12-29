@@ -16,26 +16,30 @@ float GetFloat()
 
 #include "Matrix.h"
 
+float la;
+float lb;
+
 Vector4d SampleUniform(const Vector4d & input,const Vector4d &normal, float &pdf)
 {
-  float alpha = james.GetFloat() *2*PI;
-  float beta = james.GetFloat() * PI;
-  float cosA = cos(alpha);
-  float cosB = cos(beta);
-  float sinA = sin(alpha);
-  float sinB = sin(beta);
+  float e1 = james.GetFloat();
+  float e2 = james.GetFloat()* 2 * PI;
   Vector4d ret;
-  ret[0] = cosA * sinB;
-  ret[1] = sinA * sinB;
-  //elevation
-  ret[2] = cosB;
+  float cosEl = cos(e1);
+  float sinEl = sin(e1);
+  float cosAz = cos(e2);
+  float sinAz = sin(e2);
+
+  ret[0] = cosAz * sinEl;
+  ret[1] = sinAz * sinEl;
+  ret[2] = cosEl;
   ret[3] = 0;
   ret.Normalize();
 
   Matrix4d m;
   m.CreateFromZ(normal); 
   pdf = 0.5/PI;
-  return m.InSpace(ret);
+  Vector4d ret2 = m.InSpace(ret);
+  return ret2;
 } 
 
 #include "Debug.h"
