@@ -14,6 +14,8 @@ public:
 	Vector4d GetDiffuse( const Vector4d & input, const Vector4d & output ) const;
 	Vector4d EvalBrdf(const Vector4d & input,const Vector4d & normal, Vector4d & output ) const;
   Vector4d SampleBrdf(const Vector4d & input,const Vector4d &normal,float &pdf)const;
+  float GetPdf(const Vector4d &sampledDir, const Vector4d & nrm) const;
+
 };
 
 #endif

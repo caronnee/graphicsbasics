@@ -15,11 +15,12 @@ public:
 	void SetPoints(Vector4d * trianglePoints);
 	void SetProperty(PropertyType type, void * values);
 	void * GetProperty(PropertyType type);
-	virtual Vector4d SampleIllumination(Intersection &section, Vector4d & sampledDir, float & len);
+	virtual Vector4d SampleIllumination(const Intersection &section, Vector4d & sampledDir, float & sampleLen);
 	void SaveProperties(FileHandler & handler);
 	void LoadProperties(FileHandler & handler);
 	int Type() const;
   Vector4d Evaluate( const Vector4d& secNormal,const Vector4d & sampledDir, const float & len, float pdf );
+  virtual float GetPdf(const Vector4d & direction);
 };
 
 #endif

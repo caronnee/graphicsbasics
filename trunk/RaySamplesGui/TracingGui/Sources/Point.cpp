@@ -27,7 +27,7 @@ int PointObject::Type() const
 	return TypePoint;
 }
 
-Vector4d PointObject::SampleIllumination(Intersection &section, Vector4d & sampledDir, float & sampleLen)
+Vector4d PointObject::SampleIllumination(const Intersection &section, Vector4d & sampledDir, float & sampleLen)
 {
 	DoAssert(GetMaterial() && GetMaterial()->IsLight());
 	Vector4d & intensity = GetMaterial()->Emmisive();

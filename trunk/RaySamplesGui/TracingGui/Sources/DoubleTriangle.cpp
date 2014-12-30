@@ -126,7 +126,7 @@ Vector4d maxCoordsLight;
 Vector4d minShine(100,100,100,100);
 Vector4d minCoordsLight;
 
-Vector4d DoubleTriangle::SampleIllumination(Intersection &section, Vector4d & sampledDir, float & len)
+Vector4d DoubleTriangle::SampleIllumination(const Intersection &section, Vector4d & sampledDir, float & sampleLen)
 {
 	// sample point on the triangle
 	float a1 = GetFloat();
@@ -146,9 +146,9 @@ Vector4d DoubleTriangle::SampleIllumination(Intersection &section, Vector4d & sa
   DoAssert(raster[1] > -30);
   DoAssert(raster[0] > -30);
   sampledDir = mPoint - section.worldPosition;
-  len = sampledDir.Size();
+  sampleLen = sampledDir.Size();
   sampledDir.Normalize();
-  Vector4d total = Evaluate( section.nrm, sampledDir, len,1.0/_area);
+  Vector4d total = Evaluate( section.nrm, sampledDir, sampleLen,1.0/_area);
 
   if ( total.Size2()  > maxShine.Size2() )
   {
@@ -172,4 +172,9 @@ void DoubleTriangle::LoadProperties(FileHandler & handler)
 {
 	handler.Read(_points,sizeof(Vector4d),3);
 	SetProperty(PPoints,_points);
+}
+
+float DoubleTriangle::GetPdf(const Vector4d & direction)
+{
+  return 1/_area;
 }
