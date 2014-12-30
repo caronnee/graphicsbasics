@@ -202,8 +202,13 @@ Vector4d PathTraceRenderer::SampleMIS(const Ray & ray, const Intersection & isec
       float pdf1 = _scene->GetLight(i)->GetPdf(sampledDir) / _scene->Lights();
       float pdf2 = isec.model->GetMaterial()->GetPdf(sampledDir,isec.nrm);
       brdf = isec.model->GetMaterial()->EvalBrdf(-ray.direction,isec.nrm,sampledDir);
-      float misW = pdf1 + pdf2;
-      total += illumination.MultiplyPerElement(brdf) * misW/pdf1;
+      if ( (pdf1 > 0) && (pdf2 > 0) )
+      {
+        float misW = pdf1 + pdf2;
+        DoAssert(misW > 0);
+        DoAssert(pdf1 > 0);
+        total += illumination.MultiplyPerElement(brdf) * misW/pdf1;
+      }
     }
   }
 
@@ -216,14 +221,19 @@ Vector4d PathTraceRenderer::SampleMIS(const Ray & ray, const Intersection & isec
     r2.origin = isec.worldPosition;
     r2.direction = sampledDir;
     Intersection isec2;
-    if ( _scene->FindIntersection(r2,isec2) )
+    if ( sampledDir.Size2() > 0 && _scene->FindIntersection(r2,isec2) )
     {
       if (isec2.model->GetMaterial()->IsLight())
       {
         float pdf2 = isec2.model->GetPdf(sampledDir);
         illumination = isec2.model->Evaluate(isec.nrm,sampledDir,isec2.t,pdf1);
-        float misW = pdf1 + pdf2;
-        total += illumination.MultiplyPerElement(brdf) * misW /pdf1;
+        if ( (pdf1 > 0) && (pdf2 > 0) )
+        {
+          float misW = pdf1 + pdf2;
+          DoAssert(misW > 0);
+          DoAssert(pdf1 > 0);
+          total += illumination.MultiplyPerElement(brdf) * misW /pdf1;
+        }      
       }
     }
   }
