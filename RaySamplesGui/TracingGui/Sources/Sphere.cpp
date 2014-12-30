@@ -91,7 +91,7 @@ void Sphere::SetProperty(PropertyType type, void * value)
 	base::SetProperty(type,value);
 }
 
-Vector4d Sphere::SampleIllumination(Intersection &section, Vector4d & sampledDir, float & len)
+Vector4d Sphere::SampleIllumination(const Intersection &section, Vector4d & sampledDir, float & sampleLen)
 {
 	throw "Not implemented yet. And maybe won't be ever...";
 }

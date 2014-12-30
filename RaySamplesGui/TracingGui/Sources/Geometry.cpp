@@ -154,3 +154,8 @@ Vector4d Geometry::Evaluate(const Vector4d& secNormal,const Vector4d & sampledDi
 //  throw "not implemented";
   return Vector4d(0,0,0,0);
 }
+
+float Geometry::GetPdf(const Vector4d & direction)
+{
+  throw std::logic_error("The method or operation is not implemented.");
+}

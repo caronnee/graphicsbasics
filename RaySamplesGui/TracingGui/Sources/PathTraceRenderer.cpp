@@ -177,29 +177,58 @@ Vector4d GCoord;
 
 Vector4d PathTraceRenderer::SampleMIS(const Ray & ray, const Intersection & isec)
 {
-  Vector4d ret;
   const Material * m = isec.model->GetMaterial();
   if ( m->IsLight() )
-    return Vector4d(1,1,1,1);
+    return m->Emmisive();
 
-  float test = GetFloat();
-
+  Vector4d total;
+  // number of mis sampling is 1 for start
   float pdf;
   Vector4d sampledDir;
-  if ( test < .5 )
+  Vector4d illumination;
+  Vector4d brdf;
+  // sample from one light
   {
-    // sample from light
     int i = GetFloat() * _scene->Lights();
-    sampledDir;// = SampleLight(i,-ray.direction, isec.nrm, pdf);
+    float len;
+    illumination = _scene->GetLight(i)->SampleIllumination(isec,sampledDir,len);
+    // check for occlusion
+    Ray r2;
+    r2.origin = isec.worldPosition;
+    r2.direction = sampledDir;
+    Intersection isec2;
+    if ( !_scene->FindIntersection(r2,isec2) || fabs(isec2.t - len) < EPSILON )
+    {
+      float pdf1 = _scene->GetLight(i)->GetPdf(sampledDir) / _scene->Lights();
+      float pdf2 = isec.model->GetMaterial()->GetPdf(sampledDir,isec.nrm);
+      brdf = isec.model->GetMaterial()->EvalBrdf(-ray.direction,isec.nrm,sampledDir);
+      float misW = pdf1 + pdf2;
+      total += illumination.MultiplyPerElement(brdf) * misW/pdf1;
+    }
   }
-  else
+
+  //sample from brdf
   {
-    //sample from brdf
-    sampledDir = m->SampleBrdf( -ray.direction, isec.nrm, pdf );  
+    int i = GetFloat() * _scene->Lights();
+    float pdf1;
+    sampledDir = m->SampleBrdf( -ray.direction, isec.nrm, pdf1 );
+    Ray r2;
+    r2.origin = isec.worldPosition;
+    r2.direction = sampledDir;
+    Intersection isec2;
+    if ( _scene->FindIntersection(r2,isec2) )
+    {
+      if (isec2.model->GetMaterial()->IsLight())
+      {
+        float pdf2 = isec2.model->GetPdf(sampledDir);
+        illumination = isec2.model->Evaluate(isec.nrm,sampledDir,isec2.t,pdf1);
+        float misW = pdf1 + pdf2;
+        total += illumination.MultiplyPerElement(brdf) * misW /pdf1;
+      }
+    }
   }
-  ret = m->EvalBrdf( -ray.direction, isec.nrm, sampledDir);
   
-  return ret;
+  return total;
 }
 
 Vector4d PathTraceRenderer::SampleLightBrdf(const Ray & ray, const Intersection & isec)

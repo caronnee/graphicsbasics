@@ -34,6 +34,16 @@ Vector4d MaterialSpecular::EvalBrdf(const Vector4d & incoming, const Vector4d & 
 #include "Matrix.h"
 #include "RandomNumber.h"
 
+float MaterialSpecular::GetPdf(const Vector4d &input, const Vector4d & normal) const
+{
+  Vector4d reflected = Reflected( input, normal );
+  float cosAn = normal.Dot(reflected);
+  DoAssert( (reflected.Size2() - 1) < EPSILON );
+  cosAn = pow(cosAn,_phongCoef);
+  float pdf = (_phongCoef + 1)*cosAn/(2*PI);
+  return pdf;
+}
+
 Vector4d MaterialSpecular::SampleBrdf(const Vector4d & input,const Vector4d &normal,float &pdf) const
 {
   float pd = _diffuseReflectance.Max();
@@ -47,19 +57,19 @@ Vector4d MaterialSpecular::SampleBrdf(const Vector4d & input,const Vector4d &nor
     return ret;
   }
 
-  Vector4d reflected = Reflected( input, normal );
-  float cosAn = normal.Dot(reflected);
-
   // sample according to specular BRDF
   Vector4d ret = SampleHemisphereWeighted(_phongCoef);
+  Vector4d reflected = Reflected( input, normal );
+  float cosAn = normal.Dot(reflected);
   DoAssert( (reflected.Size2() - 1) < EPSILON );
   DoAssert( (ret.Size2() - 1) < EPSILON );
   cosAn = pow(cosAn,_phongCoef);
+  pdf = (_phongCoef + 1)*cosAn/(2*PI);
+
   Matrix4d sample;
   sample.CreateFromZ(reflected);
   ret = sample.InSpace(ret);
   // TODO why,why?
-  pdf = (_phongCoef + 1)*cosAn/(2*PI);
   if ( ret.Dot(reflected) < 0 || (pdf < EPSILON))
     return Vector4d(0,0,0,0);
   pdf = pdf * ps/sum;
