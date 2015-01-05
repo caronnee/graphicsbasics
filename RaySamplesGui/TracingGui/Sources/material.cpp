@@ -60,7 +60,7 @@ Vector4d Material::Emmisive() const
   return _emmisive;
 }
 
-float Material::GetPdf(const Vector4d &sampledDir, const Vector4d & nrm) const
+float Material::GetDirectionalPdf(const Vector4d &sampledDir, const Vector4d & nrm) const
 {
   throw std::logic_error("The method or operation is not implemented.");
 }

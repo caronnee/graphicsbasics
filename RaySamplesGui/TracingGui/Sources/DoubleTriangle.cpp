@@ -174,7 +174,10 @@ void DoubleTriangle::LoadProperties(FileHandler & handler)
 	SetProperty(PPoints,_points);
 }
 
-float DoubleTriangle::GetPdf(const Vector4d & direction)
+float DoubleTriangle::GetDirectionalPdf(const Vector4d & direction, const Vector4d& normal, const Vector4d& pos, const float & len)
 {
-  return 1/_area;
+  float areaPdf = 1.0f/_area;
+  float d2 = len * len;
+  float geomCoef = _normal.Dot(direction)/-d2;
+  return areaPdf/geomCoef;
 }

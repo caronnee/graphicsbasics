@@ -40,6 +40,7 @@ public:
 	RenderThread( RenderContext & ctx);
 	void GetResults(Image & image);
 	void Stop();
+  void Saturate(float & xDim, float & yDim);
 };
 
 #endif

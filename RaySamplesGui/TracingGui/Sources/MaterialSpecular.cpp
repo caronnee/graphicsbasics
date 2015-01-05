@@ -34,8 +34,9 @@ Vector4d MaterialSpecular::EvalBrdf(const Vector4d & incoming, const Vector4d & 
 #include "Matrix.h"
 #include "RandomNumber.h"
 
-float MaterialSpecular::GetPdf(const Vector4d &input, const Vector4d & normal) const
+float MaterialSpecular::GetDirectionalPdf(const Vector4d &input, const Vector4d & normal) const
 {
+  // count also diffuse
   Vector4d reflected = Reflected( input, normal );
   float cosAn = normal.Dot(reflected);
   DoAssert( (reflected.Size2() - 1) < EPSILON );

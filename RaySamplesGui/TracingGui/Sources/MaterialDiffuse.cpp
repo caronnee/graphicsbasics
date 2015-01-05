@@ -37,7 +37,7 @@ Vector4d MaterialDiffuse::SampleBrdf(const Vector4d & input,const Vector4d &norm
   return sample;
 }
 
-float MaterialDiffuse::GetPdf(const Vector4d &sampledDir, const Vector4d & nrm) const
+float MaterialDiffuse::GetDirectionalPdf(const Vector4d &sampledDir, const Vector4d & nrm) const
 {
   return sampledDir.Dot(nrm)/PI;
 }

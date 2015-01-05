@@ -20,7 +20,7 @@ public:
 	void LoadProperties(FileHandler & handler);
 	int Type() const;
   Vector4d Evaluate( const Vector4d& secNormal,const Vector4d & sampledDir, const float & len, float pdf );
-  virtual float GetPdf(const Vector4d & direction);
+  virtual float GetDirectionalPdf(const Vector4d & direction, const Vector4d& normal, const Vector4d& pos, const float & len);
 };
 
 #endif
