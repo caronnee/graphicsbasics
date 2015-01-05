@@ -43,3 +43,11 @@ void RenderThread::Stop()
 {
 	_renderer->Stop();
 }
+
+void RenderThread::Saturate(float & xDim, float & yDim)
+{
+  if ( xDim < _end[0])
+    xDim = _end[0];
+  if ( yDim < _end[1])
+    yDim = _end[1];
+}

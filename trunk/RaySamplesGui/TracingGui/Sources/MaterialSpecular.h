@@ -19,6 +19,6 @@ public:
   
   //
 	Vector4d EvalBrdf(const Vector4d & input,const Vector4d & normal, Vector4d & output) const;
-  float GetPdf(const Vector4d &sampledDir, const Vector4d & nrm) const;
+  float GetDirectionalPdf(const Vector4d &sampledDir, const Vector4d & nrm) const;
 };
 #endif

@@ -43,7 +43,8 @@ Vector4d AmbientLight::Illumination(const Vector4d & lightVector, const Vector4d
   return _backColor * cosA / pdf; 
 }
 
-float AmbientLight::GetPdf(const Vector4d & direction)
+float AmbientLight::GetDirectionalPdf(const Vector4d & direction, const Vector4d& normal, const Vector4d& pos, const float & len)
 {
-  return 1/ 4 *PI;
+  // same as the area, radians
+  return 1.f/ (4 *PI);
 }

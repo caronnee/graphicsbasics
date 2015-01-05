@@ -182,14 +182,14 @@ Vector4d PathTraceRenderer::SampleMIS(const Ray & ray, const Intersection & isec
     return m->Emmisive();
 
   Vector4d total;
-  // number of mis sampling is 1 for start
+  // number of mis sampling is 1 for start, we might later add some more samples
   float pdf;
   Vector4d sampledDir;
   Vector4d illumination;
   Vector4d brdf;
   // sample from one light
   {
-    int i = GetFloat() * _scene->Lights();
+    int i = GetFloat() * (_scene->Lights()-1);
     float len;
     illumination = _scene->GetLight(i)->SampleIllumination(isec,sampledDir,len);
     // check for occlusion
@@ -199,24 +199,23 @@ Vector4d PathTraceRenderer::SampleMIS(const Ray & ray, const Intersection & isec
     Intersection isec2;
     if ( !_scene->FindIntersection(r2,isec2) || fabs(isec2.t - len) < EPSILON )
     {
-      float pdf1 = _scene->GetLight(i)->GetPdf(sampledDir) / _scene->Lights();
-      float pdf2 = isec.model->GetMaterial()->GetPdf(sampledDir,isec.nrm);
+      float pdf1 = _scene->GetLight(i)->GetDirectionalPdf(sampledDir, isec.nrm, isec.worldPosition, len);
+      float pdf2 = isec.model->GetMaterial()->GetDirectionalPdf(sampledDir,isec.nrm);
       brdf = isec.model->GetMaterial()->EvalBrdf(-ray.direction,isec.nrm,sampledDir);
       if ( (pdf1 > 0) && (pdf2 > 0) )
       {
-        float misW = pdf1 + pdf2;
+        float misW = pdf1/(pdf1 + pdf2);
         DoAssert(misW > 0);
         DoAssert(pdf1 > 0);
-        total += illumination.MultiplyPerElement(brdf) * misW/pdf1;
+        total += illumination.MultiplyPerElement(brdf) * misW;
       }
     }
   }
 
   //sample from brdf
   {
-    int i = GetFloat() * _scene->Lights();
-    float pdf1;
-    sampledDir = m->SampleBrdf( -ray.direction, isec.nrm, pdf1 );
+    float pdfBrdf;
+    sampledDir = m->SampleBrdf( -ray.direction, isec.nrm, pdfBrdf );
     Ray r2;
     r2.origin = isec.worldPosition;
     r2.direction = sampledDir;
@@ -225,14 +224,14 @@ Vector4d PathTraceRenderer::SampleMIS(const Ray & ray, const Intersection & isec
     {
       if (isec2.model->GetMaterial()->IsLight())
       {
-        float pdf2 = isec2.model->GetPdf(sampledDir);
-        illumination = isec2.model->Evaluate(isec.nrm,sampledDir,isec2.t,pdf1);
-        if ( (pdf1 > 0) && (pdf2 > 0) )
+        float pdfLight = isec2.model->GetDirectionalPdf(sampledDir, isec.nrm, isec.worldPosition, isec2.t);
+        illumination = isec2.model->Evaluate(isec.nrm,sampledDir,isec2.t,pdfBrdf);
+        if ( (pdfBrdf > 0) && (pdfLight > 0) )
         {
-          float misW = pdf1 + pdf2;
+          float misW = pdfBrdf / ( pdfBrdf + pdfLight );
           DoAssert(misW > 0);
-          DoAssert(pdf1 > 0);
-          total += illumination.MultiplyPerElement(brdf) * misW /pdf1;
+          DoAssert(pdfBrdf > 0);
+          total += illumination.MultiplyPerElement(brdf) * misW ;
         }      
       }
     }

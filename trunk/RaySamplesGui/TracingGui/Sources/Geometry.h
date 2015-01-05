@@ -92,6 +92,6 @@ public:
   virtual void SaveProperties(FileHandler & handler);
 	virtual void LoadProperties(FileHandler & handler);
   virtual Vector4d Evaluate(const Vector4d& secNormal,const Vector4d & sampledDir, const float & len, float pdf);
-  virtual float GetPdf(const Vector4d & direction);
+  virtual float GetDirectionalPdf(const Vector4d & direction, const Vector4d& normal, const Vector4d& pos, const float & len);
 };
 #endif

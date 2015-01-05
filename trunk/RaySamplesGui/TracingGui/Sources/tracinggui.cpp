@@ -746,9 +746,6 @@ void TracingGui::RenderSlot()
 	_scene.CreateCamera(ctx);
 	CreateScene(_scene);
 
-	_image.SetSize(xDim,yDim);
-	_image.Clear();
-
 	// init threads
 	//_threa
 	RenderContext renderCtx;
@@ -778,13 +775,19 @@ void TracingGui::RenderSlot()
 void TracingGui::FetchResultsSlot()
 {
 	// fetch result from each thread
-	_image.Clear();
+  float xDim = 0;float yDim = 0;
 	for ( int i =0; i < MAXTHREADS; i++)
 	{
 		if ( !_threads[i]->isFinished())
 			return;
-		_threads[i]->GetResults(_image);
+    _threads[i]->Saturate(xDim,yDim);
 	}
+  _image.SetSize(xDim,yDim);
+  _image.Clear();
+
+  for ( int i =0; i < MAXTHREADS; i++)
+    _threads[i]->GetResults(_image);
+
 	ui.sExposureNumber->setValue(0);
 	ui.bRender->setText("Render!");
 	ShowHdr(0);
