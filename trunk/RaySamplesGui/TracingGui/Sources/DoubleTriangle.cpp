@@ -99,7 +99,7 @@ float lasta;
 float lastb;
 float mmm = 100;
 
-Vector4d DoubleTriangle::Evaluate( const Vector4d& secNormal,const Vector4d & sampledDir, const float & len, float pdf )
+Vector4d DoubleTriangle::Evaluate( const Vector4d& secNormal, const Vector4d & sampledDir, const float & len )
 {
 #if _DEBUG
   float size = sampledDir.Size2();
@@ -114,8 +114,8 @@ Vector4d DoubleTriangle::Evaluate( const Vector4d& secNormal,const Vector4d & sa
   float cosB = -_normal.Dot(sampledDir);
   if ( (cosA <= 0) || (cosB <= 0))
     return Vector4d(0,0,0,0);
-  Vector4d v = GetMaterial()->Emmisive();
-  return v * cosA * cosB /(d2*pdf);
+  Vector4d li = GetMaterial()->Emmisive();
+  return li * cosA ;
 }
 
 #include "Camera.h"
@@ -131,13 +131,13 @@ Vector4d DoubleTriangle::SampleIllumination(const Intersection &section, Vector4
 	// sample point on the triangle
 	float a1 = GetFloat();
   float a2 = GetFloat();
+
+  // sampling from rectangle to triangle 
   if ( a2 > (1 - a1) )
   {
     a1 = 1-a1;
     a2 = 1-a2;
   }
-	lasta = a1;
-	lastb = a2;
 	Vector4d point = _edges[0]*a1 + _edges[1]*a2 + _points[0];
 	Vector4d mPoint = ModelToWorld(point);
   Vector4d raster = GetCamera()->WorldToViewport(mPoint);
@@ -148,8 +148,11 @@ Vector4d DoubleTriangle::SampleIllumination(const Intersection &section, Vector4
   sampledDir = mPoint - section.worldPosition;
   sampleLen = sampledDir.Size();
   sampledDir.Normalize();
-  Vector4d total = Evaluate( section.nrm, sampledDir, sampleLen,1.0/_area);
-
+  Vector4d total = Evaluate( section.nrm, sampledDir, sampleLen);
+  float pdf = GetDirectionalPdf(sampledDir,section.nrm,section.worldPosition,sampleLen);
+  if (pdf <=0)
+    return Vector4d(0,0,0,0);
+  total/=pdf;
   if ( total.Size2()  > maxShine.Size2() )
   {
     maxCoordsLight =  GetCamera()->WorldToViewport(point);

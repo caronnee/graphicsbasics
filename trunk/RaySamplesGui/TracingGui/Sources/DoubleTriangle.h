@@ -19,7 +19,7 @@ public:
 	void SaveProperties(FileHandler & handler);
 	void LoadProperties(FileHandler & handler);
 	int Type() const;
-  Vector4d Evaluate( const Vector4d& secNormal,const Vector4d & sampledDir, const float & len, float pdf );
+  Vector4d Evaluate( const Vector4d& secNormal, const Vector4d & sampledDir, const float & len );
   virtual float GetDirectionalPdf(const Vector4d & direction, const Vector4d& normal, const Vector4d& pos, const float & len);
 };
 

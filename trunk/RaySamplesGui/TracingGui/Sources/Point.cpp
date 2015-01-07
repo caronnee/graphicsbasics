@@ -42,5 +42,12 @@ Vector4d PointObject::SampleIllumination(const Intersection &section, Vector4d &
 	
 	if ( cosa < 0 )
 		return Vector4d(0,0,0,0);
-	return intensity*cosa/r2;
+	return intensity*cosa;
+}
+
+float PointObject::GetDirectionalPdf(const Vector4d & direction, const Vector4d& normal, const Vector4d& pos, const float & len)
+{
+  if ( len < EPSILON)
+    return 0;
+  return 1.0f/(len *len);
 }
