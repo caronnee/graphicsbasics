@@ -191,9 +191,8 @@ Vector4d PathTraceRenderer::SampleMIS(const Ray & ray, const Intersection & isec
   Vector4d illumination;
   Vector4d brdf;
   // sample from one light
-  if (false)
+  for (int i =0; i < _scene->Lights(); i++)
   {
-    int i = GetFloat() * (_scene->Lights()-1);
     float len;
     illumination = _scene->GetLight(i)->SampleIllumination(isec,sampledDir,len);
     // check for occlusion

@@ -45,6 +45,5 @@ Vector4d AmbientLight::Illumination(const Vector4d & lightVector, const Vector4d
 
 float AmbientLight::GetDirectionalPdf(const Vector4d & direction, const Vector4d& normal, const Vector4d& pos, const float & len)
 {
-  // same as the area, radians
-  return 1.f/ (4 *PI);
+  return 4*PI;
 }

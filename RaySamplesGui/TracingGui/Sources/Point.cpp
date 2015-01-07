@@ -49,5 +49,5 @@ float PointObject::GetDirectionalPdf(const Vector4d & direction, const Vector4d&
 {
   if ( len < EPSILON)
     return 0;
-  return 1.0f/(len *len);
+  return (len *len);
 }
