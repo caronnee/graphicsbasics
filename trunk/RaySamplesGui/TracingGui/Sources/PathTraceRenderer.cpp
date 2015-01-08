@@ -190,31 +190,36 @@ Vector4d PathTraceRenderer::SampleMIS(const Ray & ray, const Intersection & isec
   Vector4d sampledDir;
   Vector4d illumination;
   Vector4d brdf;
-  // sample from one light
-  for (int i =0; i < _scene->Lights(); i++)
+  int nSamples = 1;
+  for ( int dummy = 0; dummy < nSamples; dummy++ )
   {
-    float len;
-    illumination = _scene->GetLight(i)->SampleIllumination(isec,sampledDir,len);
-    // check for occlusion
-    Ray r2;
-    r2.origin = isec.worldPosition;
-    r2.direction = sampledDir;
-    Intersection isec2;
-    if ( !_scene->FindIntersection(r2,isec2) || fabs(isec2.t - len) < EPSILON )
+    // sample from one light
+    for (int i =0; i < _scene->Lights(); i++)
     {
-      float pdf1 = _scene->GetLight(i)->GetDirectionalPdf(sampledDir, isec.nrm, isec.worldPosition, len);
-      float pdf2 = isec.model->GetMaterial()->GetDirectionalPdf(sampledDir,isec.nrm);
-      brdf = isec.model->GetMaterial()->EvalBrdf(-ray.direction,isec.nrm,sampledDir);
-      if ( (pdf1 > 0) && (pdf2 > 0) )
+      float len;
+      illumination = _scene->GetLight(i)->SampleIllumination(isec,sampledDir,len);
+      // check for occlusion
+      Ray r2;
+      r2.origin = isec.worldPosition;
+      r2.direction = sampledDir;
+      Intersection isec2;
+      if ( !_scene->FindIntersection(r2,isec2) || fabs(isec2.t - len) < EPSILON )
       {
-        float misW = 1.0f/(pdf1 + pdf2);
-        DoAssert(misW > 0);
-        DoAssert(pdf1 > 0);
-        total += illumination.MultiplyPerElement(brdf) * misW;
+        float pdf1 = _scene->GetLight(i)->GetDirectionalPdf(sampledDir, isec.nrm, isec.worldPosition, len);
+        float pdf2 = isec.model->GetMaterial()->GetDirectionalPdf(sampledDir,isec.nrm);
+        brdf = isec.model->GetMaterial()->EvalBrdf(-ray.direction,isec.nrm,sampledDir);
+        if ( (pdf1 > 0) && (pdf2 > 0) )
+        {
+          float misW = 1.0f/(pdf1 + pdf2);
+          DoAssert(misW > 0);
+          DoAssert(pdf1 > 0);
+          total += illumination.MultiplyPerElement(brdf) * misW;
+        }
       }
     }
   }
 
+  for ( int dummy = 0; dummy < nSamples; dummy++ )
   //sample from brdf
   {
     float pdfBrdf;
@@ -240,8 +245,8 @@ Vector4d PathTraceRenderer::SampleMIS(const Ray & ray, const Intersection & isec
       }
     }
   }
-  
-  return total/2;
+  const int nTechs = 2;
+  return total/ (nTechs* nSamples);
 }
 
 Vector4d PathTraceRenderer::SampleLightBrdf(const Ray & ray, const Intersection & isec)
