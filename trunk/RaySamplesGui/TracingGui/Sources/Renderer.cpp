@@ -68,30 +68,3 @@ TrackProgress * GetRendererTrack()
 {
 	return &GTrackProgress;
 }
-
-FiniteBouncer::FiniteBouncer(int bounces)
-{
-	_maxBounces = bounces;
-}
-
-void FiniteBouncer::Init()
-{
-	_counter = _maxBounces;
-}
-
-
-bool FiniteBouncer::Bounce(Ray & ret, Intersection & section, Vector4d& throughput, float & pdf)
-{
-  if (_counter <0)
-    return true;
-  _counter --;
-  pdf = 1.0f/_maxBounces;
-  throughput *= pdf;
-	ret.origin = section.worldPosition;
-	Matrix4d cvrt;
-	cvrt.CreateFromZ(section.nrm);
-	Vector4d direction = SampleHemisphereWeighted();
-	ret.direction = cvrt.InSpace(direction);
-	ret.direction.Normalize();
-	return false;
-}

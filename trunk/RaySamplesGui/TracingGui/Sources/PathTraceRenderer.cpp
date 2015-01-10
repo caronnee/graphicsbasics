@@ -45,34 +45,6 @@ Vector4d PathTraceRenderer::SampleLight(Ray & ray, Intersection & isec)
 	return total;
 }
 
-// bounce logic
-Vector4d PathTraceRenderer::Bounced(Ray & xray, Intersection & xsection )
-{
-	Vector4d total(0,0,0,0);
-	Vector4d throughput(1,1,1,1);
-	Ray ray = xray;
-	Intersection isec = xsection;
-  while (true)
-	{
-    float pdf;
-    // we can always bounce, ray is now bounced ray
-    if (!_bouncer->Bounce(ray, isec,throughput, pdf))
-      break;
-
-    isec.t = FLT_MAX;
-    if ( !_scene->FindIntersection(ray,isec) )
-    {
-      //DoAssert(false);
-      break;
-    }
-
-		// calculate indirect light
-    // this is shadow ray
-		total += SampleLight(ray,isec).MultiplyPerElement(throughput);
-	}
-	return total;
-}
-
 Vector4d PathTraceRenderer::RayTrace(Ray ray)
 {
 	Vector4d total;
@@ -86,7 +58,7 @@ Vector4d PathTraceRenderer::RayTrace(Ray ray)
 	}
 
 	if ( _renderMask & RIndirectLightBounced)
-		total += Bounced(ray,isec);
+		total += SampleIndirect(ray,isec);
 
 	if ( _renderMask & RDirectLight )
 		total += SampleLight(ray,isec);
@@ -154,24 +126,13 @@ Vector4d PathTraceRenderer::RenderPixel(const int &x, const int &y)
   Ray r = _scene->GetRay(x,v);
   _scene->FindIntersection(r,s2);
   return TrackShine(s2,s1);*/
-	if (_bouncer)
-		_bouncer->Init();
 	Ray ray = _scene->GetRay( u,v );
   return RayTrace( ray );
 }
 
-PathTraceRenderer::PathTraceRenderer() : Renderer(), _bouncer(NULL)
+PathTraceRenderer::PathTraceRenderer() : Renderer()
 {
 
-}
-
-void PathTraceRenderer::Init(Scene * scene, Image * image, int bounces)
-{
-	base::Init(scene,image,bounces);
-	if ( _renderMask & RIndirectLightBounced )
-	{
-			_bouncer = new FiniteBouncer(bounces);
-	}
 }
 
 Vector4d GCoord;
@@ -296,4 +257,15 @@ Vector4d PathTraceRenderer::SampleLightBrdf(const Ray & ray, const Intersection 
     ret += _scene->Ambient().Illumination(sampledDir,isec.nrm,dummy,pdf).MultiplyPerElement(brdf);
   }
   return ret;
+}
+
+Vector4d PathTraceRenderer::SampleIndirect(const Ray & ray, const Intersection & isec)
+{
+  while (true)
+  {
+    if ( _renderMask & RIndirectSimple )
+    {
+
+    }
+  }
 }
