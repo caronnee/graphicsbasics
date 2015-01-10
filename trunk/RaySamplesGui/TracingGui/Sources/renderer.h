@@ -10,15 +10,42 @@
 
 TrackProgress * GetRendererTrack();
 
-#define RNone 0
-#define RDirectLight 1
-#define RDirectBRDF 2
-#define RDirectUniform 4
-#define RDirectMIS 8
+#define DIRECT_LIGHT( XX )  \
+  XX(DirectLight)  \
+  XX(DirectBRDF)  \
+  XX(DirectUniform)  \
+  XX(DirectMIS)  \
+  XX(IndirectOffset)  \
 
-#define RIndirectOffset 4
-#define RIndirectLightBounced ( 1 << RIndirectOffset )
-#define RGlobalIllumination ( 2 << RIndirectOffset )
+#define INDIRECT_LIGHT( XX )  \
+  XX(IndirectLightBounced)  \
+  XX(IndirectSimple)  \
+  XX(IndirectNextEvent)  \
+
+#define RNone 0
+#define  CREATE_ENUMS_DOUBLE(name) S##name,
+#define  CREATE_ENUMS_SHIFT(name) R##name = (1 << S##name),
+#define  CREATE_ENUMS_SHIFT_INDIRECT(name) R##name = (1 << (S##name + SIndirectOffset)),
+
+enum DirectRenderOffset
+{
+  DIRECT_LIGHT(CREATE_ENUMS_DOUBLE)
+};
+
+enum InDirectRenderOffset
+{
+  INDIRECT_LIGHT(CREATE_ENUMS_DOUBLE)
+};
+
+enum DirectMask
+{
+  DIRECT_LIGHT(CREATE_ENUMS_SHIFT)
+};
+
+enum InDirectMask
+{
+ INDIRECT_LIGHT(CREATE_ENUMS_SHIFT_INDIRECT)
+};
 
 class Bouncer
 {

@@ -246,7 +246,7 @@ Vector4d PathTraceRenderer::SampleMIS(const Ray & ray, const Intersection & isec
     }
   }
   const int nTechs = 2;
-  return total/ (nTechs* nSamples);
+  return total / (nTechs* nSamples);
 }
 
 Vector4d PathTraceRenderer::SampleLightBrdf(const Ray & ray, const Intersection & isec)
