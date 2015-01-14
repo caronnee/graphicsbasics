@@ -89,7 +89,7 @@ Vector4d PathTraceRenderer::TrackShine( const Intersection & lightSection, const
   // a1, a2;
   float len;
   // todo change
-  return lightSection.model->Evaluate( testSection.nrm, dirToLight, len);
+  return lightSection.model->Radiance( testSection.nrm, dirToLight, len);
 }
 
 Vector4d PathTraceRenderer::RenderPixel(const int &x, const int &y)
@@ -130,7 +130,7 @@ Vector4d PathTraceRenderer::RenderPixel(const int &x, const int &y)
   return RayTrace( ray );
 }
 
-PathTraceRenderer::PathTraceRenderer() : Renderer()
+PathTraceRenderer::PathTraceRenderer() : Renderer(), _bounces(0)
 {
 
 }
@@ -194,7 +194,7 @@ Vector4d PathTraceRenderer::SampleMIS(const Ray & ray, const Intersection & isec
       if (isec2.model->GetMaterial()->IsLight())
       {
         float pdfLight = isec2.model->GetDirectionalPdf(sampledDir, isec.nrm, isec.worldPosition, isec2.t);
-        illumination = isec2.model->Evaluate(isec.nrm,sampledDir,isec2.t);
+        illumination = isec2.model->Radiance(isec.nrm,sampledDir,isec2.t);
         if ( (pdfBrdf > 0) && (pdfLight > 0) )
         {
           float misW = 1.0f / ( pdfBrdf + pdfLight );
@@ -245,7 +245,7 @@ Vector4d PathTraceRenderer::SampleLightBrdf(const Ray & ray, const Intersection 
   if ( hitSomething )
   {
     bool t = isec2.model->GetMaterial()->IsLight();
-    Vector4d illuminationComing = isec2.model->Evaluate( isec.nrm, sampledDir, isec2.t );
+    Vector4d illuminationComing = isec2.model->Radiance( isec.nrm, sampledDir, isec2.t );
     DoAssert(t && illuminationComing.Size2()>0)
     ret = illuminationComing.MultiplyPerElement(brdf)/pdf;
   }
@@ -258,14 +258,69 @@ Vector4d PathTraceRenderer::SampleLightBrdf(const Ray & ray, const Intersection 
   }
   return ret;
 }
-
-Vector4d PathTraceRenderer::SampleIndirect(const Ray & ray, const Intersection & isec)
+//  
+Vector4d PathTraceRenderer::SampleIndirect(const Ray & incomingRay, const Intersection & isec)
 {
+  Vector4d accum(0,0,0,0);
+  Vector4d through(1,1,1,1);
+  
+  int bounces = _bounces;
+  Intersection prev = isec;
+  Ray prevRay = incomingRay;
+  
+  Intersection next;
+  Ray nextRay;
+  nextRay.origin = prev.worldPosition;
+  // sample the new direction from the previous model ( anywhere on the hemisphere because light can com from everywhere )
+  Matrix4d frame;
+  frame.CreateFromZ(prev.nrm);
+  nextRay.direction = frame.InSpace( SampleHemisphereWeighted(0) );
+
+  // gather the radiance along the path
   while (true)
   {
-    if ( _renderMask & RIndirectSimple )
-    {
+    // if it does not find anything, calculate background light
+    // next that will can be possible light
+    if (!_scene->FindIntersection(nextRay,next))
+      return accum + through.MultiplyPerElement(_scene->Ambient().GetMaterial()->Emmisive());
+    
+    Vector4d brdf = prev.model->GetMaterial()->EvalBrdf(prevRay.direction, prev.nrm,nextRay.direction);
+    brdf *= nextRay.direction.Dot(prev.nrm);
 
+    // We generated the direction uniformly
+    float pdf = 1.0f/2*PI;
+    float reflectance = prev.model->GetMaterial()->Reflectance();
+    through = brdf / (pdf * reflectance);
+    if ( _renderMask & (RIndirectSimple |RIndirectNextEvent) )
+    {
+      // stop according to reflection
+      float test = GetFloat();
+      if ( test < reflectance )
+        return accum;
     }
+    if ( _renderMask & RIndirectLightBounced )
+    {
+      bounces--;
+      if (bounces == 0 )
+        break;
+    }
+
+
+    prev = next;
+    prevRay = nextRay;
+    nextRay.origin = prev.worldPosition;
+    // sample the new direction from the previous model ( anywhere on the hemisphere because light can com from everywhere )
+    Matrix4d frame;
+    frame.CreateFromZ(prev.nrm);
+    nextRay.direction = frame.InSpace( SampleHemisphereWeighted(0) );
   }
+
+  // nothing, no light
+  return accum;
+}
+
+void PathTraceRenderer::Init(Scene * scene, Image * image, int maxBounces)
+{
+  _bounces = maxBounces;
+  Renderer::Init(scene, image, maxBounces);
 }

@@ -64,3 +64,9 @@ float Material::GetDirectionalPdf(const Vector4d &sampledDir, const Vector4d & n
 {
   throw std::logic_error("The method or operation is not implemented.");
 }
+
+float Material::Reflectance() const
+{
+  // does not reflect
+  return 0;
+}

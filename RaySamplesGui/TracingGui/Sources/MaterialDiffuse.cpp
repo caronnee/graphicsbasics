@@ -41,3 +41,8 @@ float MaterialDiffuse::GetDirectionalPdf(const Vector4d &sampledDir, const Vecto
 {
   return sampledDir.Dot(nrm)/PI;
 }
+
+float MaterialDiffuse::Reflectance() const
+{
+  return _diffuseReflectance.Max();
+}

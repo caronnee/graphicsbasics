@@ -20,6 +20,5 @@ public:
   Vector4d Illumination(const Vector4d & lightVector, const Vector4d & nrm, const int & dummy, float pdf);
 
   float GetDirectionalPdf(const Vector4d & direction, const Vector4d& normal, const Vector4d& pos, const float & len);
-
 };
 #endif
