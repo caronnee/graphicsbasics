@@ -15,6 +15,7 @@ public:
 	virtual Vector4d EvalBrdf(const Vector4d & input, const Vector4d & normal, Vector4d & outputDir ) const =0;
   virtual Vector4d SampleBrdf(const Vector4d & input,const Vector4d &normal, float &pdf)const = 0;
   virtual float GetDirectionalPdf(const Vector4d &sampledDir, const Vector4d & nrm) const;
+  virtual float Reflectance() const;
 };
 
 enum MaterialType{

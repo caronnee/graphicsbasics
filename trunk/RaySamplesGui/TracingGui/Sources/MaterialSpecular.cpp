@@ -77,3 +77,8 @@ Vector4d MaterialSpecular::SampleBrdf(const Vector4d & input,const Vector4d &nor
     return Vector4d(0,0,0,0);
   return ret;
 }
+
+float MaterialSpecular::Reflectance() const
+{
+  return _specularReflectance.Max()+ base::Reflectance();
+}

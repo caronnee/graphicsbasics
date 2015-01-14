@@ -20,5 +20,7 @@ public:
   //
 	Vector4d EvalBrdf(const Vector4d & input,const Vector4d & normal, Vector4d & output) const;
   float GetDirectionalPdf(const Vector4d &sampledDir, const Vector4d & nrm) const;
+  // reflectance
+  virtual float Reflectance() const;
 };
 #endif

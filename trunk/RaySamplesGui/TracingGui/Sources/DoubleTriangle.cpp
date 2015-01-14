@@ -99,7 +99,7 @@ float lasta;
 float lastb;
 float mmm = 100;
 
-Vector4d DoubleTriangle::Evaluate( const Vector4d& secNormal, const Vector4d & sampledDir, const float & len )
+Vector4d DoubleTriangle::Radiance( const Vector4d& secNormal, const Vector4d & sampledDir, const float & len )
 {
 #if _DEBUG
   float size = sampledDir.Size2();
@@ -148,7 +148,7 @@ Vector4d DoubleTriangle::SampleIllumination(const Intersection &section, Vector4
   sampledDir = mPoint - section.worldPosition;
   sampleLen = sampledDir.Size();
   sampledDir.Normalize();
-  Vector4d total = Evaluate( section.nrm, sampledDir, sampleLen);
+  Vector4d total = Radiance( section.nrm, sampledDir, sampleLen);
   float pdf = GetDirectionalPdf(sampledDir,section.nrm,section.worldPosition,sampleLen);
   if (pdf <=0)
     return Vector4d(0,0,0,0);
