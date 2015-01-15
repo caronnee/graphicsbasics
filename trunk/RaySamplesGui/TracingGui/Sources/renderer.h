@@ -47,6 +47,7 @@ enum InDirectMask
  INDIRECT_LIGHT(CREATE_ENUMS_SHIFT_INDIRECT)
 };
 
+// might be later used
 class Bouncer
 {
 public:

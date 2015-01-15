@@ -15,7 +15,7 @@ Vector4d AmbientLight::SampleIllumination(const Intersection &section, Vector4d 
 	sampledDir = SampleSphere();
 	//lightVector = l;
 	sampledDir.Normalize();
-  return Illumination(sampledDir,section.nrm,sampleLen,1.0/(4*PI));
+  return Radiance(sampledDir,section.nrm,sampleLen);
 }
 
 int AmbientLight::Type(void) const
@@ -32,7 +32,7 @@ bool AmbientLight::Intersect(const Ray &,Intersection &)
 	return false;
 }
 
-Vector4d AmbientLight::Illumination(const Vector4d & lightVector, const Vector4d & nrm, const int & dummy, float pdf)
+Vector4d AmbientLight::Radiance(const Vector4d & lightVector, const Vector4d & nrm, const int & dummy)
 {
   DoAssert( fabs(lightVector.Size2() - 1 ) < EPSILON );
   float cosA = nrm.Dot(lightVector);
@@ -40,10 +40,10 @@ Vector4d AmbientLight::Illumination(const Vector4d & lightVector, const Vector4d
     return Vector4d(0,0,0,0);
   DoAssert(cosA <=1.01);
   // sample hemisphere
-  return _backColor * cosA / pdf; 
+  return _backColor * cosA; 
 }
 
 float AmbientLight::GetDirectionalPdf(const Vector4d & direction, const Vector4d& normal, const Vector4d& pos, const float & len)
 {
-  return 4*PI;
+  return 1.0f/(4*PI);
 }

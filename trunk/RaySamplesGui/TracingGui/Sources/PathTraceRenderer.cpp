@@ -4,6 +4,7 @@
 #include "RandomNumber.h"
 
 #define MAX_BOUNCES 10
+static const int RIndirectMask = (~0) << SIndirectOffset;
 
 Vector4d PathTraceRenderer::SampleLight(Ray & ray, Intersection & isec)
 {
@@ -57,7 +58,7 @@ Vector4d PathTraceRenderer::RayTrace(Ray ray)
 		return BLACK;
 	}
 
-	if ( _renderMask & RIndirectLightBounced)
+	if ( _renderMask & RIndirectMask)
 		total += SampleIndirect(ray,isec);
 
 	if ( _renderMask & RDirectLight )
@@ -254,7 +255,7 @@ Vector4d PathTraceRenderer::SampleLightBrdf(const Ray & ray, const Intersection 
     // was not occluded
     // use ambient lighting
     int dummy;
-    ret += _scene->Ambient().Illumination(sampledDir,isec.nrm,dummy,pdf).MultiplyPerElement(brdf);
+    ret += _scene->Ambient().Radiance(sampledDir,isec.nrm,dummy).MultiplyPerElement(brdf)/pdf;
   }
   return ret;
 }
@@ -282,13 +283,17 @@ Vector4d PathTraceRenderer::SampleIndirect(const Ray & incomingRay, const Inters
     // if it does not find anything, calculate background light
     // next that will can be possible light
     if (!_scene->FindIntersection(nextRay,next))
-      return accum + through.MultiplyPerElement(_scene->Ambient().GetMaterial()->Emmisive());
+      return accum + through.MultiplyPerElement(_scene->Ambient().Radiance(nextRay.direction,next.nrm,1));
     
+    if ( next.model->GetMaterial()->IsLight())
+    {
+      accum += through.MultiplyPerElement(next.model->GetMaterial()->Emmisive());
+    }
     Vector4d brdf = prev.model->GetMaterial()->EvalBrdf(prevRay.direction, prev.nrm,nextRay.direction);
     brdf *= nextRay.direction.Dot(prev.nrm);
 
     // We generated the direction uniformly
-    float pdf = 1.0f/2*PI;
+    float pdf = 1.0f/(2*PI);
     float reflectance = prev.model->GetMaterial()->Reflectance();
     through = brdf / (pdf * reflectance);
     if ( _renderMask & (RIndirectSimple |RIndirectNextEvent) )
