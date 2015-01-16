@@ -295,7 +295,7 @@ Vector4d PathTraceRenderer::SampleIndirect(const Ray & incomingRay, const Inters
     brdf *= cosa;
 
     // We generated the direction uniformly
-    float pdf = (2*PI);
+    float pdf = 1.0f/ (2*PI);
     float reflectance = prev.model->GetMaterial()->Reflectance();
     through = through.MultiplyPerElement( brdf ) / (pdf * reflectance);
     if ( _renderMask & (RIndirectSimple |RIndirectNextEvent) )
