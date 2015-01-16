@@ -45,5 +45,6 @@ Vector4d AmbientLight::Radiance(const Vector4d & lightVector, const Vector4d & n
 
 float AmbientLight::GetDirectionalPdf(const Vector4d & direction, const Vector4d& normal, const Vector4d& pos, const float & len)
 {
-  return 1.0f/(4*PI);
+  // because the 
+  return (4*PI);
 }

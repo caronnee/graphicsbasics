@@ -97,8 +97,8 @@ Vector4d PathTraceRenderer::RenderPixel(const int &x, const int &y)
 {
 	// we start at camera
   int u = x,v=y;
-//  u = 141;
-//  v = 87;  
+  /*u = 41;
+  v = 187;  */
   if ( y < 128 )
   {
 //    v = 78;  
@@ -290,17 +290,19 @@ Vector4d PathTraceRenderer::SampleIndirect(const Ray & incomingRay, const Inters
       accum += through.MultiplyPerElement(next.model->GetMaterial()->Emmisive());
     }
     Vector4d brdf = prev.model->GetMaterial()->EvalBrdf(prevRay.direction, prev.nrm,nextRay.direction);
-    brdf *= nextRay.direction.Dot(prev.nrm);
+    float cosa = nextRay.direction.Dot(prev.nrm);
+    DoAssert(cosa >=0);
+    brdf *= cosa;
 
     // We generated the direction uniformly
-    float pdf = 1.0f/(2*PI);
+    float pdf = (2*PI);
     float reflectance = prev.model->GetMaterial()->Reflectance();
-    through = brdf / (pdf * reflectance);
+    through = through.MultiplyPerElement( brdf ) / (pdf * reflectance);
     if ( _renderMask & (RIndirectSimple |RIndirectNextEvent) )
     {
       // stop according to reflection
       float test = GetFloat();
-      if ( test < reflectance )
+      if ( test >= reflectance )
         return accum;
     }
     if ( _renderMask & RIndirectLightBounced )
