@@ -153,6 +153,7 @@ Vector4d PathTraceRenderer::SampleMIS(const Ray & ray, const Intersection & isec
   Vector4d illumination;
   Vector4d brdf;
   int nSamples = 1;
+//  if ( false )
   for ( int dummy = 0; dummy < nSamples; dummy++ )
   {
     // sample from one light
@@ -175,14 +176,15 @@ Vector4d PathTraceRenderer::SampleMIS(const Ray & ray, const Intersection & isec
           float misW = 1.0f/(pdf1 + pdf2);
           DoAssert(misW > 0);
           DoAssert(pdf1 > 0);
+          DoAssert(pdf2 > 0);
           total += illumination.MultiplyPerElement(brdf) * misW;
         }
       }
     }
   }
 
-  for ( int dummy = 0; dummy < nSamples; dummy++ )
   //sample from brdf
+  for ( int dummy = 0; dummy < nSamples; dummy++ )
   {
     float pdfBrdf;
     sampledDir = m->SampleBrdf( -ray.direction, isec.nrm, pdfBrdf );
@@ -190,12 +192,28 @@ Vector4d PathTraceRenderer::SampleMIS(const Ray & ray, const Intersection & isec
     r2.origin = isec.worldPosition;
     r2.direction = sampledDir;
     Intersection isec2;
-    if ( sampledDir.Size2() > 0 && _scene->FindIntersection(r2,isec2) )
+    if ( (sampledDir.Size2() > 0)  )
     {
-      if (isec2.model->GetMaterial()->IsLight())
+      if (_scene->FindIntersection(r2,isec2))
       {
-        float pdfLight = isec2.model->GetDirectionalPdf(sampledDir, isec.nrm, isec.worldPosition, isec2.t);
-        illumination = isec2.model->Radiance(isec.nrm,sampledDir,isec2.t);
+        if (isec2.model->GetMaterial()->IsLight())
+        {
+          float pdfLight = isec2.model->GetDirectionalPdf(sampledDir, isec.nrm, isec.worldPosition, isec2.t);
+          illumination = isec2.model->Radiance(isec.nrm,sampledDir,isec2.t);
+          if ( (pdfBrdf > 0) && (pdfLight > 0) )
+          {
+            float misW = 1.0f / ( pdfBrdf + pdfLight );
+            DoAssert(misW > 0);
+            DoAssert(pdfBrdf > 0);
+            brdf = isec.model->GetMaterial()->EvalBrdf(-ray.direction,isec.nrm,sampledDir);          
+            total += illumination.MultiplyPerElement(brdf) * misW ;
+          }      
+        }
+      }
+      else
+      {
+        float pdfLight = _scene->Ambient().GetDirectionalPdf(sampledDir, isec.nrm, isec.worldPosition, isec2.t);
+        illumination = _scene->Ambient().Radiance(sampledDir,isec.nrm,0);
         if ( (pdfBrdf > 0) && (pdfLight > 0) )
         {
           float misW = 1.0f / ( pdfBrdf + pdfLight );
@@ -203,9 +221,10 @@ Vector4d PathTraceRenderer::SampleMIS(const Ray & ray, const Intersection & isec
           DoAssert(pdfBrdf > 0);
           brdf = isec.model->GetMaterial()->EvalBrdf(-ray.direction,isec.nrm,sampledDir);          
           total += illumination.MultiplyPerElement(brdf) * misW ;
-        }      
+        }  
       }
     }
+
   }
   const int nTechs = 2;
   return total / (nTechs* nSamples);
