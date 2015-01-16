@@ -97,8 +97,8 @@ Vector4d PathTraceRenderer::RenderPixel(const int &x, const int &y)
 {
 	// we start at camera
   int u = x,v=y;
-  /*u = 41;
-  v = 187;  */
+  //u = 133;
+  //v = 67;  
   if ( y < 128 )
   {
 //    v = 78;  
@@ -296,18 +296,24 @@ Vector4d PathTraceRenderer::SampleIndirect(const Ray & incomingRay, const Inters
   frame.CreateFromZ(prev.nrm);
   nextRay.direction = frame.InSpace( SampleHemisphereWeighted(0) );
 
+  int index = 0;
   // gather the radiance along the path
   while (true)
   {
     // if it does not find anything, calculate background light
     // next that will can be possible light
     if (!_scene->FindIntersection(nextRay,next))
-      return accum + through.MultiplyPerElement(_scene->Ambient().Radiance(nextRay.direction,next.nrm,1));
+    {
+      // hack to get full radiance
+      accum += through.MultiplyPerElement(_scene->Ambient().Radiance(prev.nrm,prev.nrm,1));
+      break;
+    }
     
     if ( next.model->GetMaterial()->IsLight())
     {
-      accum += through.MultiplyPerElement(next.model->GetMaterial()->Emmisive());
+      accum += through.MultiplyPerElement(next.model->Radiance( prev.nrm, nextRay.direction,next.t ));
     }
+
     Vector4d brdf = prev.model->GetMaterial()->EvalBrdf(prevRay.direction, prev.nrm,nextRay.direction);
     float cosa = nextRay.direction.Dot(prev.nrm);
     DoAssert(cosa >=0);
@@ -322,7 +328,7 @@ Vector4d PathTraceRenderer::SampleIndirect(const Ray & incomingRay, const Inters
       // stop according to reflection
       float test = GetFloat();
       if ( test >= reflectance )
-        return accum;
+        break;
     }
     if ( _renderMask & RIndirectLightBounced )
     {
@@ -330,7 +336,6 @@ Vector4d PathTraceRenderer::SampleIndirect(const Ray & incomingRay, const Inters
       if (bounces == 0 )
         break;
     }
-
 
     prev = next;
     prevRay = nextRay;
@@ -340,7 +345,8 @@ Vector4d PathTraceRenderer::SampleIndirect(const Ray & incomingRay, const Inters
     frame.CreateFromZ(prev.nrm);
     nextRay.direction = frame.InSpace( SampleHemisphereWeighted(0) );
   }
-
+  if ( index == 1 )
+    __debugbreak();
   // nothing, no light
   return accum;
 }
