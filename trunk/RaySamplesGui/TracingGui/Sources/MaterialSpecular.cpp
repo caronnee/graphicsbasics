@@ -57,24 +57,32 @@ Vector4d MaterialSpecular::SampleBrdf(const Vector4d & input,const Vector4d &nor
   if ( test < pd )
   {
     Vector4d ret = MaterialDiffuse::SampleBrdf(input,normal,pdf);
-    pdf = GetDirectionalPdf(input, normal);
+    pdf = GetDirectionalPdf(ret, normal);
     return ret;
   }
 
   // sample according to specular BRDF
-  Vector4d ret = SampleHemisphereWeighted(_phongCoef);
+  Vector4d retSampled = SampleHemisphereWeighted(_phongCoef);
   Vector4d reflected = Reflected( input, normal );
+#if _DEBUG
   float cosAn = normal.Dot(reflected);
   DoAssert( (reflected.Size2() - 1) < EPSILON );
-  DoAssert( (ret.Size2() - 1) < EPSILON );
-  pdf = GetDirectionalPdf(input, normal);
+  DoAssert( (retSampled.Size2() - 1) < EPSILON );
+#endif
 
   Matrix4d sample;
   sample.CreateFromZ(reflected);
-  ret = sample.InSpace(ret);
+  float xrcos = retSampled.Dot(Vector4d(0,0,1,0));
+  Vector4d ret = sample.InSpace(retSampled);
   // TODO why,why?
-  if ( ret.Dot(reflected) < 0 || (pdf < EPSILON))
+  float aroundR = ret.Dot(reflected);
+  float aroundN = ret.Dot(normal);
+  DoAssert(aroundR >= 0);
+  pdf = GetDirectionalPdf(input, normal);  
+  if ( (pdf < EPSILON) || (aroundN < 0))
     return Vector4d(0,0,0,0);
+  DoAssert(aroundN >= 0);
+
   return ret;
 }
 
