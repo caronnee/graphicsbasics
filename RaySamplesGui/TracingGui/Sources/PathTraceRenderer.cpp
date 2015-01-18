@@ -289,20 +289,26 @@ Vector4d PathTraceRenderer::SampleIndirect(const Ray & incomingRay, const Inters
   Ray prevRay = incomingRay;
   
   Intersection next;
+  float pdf;
   Ray nextRay;
   nextRay.origin = prev.worldPosition;
   // sample the new direction from the previous model ( anywhere on the hemisphere because light can com from everywhere )
-  Matrix4d frame;
-  frame.CreateFromZ(prev.nrm);
-  nextRay.direction = frame.InSpace( SampleHemisphereWeighted(0) );
+  // sample according to brdf
+  nextRay.direction = prev.model->GetMaterial()->SampleBrdf(-prevRay.direction,prev.nrm,pdf);
+    //frame.InSpace( SampleHemisphereWeighted(0) );
+
+  float cossa = nextRay.direction.Dot(prev.nrm);
+  DoAssert(pdf > 0);
+  DoAssert(cossa >=0);
 
   int index = 0;
   // gather the radiance along the path
   while (true)
   {
+    index++;
     // if it does not find anything, calculate background light
     // next that will can be possible light
-    if (!_scene->FindIntersection(nextRay,next))
+    if ((nextRay.direction.Size2() == 0) || !_scene->FindIntersection(nextRay,next))
     {
       // hack to get full radiance
       accum += through.MultiplyPerElement(_scene->Ambient().Radiance(prev.nrm,prev.nrm,1));
@@ -314,13 +320,14 @@ Vector4d PathTraceRenderer::SampleIndirect(const Ray & incomingRay, const Inters
       accum += through.MultiplyPerElement(next.model->Radiance( prev.nrm, nextRay.direction,next.t ));
     }
 
-    Vector4d brdf = prev.model->GetMaterial()->EvalBrdf(prevRay.direction, prev.nrm,nextRay.direction);
+    Vector4d brdf = prev.model->GetMaterial()->EvalBrdf(-prevRay.direction, prev.nrm,nextRay.direction);
     float cosa = nextRay.direction.Dot(prev.nrm);
+    DoAssert(pdf > 0);
     DoAssert(cosa >=0);
     brdf *= cosa;
 
     // We generated the direction uniformly
-    float pdf = 1.0f/ (2*PI);
+    //float pdf = prev.model->GetMaterial()->GetDirectionalPdf(nextRay.direction,prev.nrm);
     float reflectance = prev.model->GetMaterial()->Reflectance();
     through = through.MultiplyPerElement( brdf ) / (pdf * reflectance);
     if ( _renderMask & (RIndirectSimple |RIndirectNextEvent) )
@@ -341,12 +348,10 @@ Vector4d PathTraceRenderer::SampleIndirect(const Ray & incomingRay, const Inters
     prevRay = nextRay;
     nextRay.origin = prev.worldPosition;
     // sample the new direction from the previous model ( anywhere on the hemisphere because light can com from everywhere )
-    Matrix4d frame;
-    frame.CreateFromZ(prev.nrm);
-    nextRay.direction = frame.InSpace( SampleHemisphereWeighted(0) );
+    nextRay.direction = prev.model->GetMaterial()->SampleBrdf(-prevRay.direction,prev.nrm,pdf); 
   }
-  if ( index == 1 )
-    __debugbreak();
+  //if ( index == 1 )
+  //  __debugbreak();
   // nothing, no light
   return accum;
 }

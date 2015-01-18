@@ -8,7 +8,7 @@
 
 Vector4d MoveToCoord( Vector4d origin, Vector4d dir, float dist , int coord);
 
-#define DoAssert(val) if ( val==false ) __debugbreak();
+#define DoAssert(val) if ( val==false ) { OutputDebugStringA(#val); __debugbreak(); }
 
 void ShowDebugMessage(char * format, ...);
 
