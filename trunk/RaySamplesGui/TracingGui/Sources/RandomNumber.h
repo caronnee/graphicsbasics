@@ -10,7 +10,7 @@ public:
 	Rng(int aSeed = 1234);
 
 	  float GetFloat();
-
+    ~Rng();
 private:
 
 	std::mt19937_64 mRng;

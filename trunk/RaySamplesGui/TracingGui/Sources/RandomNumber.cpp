@@ -1,10 +1,25 @@
 #include "RandomNumber.h"
 
 Rng james;
+FILE * GSequence = NULL;
+bool save = false;
 
+#include "Debug.h"
 float Rng::GetFloat()
 {
-	return mDistFloat(mRng);
+  float ret;
+  if ( save )
+	{
+    ret = mDistFloat(mRng);
+    fwrite(&ret, sizeof(ret),1, GSequence );
+    return ret;
+  }
+  int len = fread(&ret, sizeof(ret),1,GSequence);
+  DoAssert(len == 1);
+
+  if ( feof(GSequence) )
+    fseek(GSequence,0,SEEK_SET);
+  return ret;
 }
 
 #include "MathUtil.h"
@@ -88,8 +103,20 @@ Vector4d SampleSphere()
 	return ret;
 }
 
+#define SNAME "sequence.txt"
+
+Rng::~Rng()
+{
+  fclose(GSequence);
+}
+
 Rng::Rng(int aSeed /*= 1234*/) :
 mRng(aSeed)
 {
-
+  GSequence = fopen(SNAME,"rb");
+  if ( GSequence == NULL )
+  {
+    GSequence = fopen(SNAME,"wb");
+    save = true;
+  }
 }
