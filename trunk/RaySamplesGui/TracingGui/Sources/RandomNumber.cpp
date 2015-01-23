@@ -1,12 +1,19 @@
 #include "RandomNumber.h"
 
 Rng james;
+
+#define USE_SEQUENCE 0
+
+#if USE_SEQUENCE
 FILE * GSequence = NULL;
 bool save = false;
+#endif
 
 #include "Debug.h"
+
 float Rng::GetFloat()
 {
+#if USE_SEQUENCE
   float ret;
   if ( save )
 	{
@@ -15,11 +22,17 @@ float Rng::GetFloat()
     return ret;
   }
   int len = fread(&ret, sizeof(ret),1,GSequence);
-  DoAssert(len == 1);
 
   if ( feof(GSequence) )
+  {
     fseek(GSequence,0,SEEK_SET);
+    len = fread(&ret, sizeof(ret),1,GSequence);
+  }
+  DoAssert(len == 1);
   return ret;
+#else
+  return mDistFloat(mRng);
+#endif
 }
 
 #include "MathUtil.h"
@@ -107,16 +120,20 @@ Vector4d SampleSphere()
 
 Rng::~Rng()
 {
+#if USE_SEQUENCE
   fclose(GSequence);
+#endif
 }
 
 Rng::Rng(int aSeed /*= 1234*/) :
 mRng(aSeed)
 {
+#if USE_SEQUENCE
   GSequence = fopen(SNAME,"rb");
   if ( GSequence == NULL )
   {
     GSequence = fopen(SNAME,"wb");
     save = true;
   }
+#endif
 }

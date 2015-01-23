@@ -18,7 +18,8 @@ public:
 	Vector4d& Up();
 	Vector4d& Direction();
 	void Identity();
-	Matrix4d Invert()const;
+  Vector4d ToLocal( const Vector4d& v);
+  Matrix4d Invert()const;
 	Vector4d& GetRow(int i);
 	const Vector4d GetRow(int i)const;
 	Vector4d operator*(const Vector4d& oper)const;
