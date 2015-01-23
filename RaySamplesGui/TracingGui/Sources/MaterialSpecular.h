@@ -8,6 +8,8 @@ class MaterialSpecular : public MaterialDiffuse
 	Vector4d _specularReflectance;
 
 	float _phongCoef;
+
+  float GetSpecularDirectionalPdf(const Vector4d &input, const Vector4d & normal) const;
 public:	
   MaterialSpecular(const Vector4d & diffuse, const Vector4d & specular, const float & phongCoef);
 
@@ -15,7 +17,7 @@ public:
 	Vector4d GetSpecular(const Vector4d & incoming, const Vector4d & normal, const Vector4d & output) const;
   
   //
-  Vector4d SampleBrdf(const Vector4d & input,const Vector4d &normal,float &pdf)const;
+  Vector4d SampleBrdf(const Vector4d & input,const Vector4d &normal,float &pdf, Vector4d & brdf)const;
   
   //
 	Vector4d EvalBrdf(const Vector4d & input,const Vector4d & normal, Vector4d & output) const;

@@ -285,3 +285,11 @@ Matrix4d & Matrix4d::CreateFromZ(const Vector4d & nrm)
 	Aside() = Up().Cross(Direction());
 	return *this;
 }
+
+Vector4d Matrix4d::ToLocal(const Vector4d& v)
+{
+  Vector4d ret;
+  for ( int i =0; i < DIM; i++)
+    ret[i] = v.Dot(_rows[i]);
+  return ret;
+}

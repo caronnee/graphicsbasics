@@ -355,8 +355,8 @@ void TracingGui::LoadMaterials(const QString & nname)
 		handler.Read( &g->parameters[1], sizeof (g->parameters[1]), 1);
 		handler.Read( &g->matSpecularExp, sizeof (g->matSpecularExp), 1);
 		handler.Read( &g->parameters[2], sizeof (g->parameters[2]), 1);
-    g->parameters[0] *=0.48;
-    g->parameters[1] *=0.58;
+    //g->parameters[0] *=0.48;
+    //g->parameters[1] *=0.58;
 	}
 	float ambient[3];
 	handler.Read( &ambient, sizeof (float), 3 );

@@ -14,6 +14,10 @@ bool stop = false;
 
 extern Vector4d GCoord;
 
+Vector4d GMax(0,0,0,0);
+Vector4d GMaxCoords;
+
+
 void Renderer::Render(int iterations)
 {
 	_image->Clear();
@@ -34,7 +38,16 @@ void Renderer::Render(int iterations)
         if ( GCoord [0] > 0)
           _image->AddColor(GCoord[0],GCoord[1],Vector4d(1,1,1,1));
         else
+        {
+          color[3] = 0;
+          if (color[1] > GMax[1])
+          {
+            GMax = color;
+            GMaxCoords[0] = x;
+            GMaxCoords[1] = y;
+          }
           _image->AddColor(x,y,color);
+        }
       }
       GetRendererTrack()->Update();
     }
