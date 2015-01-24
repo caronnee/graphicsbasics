@@ -3,7 +3,7 @@
 
 void TestRenderer::Init(Scene * scene, Image * image, int bounces)
 {
-	Renderer::Init(scene,image, bounces);
+	Renderer::Init(image);
 }
 
 #if _DEBUG
@@ -18,11 +18,11 @@ Vector4d TestRenderer::RenderPixel(const int &x, const int &y)
 	else
 		stop = false;
 #endif
-	Ray ray = _scene->GetRay((float)x +0.5,(float)y +0.5);
+	Ray ray = _renderCtx.scene->GetRay((float)x +0.5,(float)y +0.5);
 	Vector4d total = Vector4d(0,0,0,0);
 	// so far only ambient
 	Intersection isect;
-	bool found = _scene->FindIntersection(ray, isect);
+	bool found = _renderCtx.scene->FindIntersection(ray, isect);
 	if ( !found )
 	{
 		//		DoAssert(false);

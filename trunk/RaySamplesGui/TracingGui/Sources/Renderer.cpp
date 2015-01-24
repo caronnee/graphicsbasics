@@ -2,10 +2,9 @@
 #include "Debug.h"
 #include "RandomNumber.h"
 
-void Renderer::Init( Scene * scene, Image * image, int maxBounces )
+void Renderer::Init( Image * image )
 {
 	_image = image;
-	_scene = scene;
 }
 
 #if _DEBUG
@@ -18,11 +17,12 @@ Vector4d GMax(0,0,0,0);
 Vector4d GMaxCoords;
 
 
-void Renderer::Render(int iterations)
+void Renderer::Render()
 {
 	_image->Clear();
 	GetRendererTrack()->Clear();
-	GetRendererTrack()->SetStages(iterations * _image->W());
+  int & iterations = _renderCtx.iterations;
+	GetRendererTrack()->SetStages( iterations * _image->W());
 
 	for ( int i =0; i < iterations; i++)
 	{
@@ -55,7 +55,7 @@ void Renderer::Render(int iterations)
   GetRendererTrack()->Finish();
 }
 
-Renderer::Renderer() : _scene(NULL), _image(NULL), _renderMask(0),_stop(false)
+Renderer::Renderer() : _image(NULL), _stop(false)
 {
 
 }

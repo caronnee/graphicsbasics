@@ -7,29 +7,12 @@
 #include "TestRenderer.h"
 #include "PathTraceRenderer.h"
 
-struct RenderContext
-{
-	// scene contains also camera
-	Scene * scene;
-	int mask;
-	int start[2];
-	int end[2];
-	int renderMask;
-	int iterations;
-	int bounces;
-};
-
-// _scene->CreateCamera(posTranslate, oMatrix.GetRow(2), oMatrix.GetRow(1) ,fov);
+// _renderCtx.scene->CreateCamera(posTranslate, oMatrix.GetRow(2), oMatrix.GetRow(1) ,fov);
 class RenderThread : public QThread
 {
 	Image _image;
-	Scene *_scene;
-	int _mask;
 	int _start[2];
 	int _end[2];
-	int _iterations;
-	int _maxBounces;
-
 	// manually created:
 	Renderer * _renderer;
 

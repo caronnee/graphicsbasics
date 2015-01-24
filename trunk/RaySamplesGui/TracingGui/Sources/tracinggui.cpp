@@ -233,6 +233,9 @@ TracingGui::TracingGui(QWidget *parent)
   connect(ui.sceneNames->selectionModel(), SIGNAL(selectionChanged (const QItemSelection &, const QItemSelection &)),
 	  this, SLOT(SelectionSceneChangedSlot(const QItemSelection &, const QItemSelection &)));
 
+  // connect min/max on fixed point
+  //connect ( ui.fix)
+
   memset(_threads,0,sizeof(_threads));
   LoadModels(ui.currentScene->text());
   LoadMaterials(ui.currentMaterial->text());
@@ -757,10 +760,16 @@ void TracingGui::RenderSlot()
 	renderCtx.end[0] = xDim;
 	renderCtx.end[1] = yDim;
 	renderCtx.mask = ui.directType->currentData().toInt() | ui.indirectType->currentData().toInt();
+
 	renderCtx.renderMask = ui.rendererType->currentData().toInt();
 	renderCtx.iterations = ui.iterations->value();
 	renderCtx.bounces = ui.bounces->value();
-
+  if ( ui.coordOnly->checkState() == Qt::Checked )
+  {
+    renderCtx.mask |= COORDS_ONLY;
+    renderCtx.fixed[0] = ui.fixedX->value();
+    renderCtx.fixed[1] = ui.fixedY->value();
+  }
 	for ( int i =0; i < MAXTHREADS; i++)
 	{
 		if (_threads[i])
@@ -922,9 +931,9 @@ void SceneModels::AddMaterials(const QStringList & list)
 	{
 		//int index = -1;
 		//int pos = -1;
-		//for ( int iScene = 0; iScene < _scenes.size(); iScene++ )
+		//for ( int iScene = 0; iScene < _renderCtx.scenes.size(); iScene++ )
 		//{
-		//	if ( list[iList].startsWith(_scenes[iScene]) )
+		//	if ( list[iList].startsWith(_renderCtx.scenes[iScene]) )
 		//	{
 		//		int len = list[iList].length();
 		//		/*
