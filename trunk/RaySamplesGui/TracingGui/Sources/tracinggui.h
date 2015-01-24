@@ -110,6 +110,8 @@ private:
 	void LoadSceneNames();
 	void LoadModels(const QString & name);
 	void LoadMaterials(const QString & name);
+  void LoadSetup();
+  void SaveSetup();
 };
 
 #endif // TRACINGGUI_H
