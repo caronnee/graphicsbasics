@@ -28,7 +28,7 @@
        <enum>QTabWidget::North</enum>
       </property>
       <property name="currentIndex">
-       <number>3</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="model">
        <property name="layoutDirection">
@@ -349,22 +349,6 @@
             </property>
            </widget>
           </item>
-          <item row="3" column="2">
-           <widget class="QDoubleSpinBox" name="yVert_3">
-            <property name="prefix">
-             <string>y:</string>
-            </property>
-            <property name="decimals">
-             <number>2</number>
-            </property>
-            <property name="minimum">
-             <double>-1000.000000000000000</double>
-            </property>
-            <property name="maximum">
-             <double>1000.000000000000000</double>
-            </property>
-           </widget>
-          </item>
           <item row="3" column="3">
            <widget class="QDoubleSpinBox" name="zVert_3">
             <property name="prefix">
@@ -383,6 +367,22 @@
           </item>
           <item row="4" column="2">
            <widget class="QDoubleSpinBox" name="radius"/>
+          </item>
+          <item row="3" column="2">
+           <widget class="QDoubleSpinBox" name="yVert_3">
+            <property name="prefix">
+             <string>y:</string>
+            </property>
+            <property name="decimals">
+             <number>2</number>
+            </property>
+            <property name="minimum">
+             <double>-1000.000000000000000</double>
+            </property>
+            <property name="maximum">
+             <double>1000.000000000000000</double>
+            </property>
+           </widget>
           </item>
          </layout>
         </item>
@@ -854,7 +854,7 @@
         <item row="2" column="4">
          <layout class="QHBoxLayout" name="horizontalLayout_2">
           <item>
-           <widget class="QCheckBox" name="checkBox">
+           <widget class="QCheckBox" name="saveRespect">
             <property name="enabled">
              <bool>false</bool>
             </property>
@@ -1041,13 +1041,6 @@
      <widget class="QProgressBar" name="renderProgress">
       <property name="value">
        <number>0</number>
-      </property>
-     </widget>
-    </item>
-    <item row="13" column="7">
-     <widget class="QLabel" name="label">
-      <property name="text">
-       <string>outputName</string>
       </property>
      </widget>
     </item>

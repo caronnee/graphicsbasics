@@ -236,6 +236,8 @@ TracingGui::TracingGui(QWidget *parent)
   // connect min/max on fixed point
   //connect ( ui.fix)
 
+  LoadSetup();
+
   memset(_threads,0,sizeof(_threads));
   LoadModels(ui.currentScene->text());
   LoadMaterials(ui.currentMaterial->text());
@@ -806,6 +808,7 @@ void TracingGui::FetchResultsSlot()
 }
 TracingGui::~TracingGui()
 {
+  SaveSetup();
 	if ( _gModels )
 		delete _gModels;
 }
@@ -880,6 +883,61 @@ void TracingGui::SaveCurrentMaterialSlot()
 	QString materialName = ui.currentMaterial->text();
 	materialName.prepend(DEFAULT_PATH);
 	SaveMaterials(materialName.toLocal8Bit().data());
+}
+
+#define SETUP_FILE "setup.txt"
+
+#define APPLY(XX_CHECK,XX_TEXT, XX_VAL,XX_COMBO) \
+  XX_TEXT(ui.currentScene)  \
+  XX_TEXT(ui.currentMaterial)  \
+  XX_COMBO(ui.directType)  \
+  XX_VAL(ui.xPosVal)  \
+  XX_VAL(ui.yPosVal)  \
+  XX_VAL(ui.zPosVal)  \
+  XX_VAL(ui.xDirVal)  \
+  XX_VAL(ui.yDirVal)  \
+  XX_VAL(ui.zDirVal)  \
+  XX_VAL(ui.xzRotDeg)  \
+  XX_VAL(ui.xDim)  \
+  XX_VAL(ui.yDim)  \
+  XX_COMBO(ui.rendererType)  \
+  XX_COMBO(ui.directType)  \
+  XX_COMBO(ui.indirectType)  \
+  XX_VAL(ui.iterations)  \
+  XX_VAL(ui.bounces)  \
+  XX_CHECK(ui.coordOnly)  \
+  XX_VAL(ui.fixedX)  \
+  XX_VAL(ui.fixedY)  \
+
+
+#define SAVE_VAL(var) {float val = var->value(); fwrite(&val,sizeof(val),1,file); }
+#define SAVE_CHECK(var) { Qt::CheckState b = var->checkState(); fwrite(&b,sizeof(b),1,file); }
+#define SAVE_TEXT(var) { QString s = var->text(); const QChar * c = s.data(); int len = s.size(); fwrite(&len,sizeof(int),1,file); fwrite(c,sizeof(QChar),len,file); }
+#define SAVE_COMBO(var)  { int c = var->currentIndex(); fwrite(&c,sizeof(c),1,file); }
+
+#define LOAD_VAL(var) {float ret; fread(&ret,sizeof(ret),1,file); var->setValue(ret); }
+#define LOAD_CHECK(var) {Qt::CheckState b; fread(&b,sizeof(Qt::CheckState),1,file); var->setCheckState(b); }
+#define LOAD_TEXT(var)  {int size; fread(&size,sizeof(int),1,file); QChar*c = new QChar[size]; fread(c,sizeof(QChar),size,file); QString str(c,size); var->setText(str); delete[] c; } 
+#define LOAD_COMBO(var)  {int index; fread(&index,sizeof(int),1,file); var->setCurrentIndex(index);}
+//APPLY(XX_CHECK,XX_TEXT, XX_VAL,XX_COMBO)
+
+void TracingGui::SaveSetup()
+{
+  FILE *file = fopen(SETUP_FILE,"w");
+  DoAssert(file);
+  APPLY(SAVE_CHECK,SAVE_TEXT,SAVE_VAL,SAVE_COMBO);
+  fclose(file);
+}
+
+void TracingGui::LoadSetup()
+{
+  FILE * file = fopen(SETUP_FILE,"r");
+  if (!file)
+    return;
+  
+  APPLY( LOAD_CHECK,LOAD_TEXT,LOAD_VAL, LOAD_COMBO )
+
+  fclose(file);
 }
 
 
