@@ -11,10 +11,10 @@ Vector4d PathTraceRenderer::SampleLight(Ray & ray, Intersection & isec)
 	Vector4d total (0,0,0,0);
 
 	// sample direct light
-	for (int iLight =0; iLight< _scene->Lights(); iLight++)
+	for (int iLight =0; iLight< _renderCtx.scene->Lights(); iLight++)
   {
     // sample from light
-    Geometry * light = _scene->GetLight(iLight);
+    Geometry * light = _renderCtx.scene->GetLight(iLight);
     if ( light == isec.model )
     {
       total += isec.model->GetMaterial()->Emmisive();
@@ -30,7 +30,7 @@ Vector4d PathTraceRenderer::SampleLight(Ray & ray, Intersection & isec)
 		Ray r2;
 		r2.origin = isec.worldPosition;
 		r2.direction = lightVector;
-		bool occluded = _scene->FindIntersection(r2, occSec);
+		bool occluded = _renderCtx.scene->FindIntersection(r2, occSec);
 
 		// we want to know if the intersection before
 		if ( occluded && ( fabs(occSec.t - t )> EPSILON ) )
@@ -53,24 +53,24 @@ Vector4d PathTraceRenderer::RayTrace(Ray ray)
 
 	// first hit is common
 	Intersection isec;
-	if ( !_scene->FindIntersection(ray,isec) )
+	if ( !_renderCtx.scene->FindIntersection(ray,isec) )
 	{
 		return BLACK;
 	}
 
-	if ( _renderMask & RIndirectMask)
+	if ( _renderCtx.renderMask & RIndirectMask)
 		total += SampleIndirect(ray,isec);
 
-	if ( _renderMask & RDirectLight )
+	if ( _renderCtx.renderMask & RDirectLight )
 		total += SampleLight(ray,isec);
   
-  if ( _renderMask & (RDirectBRDF|RDirectUniform) )
+  if ( _renderCtx.renderMask & (RDirectBRDF|RDirectUniform) )
   {
     //isec.nrm = Vector4d(0,0,1,0);
     //isec.worldPosition = Vector4d(0,0,-1.25);
     total += SampleLightBrdf(ray,isec);
   }
-  if ( _renderMask & RDirectMIS )
+  if ( _renderCtx.renderMask & RDirectMIS )
     total += SampleMIS(ray,isec);
 
 #if 0 && _DEBUG
@@ -97,8 +97,12 @@ Vector4d PathTraceRenderer::RenderPixel(const int &x, const int &y)
 {
 	// we start at camera
   int u = x,v=y;
-  //u = 21;
-  //v = 54;  
+  if (_renderCtx.mask & COORDS_ONLY)
+  {
+    u = _renderCtx.fixed[0];
+    v = _renderCtx.fixed[1]; 
+  }
+ 
   if ( y < 128 )
   {
 //    v = 78;  
@@ -115,19 +119,19 @@ Vector4d PathTraceRenderer::RenderPixel(const int &x, const int &y)
   if ( y > 256 )
   {
     v = y - 256;
-    Ray r = _scene->GetRay(401,121);
-    _scene->FindIntersection(r,s1);
+    Ray r = _renderCtx.scene->GetRay(401,121);
+    _renderCtx.scene->FindIntersection(r,s1);
   }
   else
   {
     v=y;
-    Ray r = _scene->GetRay(121,121);
-    _scene->FindIntersection(r,s1);
+    Ray r = _renderCtx.scene->GetRay(121,121);
+    _renderCtx.scene->FindIntersection(r,s1);
   }
-  Ray r = _scene->GetRay(x,v);
-  _scene->FindIntersection(r,s2);
+  Ray r = _renderCtx.scene->GetRay(x,v);
+  _renderCtx.scene->FindIntersection(r,s2);
   return TrackShine(s2,s1);*/
-	Ray ray = _scene->GetRay( u,v );
+	Ray ray = _renderCtx.scene->GetRay( u,v );
   return RayTrace( ray );
 }
 
@@ -157,18 +161,18 @@ Vector4d PathTraceRenderer::SampleMIS(const Ray & ray, const Intersection & isec
   for ( int dummy = 0; dummy < nSamples; dummy++ )
   {
     // sample from one light
-    for (int i =0; i < _scene->Lights(); i++)
+    for (int i =0; i < _renderCtx.scene->Lights(); i++)
     {
       float len;
-      illumination = _scene->GetLight(i)->SampleIllumination(isec,sampledDir,len);
+      illumination = _renderCtx.scene->GetLight(i)->SampleIllumination(isec,sampledDir,len);
       // check for occlusion
       Ray r2;
       r2.origin = isec.worldPosition;
       r2.direction = sampledDir;
       Intersection isec2;
-      if ( !_scene->FindIntersection(r2,isec2) || fabs(isec2.t - len) < EPSILON )
+      if ( !_renderCtx.scene->FindIntersection(r2,isec2) || fabs(isec2.t - len) < EPSILON )
       {
-        float pdf1 = _scene->GetLight(i)->GetDirectionalPdf(sampledDir, isec.nrm, isec.worldPosition, len);
+        float pdf1 = _renderCtx.scene->GetLight(i)->GetDirectionalPdf(sampledDir, isec.nrm, isec.worldPosition, len);
         float pdf2 = isec.model->GetMaterial()->GetDirectionalPdf(sampledDir,isec.nrm);
         brdf = isec.model->GetMaterial()->EvalBrdf(-ray.direction,isec.nrm,sampledDir);
         if ( (pdf1 > 0) && (pdf2 > 0) )
@@ -194,7 +198,7 @@ Vector4d PathTraceRenderer::SampleMIS(const Ray & ray, const Intersection & isec
     Intersection isec2;
     if ( (sampledDir.Size2() > 0)  )
     {
-      if (_scene->FindIntersection(r2,isec2))
+      if (_renderCtx.scene->FindIntersection(r2,isec2))
       {
         if (isec2.model->GetMaterial()->IsLight())
         {
@@ -212,8 +216,8 @@ Vector4d PathTraceRenderer::SampleMIS(const Ray & ray, const Intersection & isec
       }
       else
       {
-        float pdfLight = _scene->Ambient().GetDirectionalPdf(sampledDir, isec.nrm, isec.worldPosition, isec2.t);
-        illumination = _scene->Ambient().Radiance(sampledDir,isec.nrm,0);
+        float pdfLight = _renderCtx.scene->Ambient().GetDirectionalPdf(sampledDir, isec.nrm, isec.worldPosition, isec2.t);
+        illumination = _renderCtx.scene->Ambient().Radiance(sampledDir,isec.nrm,0);
         if ( (pdfBrdf > 0) && (pdfLight > 0) )
         {
           float misW = 1.0f / ( pdfBrdf + pdfLight );
@@ -240,9 +244,9 @@ Vector4d PathTraceRenderer::SampleLightBrdf(const Ray & ray, const Intersection 
     return m->Emmisive();
   float pdf;
   Vector4d sampledDir ;
-  if ( _renderMask & RDirectBRDF )
+  if ( _renderCtx.renderMask & RDirectBRDF )
     sampledDir = m->SampleBrdf( -ray.direction, isec.nrm, pdf,brdf );
-  if ( _renderMask & RDirectUniform )
+  if ( _renderCtx.renderMask & RDirectUniform )
     sampledDir = SampleUniform(-ray.direction,isec.nrm,pdf);
 #if _DEBUG
   float cc = sampledDir.Dot(isec.nrm);
@@ -258,7 +262,7 @@ Vector4d PathTraceRenderer::SampleLightBrdf(const Ray & ray, const Intersection 
   // already direction towards outside of the sphere
   r.direction = sampledDir;
   Intersection isec2;
-  bool hitSomething = _scene->FindIntersection(r, isec2);
+  bool hitSomething = _renderCtx.scene->FindIntersection(r, isec2);
 
   Vector4d ret(0,0,0,0);
   //Vector4d brdf = m->EvalBrdf( -ray.direction, isec.nrm, sampledDir );  
@@ -275,7 +279,7 @@ Vector4d PathTraceRenderer::SampleLightBrdf(const Ray & ray, const Intersection 
     // was not occluded
     // use ambient lighting
     int dummy;
-    ret += _scene->Ambient().Radiance(sampledDir,isec.nrm,dummy).MultiplyPerElement(brdf)/pdf;
+    ret += _renderCtx.scene->Ambient().Radiance(sampledDir,isec.nrm,dummy).MultiplyPerElement(brdf)/pdf;
   }
   return ret;
 }
@@ -308,14 +312,14 @@ Vector4d PathTraceRenderer::SampleIndirect(const Ray & iRay, const Intersection 
     if (reflectance >1)
       reflectance = 1;
     DoAssert(reflectance <=1.01f);
-    if ( _renderMask & (RIndirectSimple |RIndirectNextEvent) )
+    if ( _renderCtx.renderMask & (RIndirectSimple |RIndirectNextEvent) )
     {
       // stop according to reflection
       float test = GetFloat();
       if ( test >= reflectance )
         break;
     }
-    if ( _renderMask & RIndirectLightBounced )
+    if ( _renderCtx.renderMask & RIndirectLightBounced )
     {
       bounces--;
       if (bounces == 0 )
@@ -336,11 +340,11 @@ Vector4d PathTraceRenderer::SampleIndirect(const Ray & iRay, const Intersection 
     incomingRay = bouncedRay;
 //    DoAssert(through.Max() < 2.1);
 
-    if ( (incomingRay.direction.Size2() == 0) || !_scene->FindIntersection(incomingRay,intersection))
+    if ( (incomingRay.direction.Size2() == 0) || !_renderCtx.scene->FindIntersection(incomingRay,intersection))
     {
       // hack to get full radiance
       Vector4d dummy(1,0,0,0);
-      accum += through.MultiplyPerElement(_scene->Ambient().Radiance(dummy,dummy,1));
+      accum += through.MultiplyPerElement(_renderCtx.scene->Ambient().Radiance(dummy,dummy,1));
       break;
     }
     old = through;
@@ -357,5 +361,5 @@ Vector4d PathTraceRenderer::SampleIndirect(const Ray & iRay, const Intersection 
 void PathTraceRenderer::Init(Scene * scene, Image * image, int maxBounces)
 {
   _bounces = maxBounces;
-  Renderer::Init(scene, image, maxBounces);
+  Renderer::Init(image);
 }

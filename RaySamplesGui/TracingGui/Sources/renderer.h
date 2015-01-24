@@ -37,6 +37,8 @@ enum InDirectRenderOffset
   INDIRECT_LIGHT(CREATE_ENUMS_DOUBLE)
 };
 
+#define COORDS_ONLY (1 <<31 )
+
 enum DirectMask
 {
   DIRECT_LIGHT(CREATE_ENUMS_SHIFT)
@@ -59,19 +61,32 @@ public:
 
 };
 
+struct RenderContext
+{
+  // scene contains also camera
+  Scene * scene;
+  int mask;
+  int start[2];
+  int end[2];
+  int renderMask;
+  int iterations;
+  int bounces;
+  // fixed points
+  int fixed[2];
+};
+
 class Renderer
 {
 protected:
 	bool _stop;
-	Scene * _scene;
 	Image * _image;
 	void Destroy();
 public:
-	int _renderMask;
+	RenderContext _renderCtx;
 
 	Renderer();
-	virtual void Init(Scene * scene, Image * image, int maxBounces );
-	void Render(int iterations);
+	virtual void Init(Image * image );
+	void Render();
 	virtual Vector4d RenderPixel( const int &x, const int &y ) = 0;
 
 	virtual ~Renderer();

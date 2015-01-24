@@ -1,5 +1,5 @@
-#ifndef __SCENE__
-#define __SCENE__
+#ifndef __scene__
+#define __scene__
 
 #include "Camera.h"
 #include "AmbientLight.h"
