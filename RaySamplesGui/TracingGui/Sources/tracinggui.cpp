@@ -130,7 +130,7 @@ void GModelObjects::resize(int i)
 SceneModels GScenes;
 
 TracingGui::TracingGui(QWidget *parent)
-	: QMainWindow(parent), _image(),_gModels(NULL),_prevX(-1),_prevY(-1)
+	: QMainWindow(parent), _image(),_gModels(NULL)
 {
 	ui.setupUi(this);
 	// connect(openAct, SIGNAL(triggered()), this, SLOT(open()));
@@ -1016,9 +1016,9 @@ void SceneModels::AddMaterials(const QStringList & list)
 	{
 		//int index = -1;
 		//int pos = -1;
-		//for ( int iScene = 0; iScene < _renderCtx.scenes.size(); iScene++ )
+		//for ( int iScene = 0; iScene < _scenes.size(); iScene++ )
 		//{
-		//	if ( list[iList].startsWith(_renderCtx.scenes[iScene]) )
+		//	if ( list[iList].startsWith(_scenes[iScene]) )
 		//	{
 		//		int len = list[iList].length();
 		//		/*

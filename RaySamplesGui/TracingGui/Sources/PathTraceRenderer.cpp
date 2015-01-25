@@ -4,7 +4,9 @@
 #include "RandomNumber.h"
 
 #define MAX_BOUNCES 10
-static const int RIndirectMask = (~0) << SIndirectOffset;
+#define  CREATE_MASK(name) | R##name 
+
+static const int RIndirectMask = 0 INDIRECT_LIGHT(CREATE_MASK);
 
 Vector4d PathTraceRenderer::SampleLight(Ray & ray, Intersection & isec)
 {
@@ -58,19 +60,19 @@ Vector4d PathTraceRenderer::RayTrace(Ray ray)
 		return BLACK;
 	}
 
-	if ( _renderCtx.renderMask & RIndirectMask)
+	if ( _renderCtx.mask &  ( RIndirectMask) )
 		total += SampleIndirect(ray,isec);
 
-	if ( _renderCtx.renderMask & RDirectLight )
+	if ( _renderCtx.mask & RDirectLight )
 		total += SampleLight(ray,isec);
   
-  if ( _renderCtx.renderMask & (RDirectBRDF|RDirectUniform) )
+  if ( _renderCtx.mask & (RDirectBRDF|RDirectUniform) )
   {
     //isec.nrm = Vector4d(0,0,1,0);
     //isec.worldPosition = Vector4d(0,0,-1.25);
     total += SampleLightBrdf(ray,isec);
   }
-  if ( _renderCtx.renderMask & RDirectMIS )
+  if ( _renderCtx.mask & RDirectMIS )
     total += SampleMIS(ray,isec);
 
 #if 0 && _DEBUG
@@ -244,9 +246,9 @@ Vector4d PathTraceRenderer::SampleLightBrdf(const Ray & ray, const Intersection 
     return m->Emmisive();
   float pdf;
   Vector4d sampledDir ;
-  if ( _renderCtx.renderMask & RDirectBRDF )
+  if ( _renderCtx.mask & RDirectBRDF )
     sampledDir = m->SampleBrdf( -ray.direction, isec.nrm, pdf,brdf );
-  if ( _renderCtx.renderMask & RDirectUniform )
+  if ( _renderCtx.mask & RDirectUniform )
     sampledDir = SampleUniform(-ray.direction,isec.nrm,pdf);
 #if _DEBUG
   float cc = sampledDir.Dot(isec.nrm);
@@ -272,7 +274,9 @@ Vector4d PathTraceRenderer::SampleLightBrdf(const Ray & ray, const Intersection 
     bool t = isec2.model->GetMaterial()->IsLight();
     Vector4d illuminationComing = isec2.model->Radiance( isec.nrm, sampledDir, isec2.t );
     DoAssert(t && illuminationComing.Size2()>0)
-    ret = illuminationComing.MultiplyPerElement(brdf)/pdf;
+    float cosB = isec.nrm.Dot(sampledDir);
+    DoAssert(cosB >=0);
+    ret = illuminationComing.MultiplyPerElement(brdf)*cosB/(pdf*isec2.t*isec2.t);
   }
   else
   {
@@ -312,14 +316,14 @@ Vector4d PathTraceRenderer::SampleIndirect(const Ray & iRay, const Intersection 
     if (reflectance >1)
       reflectance = 1;
     DoAssert(reflectance <=1.01f);
-    if ( _renderCtx.renderMask & (RIndirectSimple |RIndirectNextEvent) )
+    if ( _renderCtx.mask & (RIndirectSimple |RIndirectNextEvent) )
     {
       // stop according to reflection
       float test = GetFloat();
       if ( test >= reflectance )
         break;
     }
-    if ( _renderCtx.renderMask & RIndirectLightBounced )
+    if ( _renderCtx.mask & RIndirectLightBounced )
     {
       bounces--;
       if (bounces == 0 )
