@@ -130,7 +130,7 @@ void GModelObjects::resize(int i)
 SceneModels GScenes;
 
 TracingGui::TracingGui(QWidget *parent)
-	: QMainWindow(parent), _image(),_gModels(NULL)
+	: QMainWindow(parent), _image(),_gModels(NULL),_prevX(-1),_prevY(-1)
 {
 	ui.setupUi(this);
 	// connect(openAct, SIGNAL(triggered()), this, SLOT(open()));
@@ -233,6 +233,8 @@ TracingGui::TracingGui(QWidget *parent)
   connect(ui.sceneNames->selectionModel(), SIGNAL(selectionChanged (const QItemSelection &, const QItemSelection &)),
 	  this, SLOT(SelectionSceneChangedSlot(const QItemSelection &, const QItemSelection &)));
 
+  connect(ui.fixedX,SIGNAL(valueChanged(int)), this, SLOT(ShowFixedSlot(void)) );
+  connect(ui.fixedY,SIGNAL(valueChanged(int)), this, SLOT(ShowFixedSlot(void)) );
   // connect min/max on fixed point
   //connect ( ui.fix)
 
@@ -530,6 +532,26 @@ void TracingGui::SaveCamera()
 	handler.Write(ui.fovDeg->value());
 }
 
+void TracingGui::ShowFixedSlot()
+{
+  if ( (_prevX > 0) && (_prevY > 0) )
+  {
+    _image.GetComponent(_prevX, _prevY) = _previous;
+    _prevX = ui.fixedX->value();
+    _prevY = ui.fixedY->value();
+  }
+  _prevX = ui.fixedX->value();
+  _prevY = ui.fixedY->value();
+  if ( (_prevX > 0) && (_prevY > 0) )
+  {
+    _previous = _image.GetComponent( _prevX, _prevY  );
+    HDRComponent comp;
+    comp.Add(Vector4d(1,0,0,0));
+    _image.GetComponent(_prevX, _prevY) = comp;
+    ShowHdr(0);
+  }
+}
+
 void TracingGui::LoadCamera()
 {
 	FileHandler handler;
@@ -802,6 +824,8 @@ void TracingGui::FetchResultsSlot()
   for ( int i =0; i < MAXTHREADS; i++)
     _threads[i]->GetResults(_image);
 
+  _prevX = -1;
+  _prevY = -1;
 	ui.sExposureNumber->setValue(0);
 	ui.bRender->setText("Render!");
 	ShowHdr(0);
