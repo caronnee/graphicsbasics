@@ -534,6 +534,9 @@ void TracingGui::SaveCamera()
 
 void TracingGui::ShowFixedSlot()
 {
+  if ( (_image.W() < ui.fixedX->value()) || (_image.H() < ui.fixedY->value()) )
+    return;
+
   if ( (_prevX > 0) && (_prevY > 0) )
   {
     _image.GetComponent(_prevX, _prevY) = _previous;
