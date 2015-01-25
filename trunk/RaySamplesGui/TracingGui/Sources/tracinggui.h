@@ -71,6 +71,9 @@ class TracingGui : public QMainWindow
 	GModelObjects * _gModels;
 	Scene _scene;
 	RenderThread * _threads[MAXTHREADS];
+  HDRComponent _previous;
+  int _prevX;
+  int _prevY;
 
 public:
 	TracingGui(QWidget *parent = 0);
@@ -94,6 +97,7 @@ private slots:
 	void SelectionModelChangedSlot(const QItemSelection & newSel, const QItemSelection &oldSel);
 	void SelectionSceneChangedSlot(const QItemSelection &, const QItemSelection &);
 	void FetchResultsSlot();
+  void ShowFixedSlot();
 
 private:
 	Ui::TracingGuiClass ui;
