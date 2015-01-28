@@ -65,7 +65,7 @@ float Vector4d::Dot(const Vector4d& vec) const
 	return X()*vec.X() + Y()*vec.Y() + Z()*vec.Z() + W()*vec.W();
 }
 
-Vector4d Vector4d::Cross(Vector4d& vec) const
+Vector4d Vector4d::Cross(const Vector4d& vec) const
 {
 	float x = Y() * vec.Z() - vec.Y()*Z(); 
 	float y = -X() * vec.Z() + vec.X()*Z(); 
