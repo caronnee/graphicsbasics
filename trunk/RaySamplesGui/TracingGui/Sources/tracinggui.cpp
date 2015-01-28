@@ -549,9 +549,9 @@ void TracingGui::ShowFixedSlot()
   {
     _previous = _image.GetComponent( _prevX, _prevY  );
     HDRComponent comp;
-    comp.Add(Vector4d(1,0,0,0));
+    comp.Add(Vector4d(100,0,0,0));
     _image.GetComponent(_prevX, _prevY) = comp;
-    ShowHdr(0);
+    ExposureChangedSlot(ui.sExposure->value());
   }
 }
 
