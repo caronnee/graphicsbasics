@@ -7,7 +7,7 @@ AmbientLight& Scene::Ambient()
 	return _ambientLight;
 }
 
-Scene::Scene() :_ambientLight(NULL), _camera(NULL)
+Scene::Scene() :_ambientLight(NULL), _camera(NULL), _totalArea(0)
 {
 
 }
@@ -77,7 +77,7 @@ void Scene::CreateCamera( CameraContext & ctx)
   GCamera = c;
   c->RasterToWorld(Vector4d(256,256));
 	_camera =c;
-	Vector4d v[] = {Vector4d(0,0,0,0),Vector4d(0,0,0,0)};
+	Vector4d v[] = {Vector4d(0,0,0,0),Vector4d(0,0,0,0),Vector4d(0,0,0,0)};
 	_camera->SetMaterial(CreateMaterial(MDiffuse,v,0));
 	_camera->SetResolution(ctx.resolution[0],ctx.resolution[1]);
 	AddModel(_camera);
@@ -85,12 +85,13 @@ void Scene::CreateCamera( CameraContext & ctx)
 
 #include "AmbientLight.h"
 
-void Scene::AddModel(Geometry * model)
+void Scene::AddModel( Geometry * model )
 {
 	_geometry.push_back(model);
-	if (model->GetMaterial()->IsLight())
+	if ( model->GetMaterial()->IsLight() )
 	{
 		_emmiters.push_back(model);
+    _totalArea += model->Area();
 	}
 }
 
@@ -115,4 +116,9 @@ Geometry * Scene::GetLight(int iLight)
 Ray Scene::GetRay(float x,float y)
 {
 	return _camera->GetRay(x,y);
+}
+
+const float Scene::TotalArea() const
+{
+  return _totalArea;
 }

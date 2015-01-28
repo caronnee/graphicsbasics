@@ -306,6 +306,22 @@ Vector4d PathTraceRenderer::SampleIndirect(const Ray & iRay, const Intersection 
   while (true)
   {
     index++;
+    
+    if ( _renderCtx.mask & RIndirectNextEvent )
+    {
+      // pick up one light and sample from that one light
+      // hack - multiply to 0.99 to avoid 1
+      int ilight = GetFloat() * 0.9999f * _renderCtx.scene->Lights();
+      Geometry * light = _renderCtx.scene->GetLight(ilight);
+      Vector4d sample;
+      float len;
+      Vector4d illuminationA = light->SampleIllumination( intersection, sample, len );
+      float pdf = light->GetDirectionalPdf(sample,intersection.nrm,intersection.worldPosition,len);
+      // if this light is not occluded
+      accum += through.MultiplyPerElement(illuminationA)/(pdf* _renderCtx.scene->TotalArea() );
+
+    }
+
     if ( intersection.model->GetMaterial()->IsLight())
     {
       // TODO this should not be emmisive...

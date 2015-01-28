@@ -32,7 +32,7 @@ public:
 
 	float Dot(const Vector4d& vec)const;
 
-	Vector4d Cross( Vector4d& vec )const;
+	Vector4d Cross(const Vector4d& vec )const;
 	
 	float & operator[](int i ) { return _val[i];}
 	const float & operator[](int i ) const { return _val[i];}

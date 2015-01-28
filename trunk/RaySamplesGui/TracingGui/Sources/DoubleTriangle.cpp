@@ -184,3 +184,8 @@ float DoubleTriangle::GetDirectionalPdf(const Vector4d & direction, const Vector
   float geomCoef = _normal.Dot(direction)/-d2;
   return areaPdf/geomCoef;
 }
+
+float DoubleTriangle::Area() const
+{
+  return _edges[0].Cross(_edges[1]).Size()/2.f;
+}

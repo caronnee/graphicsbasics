@@ -159,3 +159,8 @@ float Geometry::GetDirectionalPdf(const Vector4d & direction, const Vector4d& no
 {
   throw std::logic_error("The method or operation is not implemented.");
 }
+
+float Geometry::Area() const
+{
+  throw std::logic_error("The method or operation is not implemented.");
+}

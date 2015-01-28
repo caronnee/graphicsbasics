@@ -91,5 +91,6 @@ public:
 	virtual void LoadProperties(FileHandler & handler);
   virtual Vector4d Radiance(const Vector4d& secNormal,const Vector4d & sampledDir, const float & len);
   virtual float GetDirectionalPdf(const Vector4d & direction, const Vector4d& normal, const Vector4d& pos, const float & len);
+  virtual float Area() const;
 };
 #endif

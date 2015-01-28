@@ -19,7 +19,7 @@ class Scene
 	AmbientLight _ambientLight;
 	std::vector<Geometry *> _geometry;
 	std::vector<Geometry *> _emmiters;
-
+  float _totalArea;
 	void DeleteModel(Geometry * geometry);
 public:
 	Scene();
@@ -33,5 +33,6 @@ public:
 	void Clear();
 	int Lights();
 	Geometry * GetLight(int iLight);
+  const float TotalArea() const;
 };
 #endif
