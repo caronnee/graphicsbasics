@@ -17,8 +17,10 @@ public:
 
   Material * CreateMaterialSpecular( const Vector4d & diffuse, const Vector4d & specular, const float & phong )
   {
-    Vector4d v = diffuse.MultiplyPerElement(specular);
-    Material * m = new MaterialSpecular(v, specular, phong);
+    float v = diffuse.Max() + specular.Max();
+    if (v <1)
+      v = 1;
+    Material * m = new MaterialSpecular(diffuse / v, specular / v, phong);
     _materials.push_back(m);
     return m;
   }
