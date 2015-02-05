@@ -95,8 +95,18 @@ Vector4d PathTraceRenderer::TrackShine( const Intersection & lightSection, const
   return lightSection.model->Radiance( testSection.nrm, dirToLight, len);
 }
 
+
+#if _DEBUG
+extern bool stop;
+#endif
+
 Vector4d PathTraceRenderer::RenderPixel(const int &x, const int &y)
 {
+#if _DEBUG
+  stop = false;
+  if ( (x == 23) && (y == 0) )
+    stop=true;
+#endif
 	// we start at camera
   int u = x,v=y;
   if (_renderCtx.mask & COORDS_ONLY)
@@ -301,11 +311,15 @@ Vector4d PathTraceRenderer::SampleIndirect(const Ray & iRay, const Intersection 
   float pdf;
   
   Ray incomingRay = iRay;
+#if _DEBUG
   int index = 0;
+#endif
   // gather the radiance along the path
   while (true)
   {
+#if _DEBUG
     index++;
+#endif
     
     if ( _renderCtx.mask & RIndirectNextEvent )
     {
@@ -329,8 +343,6 @@ Vector4d PathTraceRenderer::SampleIndirect(const Ray & iRay, const Intersection 
     }
 
     float reflectance = intersection.model->GetMaterial()->Reflectance();
-    if (reflectance >1)
-      reflectance = 1;
     DoAssert(reflectance <=1.01f);
     if ( _renderCtx.mask & (RIndirectSimple |RIndirectNextEvent) )
     {
@@ -354,11 +366,14 @@ Vector4d PathTraceRenderer::SampleIndirect(const Ray & iRay, const Intersection 
     // = intersection.model->GetMaterial()->EvalBrdf(-incomingRay.direction, intersection.nrm,bouncedRay.direction);
     float cosa = bouncedRay.direction.Dot(intersection.nrm);
     
-    static Vector4d old = through;
-//    through = old;
+    DoAssert(cosa >= 0);
+ 
+    float ff = cosa / (pdf * reflectance);
+    Vector4d test = brdf*ff;
+
     through = through.MultiplyPerElement( brdf ) * cosa / (pdf * reflectance);
     incomingRay = bouncedRay;
-//    DoAssert(through.Max() < 2.1);
+    //DoAssert(through.Max() < 1.2);
 
     if ( (incomingRay.direction.Size2() == 0) || !_renderCtx.scene->FindIntersection(incomingRay,intersection))
     {
@@ -367,8 +382,6 @@ Vector4d PathTraceRenderer::SampleIndirect(const Ray & iRay, const Intersection 
       accum += through.MultiplyPerElement(_renderCtx.scene->Ambient().Radiance(dummy,dummy,1));
       break;
     }
-    old = through;
-
     DoAssert(pdf > 0);
     DoAssert(cosa >=0);
   }

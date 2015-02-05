@@ -34,12 +34,12 @@ Vector4d MaterialSpecular::EvalBrdf(const Vector4d & incoming, const Vector4d & 
 #include "Matrix.h"
 #include "RandomNumber.h"
 
-float MaterialSpecular::GetSpecularDirectionalPdf(const Vector4d &input, const Vector4d & normal) const
+float MaterialSpecular::GetSpecularDirectionalPdf(const Vector4d &input, const Vector4d & reflected) const
 {
   //oBrdfValue = mPhongReflectance * (mPhongExponent + 2) / (PI_F * 2) * pow(/*cos_h*/cosTheta, mPhongExponent);
 
-  float cosAn = input.Dot(normal);
-  DoAssert( (normal.Size2() - 1) < EPSILON );
+  float cosAn = input.Dot(reflected);
+  DoAssert( (reflected.Size2() - 1) < EPSILON );
   cosAn = pow(cosAn,_phongCoef);
   float pdfSpec = (_phongCoef + 1)*cosAn/(2*PI);
   return pdfSpec;
@@ -48,10 +48,10 @@ float MaterialSpecular::GetSpecularDirectionalPdf(const Vector4d &input, const V
 float MaterialSpecular::GetDirectionalPdf(const Vector4d &input, const Vector4d & normal) const
 {
   float pdfDiff = MaterialDiffuse::GetDirectionalPdf(input,normal);
-  float pdfSpec = GetSpecularDirectionalPdf(input, normal);
+  float pdfSpec = GetSpecularDirectionalPdf(input, Reflected(input, normal));
 
   // normalize
-  float pd = _diffuseReflectance.Max();
+  float pd = _diffuseReflectance.Max(); 
   float ps = _specularReflectance.Max();
   float sum = ps + pd;
 
@@ -60,7 +60,6 @@ float MaterialSpecular::GetDirectionalPdf(const Vector4d &input, const Vector4d 
   return ret;
 }
 
-bool ddd;
 Vector4d MaterialSpecular::SampleBrdf(const Vector4d & input,const Vector4d &normal,float &pdf, Vector4d & brdf) const
 {
   float pd = _diffuseReflectance.Max();
@@ -69,24 +68,16 @@ Vector4d MaterialSpecular::SampleBrdf(const Vector4d & input,const Vector4d &nor
   float test = GetFloat()*sum;
   if ( test < pd )
   {
-    ddd = true;
-    Vector4d ret = MaterialDiffuse::SampleBrdf(input,normal,pdf, brdf);
-    pdf = MaterialDiffuse::GetDirectionalPdf(ret, normal);
     //brdf = MaterialDiffuse::EvalBrdf(ret,normal);
+    Vector4d ret = MaterialDiffuse::SampleBrdf(input,normal,pdf, brdf);
+    //pdf = MaterialDiffuse::GetDirectionalPdf(ret, normal);
     pdf*=pd/sum;
     return ret;
   }
-  ddd = false;
 
   // sample according to specular BRDF
   Vector4d retSampled = SampleHemisphereWeighted(_phongCoef);
   Vector4d reflected = Reflected( input, normal );
-
-#if _DEBUG
-  float cosAn = normal.Dot(reflected);
-  DoAssert( (reflected.Size2() - 1) < EPSILON );
-  DoAssert( (retSampled.Size2() - 1) < EPSILON );
-#endif
   
   Matrix4d normalSpace;
   normalSpace.CreateFromZ(normal);

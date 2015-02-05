@@ -160,7 +160,7 @@ float Vector4d::Min() const
 	return m2;
 }
 
-Vector4d Vector4d::MultiplyPerElement(const Vector4d & oper)
+Vector4d Vector4d::MultiplyPerElement(const Vector4d & oper)const
 {
 	Vector4d ret;
 	for ( int i = 0; i < DIM; i++)
