@@ -21,6 +21,8 @@ TrackProgress * GetRendererTrack();
   XX(IndirectLightBounced)  \
   XX(IndirectSimple)  \
   XX(IndirectNextEvent)  \
+  XX(IndirectMIS)  \
+  XX(GlobalIllumination)  \
 
 #define RNone 0
 #define  CREATE_ENUMS_DOUBLE(name) S##name,

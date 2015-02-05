@@ -59,6 +59,9 @@ Vector4d PathTraceRenderer::RayTrace(Ray ray)
 	{
 		return BLACK;
 	}
+  
+  if ( _renderCtx.mask &  ( RGlobalIllumination) )
+    total += SampleGlobalIllumination(ray,isec);
 
 	if ( _renderCtx.mask &  ( RIndirectMask) )
 		total += SampleIndirect(ray,isec);
@@ -73,7 +76,7 @@ Vector4d PathTraceRenderer::RayTrace(Ray ray)
     total += SampleLightBrdf(ray,isec);
   }
   if ( _renderCtx.mask & RDirectMIS )
-    total += SampleMIS(ray,isec);
+    total += SampleMIS(ray,isec).radiance;
 
 #if 0 && _DEBUG
 	float xx = total.Size2();
@@ -156,27 +159,32 @@ Vector4d GCoord;
 
 #include "MathUtil.h"
 
-Vector4d PathTraceRenderer::SampleMIS(const Ray & ray, const Intersection & isec)
+//Vector4d radiance;
+//Vector4d bounded;
+//Vector4d brdf;
+//float pdf;
+
+Generated PathTraceRenderer::SampleMIS(const Ray & ray, const Intersection & isec)
 {
+  Generated ret;
+  memset(&ret, 0, sizeof(ret));
   const Material * m = isec.model->GetMaterial();
   if ( m->IsLight() )
-    return m->Emmisive();
+  {
+    ret.radiance = m->Emmisive();
+    return ret;
+  }
 
-  Vector4d total;
-  // number of mis sampling is 1 for start, we might later add some more samples
-  float pdf;
-  Vector4d sampledDir;
-  Vector4d illumination;
-  Vector4d brdf;
+// how many samples we want to take
   int nSamples = 1;
-//  if ( false )
+
   for ( int dummy = 0; dummy < nSamples; dummy++ )
   {
-    // sample from one light
     for (int i =0; i < _renderCtx.scene->Lights(); i++)
     {
       float len;
-      illumination = _renderCtx.scene->GetLight(i)->SampleIllumination(isec,sampledDir,len);
+      Vector4d sampledDir;
+      Vector4d illumination = _renderCtx.scene->GetLight(i)->SampleIllumination(isec,sampledDir,len);
       // check for occlusion
       Ray r2;
       r2.origin = isec.worldPosition;
@@ -186,14 +194,14 @@ Vector4d PathTraceRenderer::SampleMIS(const Ray & ray, const Intersection & isec
       {
         float pdf1 = _renderCtx.scene->GetLight(i)->GetDirectionalPdf(sampledDir, isec.nrm, isec.worldPosition, len);
         float pdf2 = isec.model->GetMaterial()->GetDirectionalPdf(sampledDir,isec.nrm);
-        brdf = isec.model->GetMaterial()->EvalBrdf(-ray.direction,isec.nrm,sampledDir);
+        Vector4d brdf = isec.model->GetMaterial()->EvalBrdf(-ray.direction,isec.nrm,sampledDir);
         if ( (pdf1 > 0) && (pdf2 > 0) )
         {
-          float misW = 1.0f/(pdf1 + pdf2);
+          float misW = pdf1 + pdf2;
           DoAssert(misW > 0);
           DoAssert(pdf1 > 0);
           DoAssert(pdf2 > 0);
-          total += illumination.MultiplyPerElement(brdf) * misW;
+          ret.radiance += illumination.MultiplyPerElement(brdf) / misW;
         }
       }
     }
@@ -202,7 +210,9 @@ Vector4d PathTraceRenderer::SampleMIS(const Ray & ray, const Intersection & isec
   //sample from brdf
   for ( int dummy = 0; dummy < nSamples; dummy++ )
   {
-    float pdfBrdf;
+    float& pdfBrdf = ret.pdf;
+    Vector4d& brdf = ret.brdf;
+    Vector4d& sampledDir = ret.bounded;
     sampledDir = m->SampleBrdf( -ray.direction, isec.nrm, pdfBrdf,brdf );
     Ray r2;
     r2.origin = isec.worldPosition;
@@ -215,35 +225,36 @@ Vector4d PathTraceRenderer::SampleMIS(const Ray & ray, const Intersection & isec
         if (isec2.model->GetMaterial()->IsLight())
         {
           float pdfLight = isec2.model->GetDirectionalPdf(sampledDir, isec.nrm, isec.worldPosition, isec2.t);
-          illumination = isec2.model->Radiance(isec.nrm,sampledDir,isec2.t);
+          Vector4d illumination = isec2.model->Radiance(isec.nrm,sampledDir,isec2.t);
           if ( (pdfBrdf > 0) && (pdfLight > 0) )
           {
             float misW = 1.0f / ( pdfBrdf + pdfLight );
             DoAssert(misW > 0);
             DoAssert(pdfBrdf > 0);
             //brdf = isec.model->GetMaterial()->EvalBrdf(-ray.direction,isec.nrm,sampledDir);          
-            total += illumination.MultiplyPerElement(brdf) * misW ;
+            ret.radiance += illumination.MultiplyPerElement(brdf) * misW ;
           }      
         }
       }
       else
       {
         float pdfLight = _renderCtx.scene->Ambient().GetDirectionalPdf(sampledDir, isec.nrm, isec.worldPosition, isec2.t);
-        illumination = _renderCtx.scene->Ambient().Radiance(sampledDir,isec.nrm,0);
+        Vector4d illumination = _renderCtx.scene->Ambient().Radiance(sampledDir,isec.nrm,0);
         if ( (pdfBrdf > 0) && (pdfLight > 0) )
         {
           float misW = 1.0f / ( pdfBrdf + pdfLight );
           DoAssert(misW > 0);
           DoAssert(pdfBrdf > 0);
           brdf = isec.model->GetMaterial()->EvalBrdf(-ray.direction,isec.nrm,sampledDir);          
-          total += illumination.MultiplyPerElement(brdf) * misW ;
+          ret.radiance += illumination.MultiplyPerElement(brdf) * misW ;
         }  
       }
     }
 
   }
   const int nTechs = 2;
-  return total / (nTechs* nSamples);
+  ret.radiance /= (nTechs* nSamples);
+  return ret;
 }
 
 Vector4d PathTraceRenderer::SampleLightBrdf(const Ray & ray, const Intersection & isec)
@@ -362,18 +373,25 @@ Vector4d PathTraceRenderer::SampleIndirect(const Ray & iRay, const Intersection 
     Ray bouncedRay;
     bouncedRay.origin = intersection.worldPosition;
     Vector4d brdf;
-    bouncedRay.direction = intersection.model->GetMaterial()->SampleBrdf(-incomingRay.direction,intersection.nrm,pdf,brdf);
-    // = intersection.model->GetMaterial()->EvalBrdf(-incomingRay.direction, intersection.nrm,bouncedRay.direction);
+    if ( _renderCtx.mask & RIndirectMIS )
+    {
+      Generated ret = SampleMIS(incomingRay,intersection);
+      bouncedRay.direction = ret.bounded;
+      pdf= ret.pdf;
+      brdf = ret.brdf;
+      accum = through.MultiplyPerElement(ret.radiance);
+    }
+    else
+    {
+      bouncedRay.direction = intersection.model->GetMaterial()->SampleBrdf(-incomingRay.direction,intersection.nrm,pdf,brdf);
+    }
     float cosa = bouncedRay.direction.Dot(intersection.nrm);
     
     DoAssert(cosa >= 0);
- 
-    float ff = cosa / (pdf * reflectance);
-    Vector4d test = brdf*ff;
-
+    DoAssert(pdf > 0);
+    
     through = through.MultiplyPerElement( brdf ) * cosa / (pdf * reflectance);
     incomingRay = bouncedRay;
-    //DoAssert(through.Max() < 1.2);
 
     if ( (incomingRay.direction.Size2() == 0) || !_renderCtx.scene->FindIntersection(incomingRay,intersection))
     {
@@ -382,12 +400,7 @@ Vector4d PathTraceRenderer::SampleIndirect(const Ray & iRay, const Intersection 
       accum += through.MultiplyPerElement(_renderCtx.scene->Ambient().Radiance(dummy,dummy,1));
       break;
     }
-    DoAssert(pdf > 0);
-    DoAssert(cosa >=0);
   }
-  //if ( index == 1 )
-  //  __debugbreak();
-  // nothing, no light
   return accum;
 }
 
@@ -395,4 +408,9 @@ void PathTraceRenderer::Init(Scene * scene, Image * image, int maxBounces)
 {
   _bounces = maxBounces;
   Renderer::Init(image);
+}
+
+const Vector4d PathTraceRenderer::SampleGlobalIllumination(const Ray & ray, const Intersection & isec)
+{
+  throw std::logic_error("The method or operation is not implemented.");
 }
