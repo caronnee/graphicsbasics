@@ -226,6 +226,8 @@ TracingGui::TracingGui(QWidget *parent)
   ui.indirectType->addItem("Indirect light ( Fixed bounces )",QVariant(RIndirectLightBounced));
   ui.indirectType->addItem("Indirect light ( Simple gather )",QVariant(RIndirectSimple));
   ui.indirectType->addItem("Indirect light ( Next event estimation )",QVariant(RIndirectNextEvent));
+  ui.indirectType->addItem("Indirect light ( MIS )",QVariant(RIndirectMIS));
+  ui.indirectType->addItem("Global illumination",QVariant(RGlobalIllumination));
 
   // scenes selections
   LoadSceneNames();

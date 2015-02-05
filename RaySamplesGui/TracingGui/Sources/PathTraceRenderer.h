@@ -3,6 +3,13 @@
 
 #include "renderer.h"
 
+struct Generated
+{
+  Vector4d radiance;
+  Vector4d bounded;
+  Vector4d brdf;
+  float pdf;
+};
 
 class PathTraceRenderer : public Renderer
 {
@@ -15,12 +22,14 @@ public:
   void Init( Scene * scene, Image * image, int maxBounces );
 
 private:
+  
 	Vector4d RayTrace(Ray ray);
 	Vector4d SampleLight(Ray & ray, Intersection & section);
   Vector4d SampleLightBrdf(const Ray & ray, const Intersection & isec);
   Vector4d TrackShine( const Intersection & lightSection, const Intersection & testSection );
-  Vector4d SampleMIS(const Ray & ray, const Intersection & isec);
+  Generated SampleMIS(const Ray & ray, const Intersection & isec);
   Vector4d SampleIndirect(const Ray & incomingRay, const Intersection & isec);
+  const Vector4d SampleGlobalIllumination(const Ray & ray, const Intersection & isec);
 };
 
 #endif
