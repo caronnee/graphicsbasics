@@ -57,8 +57,10 @@ bool Sphere::Intersect(const Ray & ray, Intersection & sect)
 	{
 		Vector4d otherNorm = sect.worldPosition - ModelToWorld(Vector4d(0,0,0,1));
 		float siz2 = (otherNorm - sect.nrm).Size2();
-		if (siz2 > EPSILON )
+#if _DEBUG
+    if (siz2 > EPSILON )
 			__debugbreak();
+#endif
 		float dist2 = WorldToModel(sect.worldPosition).Size2();
 		Vector4d testIntersection = sect.worldPosition;// ray.origin + ray.direction * t0;
 		Vector4d sphereCenter = ModelToWorld(Vector4d(0,0,0,1));

@@ -34,7 +34,9 @@ void Renderer::Render()
       {
         if (_stop)
           return;
+        
         Vector4d color = RenderPixel(x,y);
+        
         if ( GCoord [0] > 0)
           _image->AddColor(GCoord[0],GCoord[1],Vector4d(1,1,1,1));
         else
