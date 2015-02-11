@@ -7,7 +7,6 @@ Geometry::Geometry() :_material(NULL)
 	_toModel.Identity();
 }
 
-
 static void checkInvert(const Matrix4d & m1, const Matrix4d & m2)
 {
 	Matrix4d res = m1*m2;
@@ -163,4 +162,15 @@ float Geometry::GetDirectionalPdf(const Vector4d & direction, const Vector4d& no
 float Geometry::Area() const
 {
   throw std::logic_error("The method or operation is not implemented.");
+}
+
+Vector4d Geometry::Position() const
+{
+  return ModelToWorld(Vector4d(0,0,0,1));
+}
+
+void Geometry::GenerateSurfels(std::vector<Surfel> & surfels, const float & grain)
+{
+  DoAssert(false);
+  throw "test";
 }

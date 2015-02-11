@@ -189,3 +189,21 @@ float DoubleTriangle::Area() const
 {
   return _edges[0].Cross(_edges[1]).Size()/2.f;
 }
+
+void DoubleTriangle::GenerateSurfels(std::vector<Surfel> & surfels, const int & grain)
+{
+  float step = 1.0/grain;
+  float half = step/2;
+  Vector4d start = _points[0] + _edges[0] * half + _edges[1] * half;
+  Surfel surf;
+  surf.color = Vector4d(0,0,0,0);
+  surf.normal = _normal;
+  
+  for ( float a = grain; a<1; a+=grain)
+    for ( float b = grain; b<(1-a); b+=grain)
+    {
+      Vector4d pos = start + _edges[0]*a + _edges[1]*b;
+      surf.position = ModelToWorld(pos);
+
+    }
+}

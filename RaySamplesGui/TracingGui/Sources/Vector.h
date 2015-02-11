@@ -56,6 +56,8 @@ public:
 	float Size()const;
 	void Normalize();
 	void Zero();
+  void AA(const Vector4d & param);
+  void BB(const Vector4d & param);
 };
 
 #endif

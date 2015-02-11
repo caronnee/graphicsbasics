@@ -108,3 +108,24 @@ void Sphere::LoadProperties(FileHandler & handler)
 	handler.Read( &_radius,sizeof(_radius),1);
 	SetProperty(PRadius, &_radius);
 }
+
+#include "MathUtil.h"
+
+void Sphere::GenerateSurfels(std::vector<Surfel> & surfels, const int & grain)
+{
+  Surfel surf;
+  surf.color = Vector4d(0,0,0,0);
+
+  float step = PI/(0.5*grain);
+  float smallR = 0.5*_radius/ tan (step);
+  for ( float i =0; i< 2*PI; i+=step)
+    for ( float j =0; j< 2*PI; j+=step)
+    {
+      Vector4d pos = GetSpherePosition(i,j);
+      surf.position = ModelToWorld(pos);
+      pos[3] = 0;
+      surf.normal = ModelToWorld(pos);
+      surf.radius = smallR;
+      surfels.push_back(surf);
+    }
+}

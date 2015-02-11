@@ -6,6 +6,7 @@
 
 #define MIN_DIST 0.0001
 
+#include <vector>
 class Geometry;
 
 struct Intersection
@@ -58,6 +59,12 @@ enum TypeId
 #include <QString>
 #include "FileHandler.h"
 
+struct Surfel
+{
+  Vector4d position,normal,color;
+  float radius;
+};
+
 class Geometry
 {
 protected:
@@ -92,5 +99,7 @@ public:
   virtual Vector4d Radiance(const Vector4d& secNormal,const Vector4d & sampledDir, const float & len);
   virtual float GetDirectionalPdf(const Vector4d & direction, const Vector4d& normal, const Vector4d& pos, const float & len);
   virtual float Area() const;
+  Vector4d Position() const;
+  virtual void GenerateSurfels( std::vector<Surfel> & surfels, const float & grain );;
 };
 #endif

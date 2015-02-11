@@ -19,3 +19,17 @@ Vector4d Reflected(const Vector4d & dir, const Vector4d& normal)
   reflected.Normalize();
   return reflected;
 }
+
+Vector4d GetSpherePosition(float elevation, float azimuth)
+{
+  float cosEl = cos(elevation);
+  float sinEl = sin(elevation);
+  float cosAz = cos(azimuth);
+  float sinAz = sin(azimuth);
+
+  Vector4d ret(0,0,0,1);
+  ret[0] = cosAz * sinEl;
+  ret[1] = sinAz * sinEl;
+  ret[2] = cosEl;
+  return ret;
+}
