@@ -44,22 +44,13 @@ float GetFloat()
 
 #include "Matrix.h"
 
-float la;
-float lb;
-
 Vector4d SampleUniform(const Vector4d & input,const Vector4d &normal, float &pdf)
 {
   float e1 = james.GetFloat();
   float e2 = james.GetFloat()* 2 * PI;
-  Vector4d ret;
-  float cosEl = cos(e1);
-  float sinEl = sin(e1);
-  float cosAz = cos(e2);
-  float sinAz = sin(e2);
-
-  ret[0] = cosAz * sinEl;
-  ret[1] = sinAz * sinEl;
-  ret[2] = cosEl;
+  
+  Vector4d ret = GetSpherePosition(e1,e2);
+  
   ret[3] = 0;
   ret.Normalize();
 

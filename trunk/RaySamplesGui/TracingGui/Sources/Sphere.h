@@ -6,6 +6,9 @@
 class Sphere : public Geometry
 {
 	typedef Geometry base;
+
+  float _radius;
+  float _radius2;
 public:
 	Sphere( float radius);
 	virtual bool Intersect( const Ray & ray, Intersection & sect );
@@ -15,8 +18,9 @@ public:
 	void SetProperty(PropertyType type, void * value);
 	void SaveProperties(FileHandler & handler);
 	void LoadProperties(FileHandler & handler);
-	float _radius;
-	float _radius2;
+
+  virtual void GenerateSurfels( std::vector<Surfel> & surfels, const int & grain );
+
 };
 
 #endif

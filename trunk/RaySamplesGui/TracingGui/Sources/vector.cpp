@@ -209,3 +209,15 @@ void Vector4d::Zero()
 {
   memset(_val,0,sizeof(_val));
 }
+
+void Vector4d::AA(const Vector4d & param)
+{
+  for ( int i =0; i < DIM; i++)
+    _val[i] = min(_val[i], param[i]);
+}
+
+void Vector4d::BB(const Vector4d & param)
+{
+  for ( int i =0; i < DIM; i++)
+    _val[i] = max(_val[i], param[i]);
+}
