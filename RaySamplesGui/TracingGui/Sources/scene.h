@@ -34,5 +34,6 @@ public:
 	int Lights();
 	Geometry * GetLight(int iLight);
   const float TotalArea() const;
+  Geometry * Model(int i) const;
 };
 #endif

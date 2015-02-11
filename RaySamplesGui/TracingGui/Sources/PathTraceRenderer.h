@@ -16,11 +16,24 @@ class PathTraceRenderer : public Renderer
 	typedef Renderer base;
 
   int _bounces;
+  std::vector<Surfel> _surfels;
 public:
 	PathTraceRenderer();
 	virtual Vector4d RenderPixel( const int &x, const int &y );
   void Init( Scene * scene, Image * image, int maxBounces );
-
+  void Bake()
+  {
+    if (_renderCtx.mask & RGlobalIllumination)
+    {
+      _surfels.clear();
+      // fill surfels
+      Geometry * geom;
+      for ( int i =0; geom = _renderCtx.scene->Model(i); i++)
+      {
+        geom->GenerateSurfels(_surfels,0.05);
+      }
+    }
+  }
 private:
   
 	Vector4d RayTrace(Ray ray);

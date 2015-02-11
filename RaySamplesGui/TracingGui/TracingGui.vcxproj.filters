@@ -80,6 +80,9 @@
     <Filter Include="Source Files\Logic\Scene">
       <UniqueIdentifier>{7d719dd5-e4bc-4179-a215-8fb2241b5e25}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Structs">
+      <UniqueIdentifier>{2d80d281-7a45-4fc5-8e11-642343d15029}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GeneratedFiles\Debug\moc_tracinggui.cpp">
@@ -193,6 +196,9 @@
     <ClCompile Include="Sources\Debug.cpp">
       <Filter>Source Files\Logic\Debug</Filter>
     </ClCompile>
+    <ClCompile Include="Sources\OctTree.cpp">
+      <Filter>Source Files\Structs</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="Sources/tracinggui.ui">
@@ -292,6 +298,9 @@
     </ClInclude>
     <ClInclude Include="Sources\RenderThread.h">
       <Filter>Source Files\Gui\Thread</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\OctTree.h">
+      <Filter>Source Files\Structs</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -105,11 +105,6 @@ extern bool stop;
 
 Vector4d PathTraceRenderer::RenderPixel(const int &x, const int &y)
 {
-#if _DEBUG
-  stop = false;
-  if ( (x == 23) && (y == 0) )
-    stop=true;
-#endif
 	// we start at camera
   int u = x,v=y;
   if (_renderCtx.mask & COORDS_ONLY)
@@ -117,33 +112,8 @@ Vector4d PathTraceRenderer::RenderPixel(const int &x, const int &y)
     u = _renderCtx.fixed[0];
     v = _renderCtx.fixed[1]; 
   }
- 
-  if ( y < 128 )
-  {
-//    v = 78;  
-   // u = 60;
-  }
-  else
-  {
-//      v = 87;  
-  //  u = 190;
-  }
-//  u = v = 128;
-//  v=250;
-  /*Intersection s1,s2; 
-  if ( y > 256 )
-  {
-    v = y - 256;
-    Ray r = _renderCtx.scene->GetRay(401,121);
-    _renderCtx.scene->FindIntersection(r,s1);
-  }
-  else
-  {
-    v=y;
-    Ray r = _renderCtx.scene->GetRay(121,121);
-    _renderCtx.scene->FindIntersection(r,s1);
-  }
-  Ray r = _renderCtx.scene->GetRay(x,v);
+
+  /*Ray r = _renderCtx.scene->GetRay(x,v);
   _renderCtx.scene->FindIntersection(r,s2);
   return TrackShine(s2,s1);*/
 	Ray ray = _renderCtx.scene->GetRay( u,v );
