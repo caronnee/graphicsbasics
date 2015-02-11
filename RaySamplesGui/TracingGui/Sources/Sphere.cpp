@@ -113,7 +113,7 @@ void Sphere::LoadProperties(FileHandler & handler)
 
 void Sphere::GenerateSurfels(std::vector<Surfel> & surfels, const int & grain)
 {
-  Surfel surf;
+  Surfel surf(this);
   surf.color = Vector4d(0,0,0,0);
 
   float step = PI/(0.5*grain);

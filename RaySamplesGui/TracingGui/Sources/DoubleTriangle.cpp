@@ -195,7 +195,7 @@ void DoubleTriangle::GenerateSurfels(std::vector<Surfel> & surfels, const int & 
   float step = 1.0/grain;
   float half = step/2;
   Vector4d start = _points[0] + _edges[0] * half + _edges[1] * half;
-  Surfel surf;
+  Surfel surf(this);
   surf.color = Vector4d(0,0,0,0);
   surf.normal = _normal;
   
