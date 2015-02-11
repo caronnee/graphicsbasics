@@ -59,10 +59,14 @@ enum TypeId
 #include <QString>
 #include "FileHandler.h"
 
+class Geometry;
+
 struct Surfel
 {
   Vector4d position,normal,color;
   float radius;
+  Geometry * parent;
+  Surfel(Geometry * geom): parent(geom) {}
 };
 
 class Geometry

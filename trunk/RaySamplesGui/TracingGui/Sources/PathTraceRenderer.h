@@ -32,6 +32,11 @@ public:
       {
         geom->GenerateSurfels(_surfels,0.05);
       }
+      // pre-bake direct illumination for each surfel
+      for ( int i =0; i < _surfels.size(); i++)
+      {
+
+      }
     }
   }
 private:
