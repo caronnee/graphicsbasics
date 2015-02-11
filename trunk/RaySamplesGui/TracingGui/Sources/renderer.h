@@ -93,6 +93,7 @@ public:
 
 	virtual ~Renderer();
 	void Stop();
+  virtual void Bake();
 };
 
 #endif

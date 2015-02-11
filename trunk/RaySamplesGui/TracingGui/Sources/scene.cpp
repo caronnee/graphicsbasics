@@ -122,3 +122,10 @@ const float Scene::TotalArea() const
 {
   return _totalArea;
 }
+
+Geometry * Scene::Model(int i) const
+{
+  if ( i < _geometry.size())
+    return _geometry[i];
+  return NULL;
+}

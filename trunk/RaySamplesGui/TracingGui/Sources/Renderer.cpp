@@ -77,6 +77,10 @@ void Renderer::Stop()
 	_stop = true;
 }
 
+void Renderer::Bake()
+{
+}
+
 TrackProgress GTrackProgress;
 
 TrackProgress * GetRendererTrack()

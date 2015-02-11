@@ -24,6 +24,7 @@ void RenderThread::run()
 {
 	_image.SetSize( _end[0], _end[1] );
 	_renderer->Init(&_image);
+  _renderer->Bake();
 	_renderer->Render();
 }
 
