@@ -105,6 +105,6 @@ public:
   virtual float GetDirectionalPdf(const Vector4d & direction, const Vector4d& normal, const Vector4d& pos, const float & len);
   virtual float Area() const;
   Vector4d Position() const;
-  virtual void GenerateSurfels( std::vector<Surfel> & surfels, const float & grain );;
+  virtual void GenerateSurfels(std::vector<Surfel> & surfels, const int & grain);
 };
 #endif

@@ -169,7 +169,7 @@ Vector4d Geometry::Position() const
   return ModelToWorld(Vector4d(0,0,0,1));
 }
 
-void Geometry::GenerateSurfels(std::vector<Surfel> & surfels, const float & grain)
+void Geometry::GenerateSurfels(std::vector<Surfel> & surfels, const int & grain)
 {
   DoAssert(false);
   throw "test";
