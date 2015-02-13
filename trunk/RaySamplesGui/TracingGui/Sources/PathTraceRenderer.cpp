@@ -63,7 +63,7 @@ Vector4d PathTraceRenderer::RayTrace(Ray ray)
   if ( _renderCtx.mask &  ( RGlobalIllumination) )
     total += SampleGlobalIllumination(ray,isec);
 
-	if ( _renderCtx.mask &  ( RIndirectMask) )
+	else if ( _renderCtx.mask &  ( RIndirectMask) )
 		total += SampleIndirect(ray,isec);
 
 	if ( _renderCtx.mask & RDirectLight )
@@ -400,9 +400,10 @@ const Vector4d PathTraceRenderer::SampleGlobalIllumination(const Ray & ray, cons
   Image image;
   Renderer * render = new SurfelRenderer(_surfels,_renderCtx);
   render->Init(&image);
-  render->Render();
-
+  render->Bake();
   camera = _renderCtx.scene->SwitchCamera(camera);
+//  render->Render();
+
   delete camera;
   // image is the depth buffer
   // calculate from the depth buffer final image
@@ -431,7 +432,7 @@ void PathTraceRenderer::Bake()
     Geometry * geom;
     for ( int i =0; geom = _renderCtx.scene->Model(i); i++)
     {
-      geom->GenerateSurfels(_surfels,0.05);
+      geom->GenerateSurfels(_surfels,20);
     }
 
     // todo will not work for glossy
