@@ -11,6 +11,20 @@ struct Generated
   float pdf;
 };
 
+class SurfelRenderer : public Renderer
+{
+public:
+  static const int coarseSize;
+
+  std::vector<Surfel> &_surfels;
+  SurfelRenderer( std::vector<Surfel>& surfels, const RenderContext & ctx);
+
+  virtual void Init ( Image * image );
+
+  Vector4d RenderPixel( const int &x, const int &y );
+};
+
+
 class PathTraceRenderer : public Renderer
 {
 	typedef Renderer base;
@@ -21,24 +35,7 @@ public:
 	PathTraceRenderer();
 	virtual Vector4d RenderPixel( const int &x, const int &y );
   void Init( Scene * scene, Image * image, int maxBounces );
-  void Bake()
-  {
-    if (_renderCtx.mask & RGlobalIllumination)
-    {
-      _surfels.clear();
-      // fill surfels
-      Geometry * geom;
-      for ( int i =0; geom = _renderCtx.scene->Model(i); i++)
-      {
-        geom->GenerateSurfels(_surfels,0.05);
-      }
-      // pre-bake direct illumination for each surfel
-      for ( int i =0; i < _surfels.size(); i++)
-      {
-
-      }
-    }
-  }
+  void Bake();
 private:
   
 	Vector4d RayTrace(Ray ray);

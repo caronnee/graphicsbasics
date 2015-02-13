@@ -380,7 +380,93 @@ void PathTraceRenderer::Init(Scene * scene, Image * image, int maxBounces)
   Renderer::Init(image);
 }
 
+
 const Vector4d PathTraceRenderer::SampleGlobalIllumination(const Ray & ray, const Intersection & isec)
 {
-  throw std::logic_error("The method or operation is not implemented.");
+  // coarse step- world as seen front the intersection point
+  CameraContext ctx;
+  Matrix4d xyz;
+  xyz.CreateFromZ(isec.nrm);
+  ctx.axis[0] = xyz.GetRow(2);
+  ctx.axis[1] = xyz.GetRow(1);
+  ctx.fov = 90;
+  ctx.position = isec.worldPosition;
+  // some wall resolution
+  ctx.resolution[0] = ctx.resolution[1] = SurfelRenderer::coarseSize;
+
+  Camera * CreateCamera( CameraContext & ctx);
+  Camera * camera = CreateCamera(ctx);
+  
+  Image image;
+  Renderer * render = new SurfelRenderer(_surfels,_renderCtx);
+  render->Init(&image);
+  render->Render();
+  // image is the depth buffer
+  // calculate from the depth buffer final image
+  Vector4d ret(0,0,0,0);
+  for ( int i =0; i < image.W(); i++)
+  {
+    for ( int j =0; j < image.H(); j++)
+    {
+      // convert to the position that we can recognize
+      Vector4d color = image.GetComponent(i,j);
+      // TODO this wil only work for diffuse
+      Vector4d brdf = isec.model->GetMaterial()->EvalBrdf(Vector4d(0,0,0,0),Vector4d(0,0,0,0),Vector4d(0,0,0,0));
+      ret += color.MultiplyPerElement(brdf);
+    }
+  }
+  return ret;
 }
+
+void PathTraceRenderer::Bake()
+{
+  if (_renderCtx.mask & RGlobalIllumination)
+  {
+    _renderCtx.iterations = 1;
+    _surfels.clear();
+    // fill surfels
+    Geometry * geom;
+    for ( int i =0; geom = _renderCtx.scene->Model(i); i++)
+    {
+      geom->GenerateSurfels(_surfels,0.05);
+    }
+
+    // todo will not work for glossy
+    Ray dummyRay;
+    Intersection sec;
+    // bake direct illumination for each surfel
+    for ( int i =0; i < _surfels.size(); i++)
+    {
+      sec.model = _surfels[i].parent;
+      sec.nrm = _surfels[i].normal;
+      sec.t = 0;
+      sec.worldPosition = _surfels[i].position;
+      _surfels[i].color = SampleLight(dummyRay,sec);
+    }
+  }
+}
+
+SurfelRenderer::SurfelRenderer(std::vector<Surfel>& surfels, const RenderContext & ctx) : _surfels(surfels)
+{
+
+}
+
+void SurfelRenderer::Init(Image * image)
+{
+  _image = image;
+  _image->SetSize(coarseSize,coarseSize);
+}
+
+Vector4d SurfelRenderer::RenderPixel(const int &x, const int &y)
+{
+  // create how the world is seen from this perspective. Take surfels as reference
+  for ( int i =0; i < _surfels.size(); i ++)
+  {
+    //find the one with the nearest distance
+
+  }
+  return Vector4d(0,0,0,0);
+}
+
+const int SurfelRenderer::coarseSize = 15;
+

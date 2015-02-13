@@ -778,12 +778,12 @@ void TracingGui::RenderSlot()
 	ctx.resolution[1] = yDim;
 
 	_scene.Clear();
-	_scene.CreateCamera(ctx);
+	_scene.CreateAddCamera(ctx);
 	CreateScene(_scene);
 
 	// init threads
-	//_threa
-	RenderContext renderCtx;
+	
+  RenderContext renderCtx;
 	memset(renderCtx.start,0,sizeof(renderCtx.start));
 	renderCtx.scene = &_scene;
 	renderCtx.end[0] = xDim;
@@ -799,7 +799,8 @@ void TracingGui::RenderSlot()
     renderCtx.fixed[0] = ui.fixedX->value();
     renderCtx.fixed[1] = ui.fixedY->value();
   }
-	for ( int i =0; i < MAXTHREADS; i++)
+	
+  for ( int i =0; i < MAXTHREADS; i++)
 	{
 		if (_threads[i])
 			delete _threads[i];
@@ -807,9 +808,8 @@ void TracingGui::RenderSlot()
 		QObject::connect(_threads[i], SIGNAL(finished()), this, SLOT(FetchResultsSlot()));
 		_threads[i]->start();
 	}
+
 	// convert Image to label
-	
-// TODO
 	// on thread finished
 }
 

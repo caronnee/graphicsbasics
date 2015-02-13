@@ -54,32 +54,31 @@ void Scene::DeleteModel(Geometry * geometry)
 	}
 }
 
-Camera * GCamera;
-Camera * GetCamera()
+// create and seupt camera
+Camera * CreateCamera( CameraContext & ctx)
 {
-  return GCamera;
+  Camera * c = new Camera();
+  c->Clear();
+  c->SetMatrix(ctx.axis[0],ctx.axis[1]);
+  c->Translate(ctx.position);
+  float zFar = 1000;
+  c->SetPerspective(zFar,ctx.fov);
+  c->SetResolution(ctx.resolution[0],ctx.resolution[1]);  
+  return c;
 }
 
-void Scene::CreateCamera( CameraContext & ctx)
+void Scene::CreateAddCamera( CameraContext & ctx)
 {
-	Camera * c = new Camera();
-	c->Clear();
-	c->SetMatrix(ctx.axis[0],ctx.axis[1]);
-	c->Translate(ctx.position);
-	float zFar = 1000;
-	c->SetPerspective(zFar,ctx.fov);
-	// Vector4d r = c->RasterToWorld(Vector4d(0.5,0.5,0,1));
+	Camera * c = CreateCamera(ctx);
+
 	if (_camera)
 	{
 		DeleteModel(_camera);
 		delete _camera;
 	}
-  GCamera = c;
-  c->RasterToWorld(Vector4d(256,256));
-	_camera =c;
+  _camera =c;
 	Vector4d v[] = {Vector4d(0,0,0,0),Vector4d(0,0,0,0),Vector4d(0,0,0,0)};
 	_camera->SetMaterial(CreateMaterial(MDiffuse,v,0));
-	_camera->SetResolution(ctx.resolution[0],ctx.resolution[1]);
 	AddModel(_camera);
 }
 
