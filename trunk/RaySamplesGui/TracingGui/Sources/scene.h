@@ -24,6 +24,7 @@ class Scene
 public:
 	Scene();
 
+  Camera * GetCamera() { return _camera; }
 	Ray GetRay(float x,float y);
 	void AddModel(Geometry * model);
 	void CreateAddCamera( CameraContext & ctx);
@@ -35,5 +36,6 @@ public:
 	Geometry * GetLight(int iLight);
   const float TotalArea() const;
   Geometry * Model(int i) const;
+  Camera * SwitchCamera( Camera * camera );
 };
 #endif

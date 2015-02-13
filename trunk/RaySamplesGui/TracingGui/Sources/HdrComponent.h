@@ -13,5 +13,10 @@ public:
 	void Normalize();
   HDRComponent & Add(const Vector4d & val);
   void SetUnit();
+  HDRComponent & operator =(const Vector4d & oper)
+  {
+    base::operator=(oper);
+    return *this;
+  }
 };
 #endif

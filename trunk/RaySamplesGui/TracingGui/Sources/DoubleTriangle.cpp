@@ -2,94 +2,94 @@
 
 DoubleTriangle::DoubleTriangle(Vector4d * trianglePoints)
 {
-	static Vector4d def [] ={ Vector4d(1,0,0,1),Vector4d(0,1,0,1),Vector4d(1,1,0,1)};
-	if ( trianglePoints == NULL )
-	{
-		trianglePoints = def;
-	}
-	SetPoints(trianglePoints);
+  static Vector4d def [] ={ Vector4d(1,0,0,1),Vector4d(0,1,0,1),Vector4d(1,1,0,1)};
+  if ( trianglePoints == NULL )
+  {
+    trianglePoints = def;
+  }
+  SetPoints(trianglePoints);
 }
 
 void DoubleTriangle::SetPoints(Vector4d * trianglePoints)
 {
-	memcpy(_points, trianglePoints, sizeof(Vector4d) * 3 );
-	_edges[0] = _points[1] -  _points[0];
-	_edges[1] = _points[2] -  _points[0];
-	_normal = _edges[1].Cross(_edges[0]);
-	_area = 0.5f*_normal.Size();
-	_normal.Normalize();
+  memcpy(_points, trianglePoints, sizeof(Vector4d) * 3 );
+  _edges[0] = _points[1] -  _points[0];
+  _edges[1] = _points[2] -  _points[0];
+  _normal = _edges[1].Cross(_edges[0]);
+  _area = 0.5f*_normal.Size();
+  _normal.Normalize();
 }
 void DoubleTriangle::SetProperty(PropertyType type, void * values)
 {
-	if (type == PPoints)
-	{
-		SetPoints((Vector4d*)values);
-	}
+  if (type == PPoints)
+  {
+    SetPoints((Vector4d*)values);
+  }
 }
 
 void * DoubleTriangle::GetProperty(PropertyType type)
 {
-	if (type == PPoints)
-	{
-		return _points;
-	}
-	return NULL;
+  if (type == PPoints)
+  {
+    return _points;
+  }
+  return NULL;
 }
 
 bool DoubleTriangle::Intersect(const Ray & ray, Intersection & sect)
 {
-	//Möller–Trumbore_intersection_algorithm
-	Vector4d d = WorldToModel(ray.direction);
-	d.Normalize();
-	Vector4d o = WorldToModel(ray.origin);
-	//Begin calculating determinant - also used to calculate u parameter
-	Vector4d P = d.Cross(_edges[1]);
-	
-	//if determinant is near zero, ray lies in plane of triangle
-	float det = _edges[0].Dot(P);
-	//NOT CULLING
-	if(det > -EPSILON && det < EPSILON) 
-		return false;
+  //Möller–Trumbore_intersection_algorithm
+  Vector4d d = WorldToModel(ray.direction);
+  d.Normalize();
+  Vector4d o = WorldToModel(ray.origin);
+  //Begin calculating determinant - also used to calculate u parameter
+  Vector4d P = d.Cross(_edges[1]);
 
-	float inv_det = 1.f / det;
+  //if determinant is near zero, ray lies in plane of triangle
+  float det = _edges[0].Dot(P);
+  //NOT CULLING
+  if(det > -EPSILON && det < EPSILON) 
+    return false;
 
-	//calculate distance from V1 to ray origin
-	Vector4d T =  o - _points[0];
+  float inv_det = 1.f / det;
 
-	//Calculate u parameter and test bound
-	float u = T.Dot(P) * inv_det;
-	//The intersection lies outside of the triangle
-	if(u < 0.f || u > 1.f) 
-		return false;
+  //calculate distance from V1 to ray origin
+  Vector4d T =  o - _points[0];
 
-	//Prepare to test v parameter
-	Vector4d Q = T.Cross(_edges[0]);
+  //Calculate u parameter and test bound
+  float u = T.Dot(P) * inv_det;
+  //The intersection lies outside of the triangle
+  if(u < 0.f || u > 1.f) 
+    return false;
 
-	//Calculate V parameter and test bound
-	float v = d.Dot(Q) * inv_det;
+  //Prepare to test v parameter
+  Vector4d Q = T.Cross(_edges[0]);
 
-	//The intersection lies outside of the triangle
-	if(v < 0.f || u + v  > 1.f) 
-		return false;
+  //Calculate V parameter and test bound
+  float v = d.Dot(Q) * inv_det;
 
-	float t = _edges[1].Dot(Q) * inv_det;
+  //The intersection lies outside of the triangle
+  if(v < 0.f || u + v  > 1.f) 
+    return false;
 
-	if(t > EPSILON) { //ray intersection
-		sect.t = t;
-		sect.model = this;
-		sect.worldPosition = ray.origin + ray.direction * t;
-		sect.nrm = ModelToWorld(_normal);
-		sect.nrm.Normalize();
-		return true;
-	}
+  float t = _edges[1].Dot(Q) * inv_det;
 
-	// No hit, no win
-	return false;
+  if(t > EPSILON) { //ray intersection
+    sect.t = t;
+    sect.model = this;
+    sect.worldPosition = ray.origin + ray.direction * t;
+    sect.nrm = ModelToWorld(_normal);
+    sect.nrm.Normalize();
+    return true;
+  }
+
+  // No hit, no win
+  return false;
 }
 
 int DoubleTriangle::Type()const
 {
-	return TypeTriangle;
+  return TypeTriangle;
 }
 
 #include "RandomNumber.h"
@@ -128,8 +128,8 @@ Vector4d minCoordsLight;
 
 Vector4d DoubleTriangle::SampleIllumination(const Intersection &section, Vector4d & sampledDir, float & sampleLen)
 {
-	// sample point on the triangle
-	float a1 = GetFloat();
+  // sample point on the triangle
+  float a1 = GetFloat();
   float a2 = GetFloat();
 
   // sampling from rectangle to triangle 
@@ -138,8 +138,8 @@ Vector4d DoubleTriangle::SampleIllumination(const Intersection &section, Vector4
     a1 = 1-a1;
     a2 = 1-a2;
   }
-	Vector4d point = _edges[0]*a1 + _edges[1]*a2 + _points[0];
-	Vector4d mPoint = ModelToWorld(point);
+  Vector4d point = _edges[0]*a1 + _edges[1]*a2 + _points[0];
+  Vector4d mPoint = ModelToWorld(point);
   sampledDir = mPoint - section.worldPosition;
   sampleLen = sampledDir.Size();
   sampledDir.Normalize();
@@ -148,19 +148,19 @@ Vector4d DoubleTriangle::SampleIllumination(const Intersection &section, Vector4
   if (pdf <=0)
     return Vector4d(0,0,0,0);
   total/=pdf;
-  
+
   return total;
 }
 
 void DoubleTriangle::SaveProperties(FileHandler & handler)
 {
-	handler.Write(_points,sizeof(Vector4d),3);	
+  handler.Write(_points,sizeof(Vector4d),3);	
 }
 
 void DoubleTriangle::LoadProperties(FileHandler & handler)
 {
-	handler.Read(_points,sizeof(Vector4d),3);
-	SetProperty(PPoints,_points);
+  handler.Read(_points,sizeof(Vector4d),3);
+  SetProperty(PPoints,_points);
 }
 
 float DoubleTriangle::GetDirectionalPdf(const Vector4d & direction, const Vector4d& normal, const Vector4d& pos, const float & len)
@@ -176,20 +176,32 @@ float DoubleTriangle::Area() const
   return _edges[0].Cross(_edges[1]).Size()/2.f;
 }
 
+#include "MathUtil.h"
+
 void DoubleTriangle::GenerateSurfels(std::vector<Surfel> & surfels, const int & grain)
 {
-  float step = 1.0/grain;
-  float half = step/2;
-  Vector4d start = _points[0] + _edges[0] * half + _edges[1] * half;
+  float step0 = 1.0/grain;
+  float step1 = 1.0/grain;
   Surfel surf(this);
   surf.color = Vector4d(0,0,0,0);
   surf.normal = _normal;
-  
-  for ( float a = grain; a<1; a+=grain)
-    for ( float b = grain; b<(1-a); b+=grain)
-    {
-      Vector4d pos = start + _edges[0]*a + _edges[1]*b;
-      surf.position = ModelToWorld(pos);
+  Vector4d start = _points[0];
+  Vector4d p1 = _edges[0]*step0;
+  Vector4d p2 = _edges[1]*step1;
 
+  // this should be the radius of the disc
+  surf.radius = Vector4d( p1.Max(),p2.Max(),0,0).Max()/3;
+  surf.area =  PI * surf.radius * surf.radius;
+  for ( float a = grain; a<1; a+=step0)
+  {
+    for ( float b = grain; b<(1-a); b+=step1)
+    {
+      Vector4d pos1 = _edges[0]*a;
+      Vector4d pos2 = _edges[1]*b;
+      // center of mass of triangle - should be sufficient
+      surf.position = ModelToWorld(start + (pos1 + pos2)/3);
+      surfels.push_back(surf);
     }
+    start = _points[0] + _edges[0]*a;
+  }
 }

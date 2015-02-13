@@ -19,9 +19,12 @@ public:
   std::vector<Surfel> &_surfels;
   SurfelRenderer( std::vector<Surfel>& surfels, const RenderContext & ctx);
 
+  // initialization of surfels
   virtual void Init ( Image * image );
 
-  Vector4d RenderPixel( const int &x, const int &y );
+  virtual Vector4d RenderPixel( const int &x, const int &y );
+  // rendering pixels
+  void Bake();
 };
 
 

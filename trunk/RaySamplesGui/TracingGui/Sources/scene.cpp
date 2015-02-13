@@ -67,6 +67,21 @@ Camera * CreateCamera( CameraContext & ctx)
   return c;
 }
 
+Camera * Scene::SwitchCamera( Camera * camera )
+{
+  Camera * c = _camera;
+  for ( int i =0; i  < _geometry.size(); i++)
+  {
+    if ( c == _geometry[i])
+    {
+      _geometry[i] = _geometry.back();
+      _geometry.pop_back();
+      break;
+    }
+  }
+  _camera = camera;
+  return c;
+}
 void Scene::CreateAddCamera( CameraContext & ctx)
 {
 	Camera * c = CreateCamera(ctx);
