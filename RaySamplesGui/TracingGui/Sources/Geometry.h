@@ -65,6 +65,7 @@ struct Surfel
 {
   Vector4d position,normal,color;
   float radius;
+  float area;
   Geometry * parent;
   Surfel(Geometry * geom): parent(geom) {}
 };

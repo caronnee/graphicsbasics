@@ -116,8 +116,11 @@ void Sphere::GenerateSurfels(std::vector<Surfel> & surfels, const int & grain)
   Surfel surf(this);
   surf.color = Vector4d(0,0,0,0);
 
-  float step = PI/(0.5*grain);
+  float step = PI/(0.5*grain);  
   float smallR = 0.5*_radius/ tan (step);
+  surf.radius = smallR;
+  surf.area = PI * surf.radius*surf.radius;
+
   for ( float i =0; i< 2*PI; i+=step)
     for ( float j =0; j< 2*PI; j+=step)
     {
@@ -125,7 +128,6 @@ void Sphere::GenerateSurfels(std::vector<Surfel> & surfels, const int & grain)
       surf.position = ModelToWorld(pos);
       pos[3] = 0;
       surf.normal = ModelToWorld(pos);
-      surf.radius = smallR;
       surfels.push_back(surf);
     }
 }

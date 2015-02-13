@@ -396,11 +396,14 @@ const Vector4d PathTraceRenderer::SampleGlobalIllumination(const Ray & ray, cons
 
   Camera * CreateCamera( CameraContext & ctx);
   Camera * camera = CreateCamera(ctx);
-  
+  camera = _renderCtx.scene->SwitchCamera(camera);
   Image image;
   Renderer * render = new SurfelRenderer(_surfels,_renderCtx);
   render->Init(&image);
   render->Render();
+
+  camera = _renderCtx.scene->SwitchCamera(camera);
+  delete camera;
   // image is the depth buffer
   // calculate from the depth buffer final image
   Vector4d ret(0,0,0,0);
@@ -410,7 +413,7 @@ const Vector4d PathTraceRenderer::SampleGlobalIllumination(const Ray & ray, cons
     {
       // convert to the position that we can recognize
       Vector4d color = image.GetComponent(i,j);
-      // TODO this wil only work for diffuse
+      // TODO this will only work for diffuse
       Vector4d brdf = isec.model->GetMaterial()->EvalBrdf(Vector4d(0,0,0,0),Vector4d(0,0,0,0),Vector4d(0,0,0,0));
       ret += color.MultiplyPerElement(brdf);
     }
@@ -446,10 +449,11 @@ void PathTraceRenderer::Bake()
   }
 }
 
-SurfelRenderer::SurfelRenderer(std::vector<Surfel>& surfels, const RenderContext & ctx) : _surfels(surfels)
+SurfelRenderer::SurfelRenderer(std::vector<Surfel>& surfels, const RenderContext & ctx) : _surfels(surfels) 
 {
-
+  _renderCtx = ctx;
 }
+
 
 void SurfelRenderer::Init(Image * image)
 {
@@ -457,15 +461,43 @@ void SurfelRenderer::Init(Image * image)
   _image->SetSize(coarseSize,coarseSize);
 }
 
-Vector4d SurfelRenderer::RenderPixel(const int &x, const int &y)
+void SurfelRenderer::Bake()
 {
   // create how the world is seen from this perspective. Take surfels as reference
+  Vector4d ret(0,0,0,0);
+  Vector4d origin = _renderCtx.scene->GetCamera()->Position();
+  Vector4d cameraDir = _renderCtx.scene->GetCamera()->Direction();
   for ( int i =0; i < _surfels.size(); i ++)
   {
-    //find the one with the nearest distance
+    //find the one with the nearest distance in the correct direction
 
+    Vector4d toPoint = _surfels[i].position - origin;
+    // check if the position id in the direction of the 
+    float cosFactor = toPoint.Dot(_surfels[i].normal);
+    if ( (toPoint.Dot(cameraDir) < 0 ) || (cosFactor < 0) )
+      continue;
+    Vector4d raster = _renderCtx.scene->GetCamera()->WorldToRaster(_surfels[i].position);
+    // visible by raster
+    if ( (raster.X() < 0) || (raster.Y() < 0) || (raster.X() >= _image->W()) || (raster.Y() >= _image->H()) )
+      continue;
+    // find the distance
+    float len = toPoint.Size2();
+    HDRComponent & comp = _image->GetComponent(raster.X(),raster.Y());
+
+    // check if the distance is less
+    if ( (comp[3] != 0) && (comp[3] < len) )
+      continue;
+
+    // TODO what if the disk is very very close/big? covers more rasters?
+    float projectedSolidAngle = _surfels[i].area * cosFactor / (len * len);
+    comp = _surfels[i].color * projectedSolidAngle;
+    comp[3] = len;
   }
-  return Vector4d(0,0,0,0);
+}
+
+Vector4d SurfelRenderer::RenderPixel(const int &x, const int &y)
+{
+  return _image->GetComponent(x,y);
 }
 
 const int SurfelRenderer::coarseSize = 15;
