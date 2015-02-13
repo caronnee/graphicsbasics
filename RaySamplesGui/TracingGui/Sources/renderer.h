@@ -51,18 +51,6 @@ enum InDirectMask
  INDIRECT_LIGHT(CREATE_ENUMS_SHIFT_INDIRECT)
 };
 
-// might be later used
-class Bouncer
-{
-public:
-	// resets 
-	virtual void Init() = 0;
-
-	// return new direction and directional pdf that this was generated with
-  virtual bool Bounce(Ray & ray, Intersection & section, Vector4d& throughput) = 0;
-
-};
-
 struct RenderContext
 {
   // scene contains also camera
@@ -80,8 +68,13 @@ struct RenderContext
 class Renderer
 {
 protected:
-	bool _stop;
-	Image * _image;
+
+	// stop the renderer
+  bool _stop;
+	
+  Image * _image;
+  
+  //
 	void Destroy();
 public:
 	RenderContext _renderCtx;

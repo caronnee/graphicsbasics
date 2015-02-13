@@ -140,11 +140,6 @@ Vector4d DoubleTriangle::SampleIllumination(const Intersection &section, Vector4
   }
 	Vector4d point = _edges[0]*a1 + _edges[1]*a2 + _points[0];
 	Vector4d mPoint = ModelToWorld(point);
-  Vector4d raster = GetCamera()->WorldToViewport(mPoint);
-  DoAssert(raster[0] < 600);
-  DoAssert(raster[1] < 600);
-  DoAssert(raster[1] > -30);
-  DoAssert(raster[0] > -30);
   sampledDir = mPoint - section.worldPosition;
   sampleLen = sampledDir.Size();
   sampledDir.Normalize();
@@ -153,16 +148,7 @@ Vector4d DoubleTriangle::SampleIllumination(const Intersection &section, Vector4
   if (pdf <=0)
     return Vector4d(0,0,0,0);
   total/=pdf;
-  if ( total.Size2()  > maxShine.Size2() )
-  {
-    maxCoordsLight =  GetCamera()->WorldToViewport(point);
-    maxShine = total;
-  }
-  if ( total.Size2()  < minShine.Size2() )
-  {
-    minShine = total;
-    minCoordsLight = GetCamera()->WorldToViewport(point);
-  }
+  
   return total;
 }
 

@@ -29,6 +29,5 @@ public:
   Vector4d WorldToViewport(const Vector4d & mPoint);
 };
 
-Camera * GetCamera();
 
 #endif

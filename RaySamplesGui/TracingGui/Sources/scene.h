@@ -26,7 +26,7 @@ public:
 
 	Ray GetRay(float x,float y);
 	void AddModel(Geometry * model);
-	void CreateCamera( CameraContext & ctx);
+	void CreateAddCamera( CameraContext & ctx);
 	AmbientLight& Ambient();
 	bool FindIntersection(const Ray & ray, Intersection& isect);
 	void CreateCornellBox();
