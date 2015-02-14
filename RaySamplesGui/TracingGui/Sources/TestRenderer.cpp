@@ -12,12 +12,6 @@ extern bool stop;
 
 Vector4d TestRenderer::RenderPixel(const int &x, const int &y)
 {
-#if _DEBUG
-	if ( (x == 34) && (y == 63) )
-		stop = true;
-	else
-		stop = false;
-#endif
 	Ray ray = _renderCtx.scene->GetRay((float)x +0.5,(float)y +0.5);
 	Vector4d total = Vector4d(0,0,0,0);
 	// so far only ambient

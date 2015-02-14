@@ -1,4 +1,5 @@
 #include "image.h"
+#include "Debug.h"
 #include <stdio.h>
 #include <math.h>
 #include <intrin.h>
@@ -64,6 +65,10 @@ void Image::SaveHdr(const char * name)
 
 HDRComponent& Image::GetComponent(int i, int j)
 {
+  DoAssert( i < _w);
+  DoAssert( j < _h);
+  DoAssert( i >= 0);
+  DoAssert( j >= 0);
 	return _buffer[ j*_w + i];
 }
 
@@ -89,5 +94,10 @@ void Image::Divide(double inv)
 	{
 		_buffer[i] *=inv;
 	}
+}
+
+Image& Image::operator=(const Image& image)
+{
+  throw "XYZ";
 }
 
