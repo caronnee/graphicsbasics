@@ -19,5 +19,6 @@ public:
 	void Clear();
 	void SetSize(int w, int h);
 	void Divide(double inv);
+  Image& operator=(const Image& image);
 };
 #endif
