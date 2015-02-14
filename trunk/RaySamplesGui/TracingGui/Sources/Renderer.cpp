@@ -5,6 +5,7 @@
 void Renderer::Init( Image * image )
 {
 	_image = image;
+  Bake();
 }
 
 #if _DEBUG
@@ -57,7 +58,7 @@ void Renderer::Render()
   GetRendererTrack()->Finish();
 }
 
-Renderer::Renderer() : _image(NULL), _stop(false)
+Renderer::Renderer(const RenderContext & ctx) : _renderCtx(ctx), _image(NULL), _stop(false)
 {
 
 }

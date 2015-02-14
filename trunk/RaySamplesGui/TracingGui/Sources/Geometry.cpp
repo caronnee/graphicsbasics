@@ -156,11 +156,13 @@ Vector4d Geometry::Radiance(const Vector4d& secNormal,const Vector4d & sampledDi
 
 float Geometry::GetDirectionalPdf(const Vector4d & direction, const Vector4d& normal, const Vector4d& pos, const float & len)
 {
+  DoAssert(false);
   throw std::logic_error("The method or operation is not implemented.");
 }
 
 float Geometry::Area() const
 {
+  DoAssert(false);
   throw std::logic_error("The method or operation is not implemented.");
 }
 

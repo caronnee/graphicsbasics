@@ -209,7 +209,8 @@ TracingGui::TracingGui(QWidget *parent)
 		this, SLOT(SelectionMaterialChangedSlot(const QItemSelection &, const QItemSelection &)));
 
 	// renderer
-	ui.rendererType->addItem("PathtracerRenderer",QVariant(1));	
+  ui.rendererType->addItem("SurfelRenderer",QVariant(2));	
+  ui.rendererType->addItem("PathtracerRenderer",QVariant(1));	
 	ui.rendererType->addItem("TestRenderer",QVariant(0));
 
   // material
@@ -227,7 +228,6 @@ TracingGui::TracingGui(QWidget *parent)
   ui.indirectType->addItem("Indirect light ( Simple gather )",QVariant(RIndirectSimple));
   ui.indirectType->addItem("Indirect light ( Next event estimation )",QVariant(RIndirectNextEvent));
   ui.indirectType->addItem("Indirect light ( MIS )",QVariant(RIndirectMIS));
-  ui.indirectType->addItem("Global illumination",QVariant(RGlobalIllumination));
 
   // scenes selections
   LoadSceneNames();
