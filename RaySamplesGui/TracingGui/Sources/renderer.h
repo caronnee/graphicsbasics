@@ -22,7 +22,6 @@ TrackProgress * GetRendererTrack();
   XX(IndirectSimple)  \
   XX(IndirectNextEvent)  \
   XX(IndirectMIS)  \
-  XX(GlobalIllumination)  \
 
 #define RNone 0
 #define  CREATE_ENUMS_DOUBLE(name) S##name,
@@ -76,10 +75,12 @@ protected:
   
   //
 	void Destroy();
-public:
-	RenderContext _renderCtx;
 
-	Renderer();
+  RenderContext _renderCtx;
+
+public:
+
+	Renderer(const RenderContext & renderContext);
 	virtual void Init(Image * image );
 	void Render();
 	virtual Vector4d RenderPixel( const int &x, const int &y ) = 0;

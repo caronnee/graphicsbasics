@@ -95,6 +95,7 @@ void Sphere::SetProperty(PropertyType type, void * value)
 
 Vector4d Sphere::SampleIllumination(const Intersection &section, Vector4d & sampledDir, float & sampleLen)
 {
+  DoAssert(false);
 	throw "Not implemented yet. And maybe won't be ever...";
 }
 

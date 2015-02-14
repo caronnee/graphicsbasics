@@ -65,6 +65,7 @@ Vector4d Material::Emmisive() const
 
 float Material::GetDirectionalPdf(const Vector4d &sampledDir, const Vector4d & nrm) const
 {
+  DoAssert(false);
   throw std::logic_error("The method or operation is not implemented.");
 }
 

@@ -199,6 +199,12 @@
     <ClCompile Include="Sources\OctTree.cpp">
       <Filter>Source Files\Structs</Filter>
     </ClCompile>
+    <ClCompile Include="Sources\DirectMCRenderer.cpp">
+      <Filter>Source Files\Logic\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\SurfelRenderer.cpp">
+      <Filter>Source Files\Logic\Renderer</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="Sources/tracinggui.ui">
@@ -301,6 +307,12 @@
     </ClInclude>
     <ClInclude Include="Sources\OctTree.h">
       <Filter>Source Files\Structs</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\DirectMCRenderer.h">
+      <Filter>Source Files\Logic\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\SurfelRenderer.h">
+      <Filter>Source Files\Logic\Renderer</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

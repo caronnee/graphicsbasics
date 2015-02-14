@@ -4,8 +4,6 @@
 #include <QThread>
 #include "Scene.h"
 #include "renderer.h"
-#include "TestRenderer.h"
-#include "PathTraceRenderer.h"
 
 // _renderCtx.scene->CreateCamera(posTranslate, oMatrix.GetRow(2), oMatrix.GetRow(1) ,fov);
 class RenderThread : public QThread

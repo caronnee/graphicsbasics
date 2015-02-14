@@ -1,21 +1,27 @@
 #include "RenderThread.h"
+#include "Debug.h"
+#include "TestRenderer.h"
+#include "PathTraceRenderer.h"
+#include "SurfelRenderer.h"
 
-Renderer * CreateRenderer(int t)
+Renderer * CreateRenderer(int t, const RenderContext & context)
 {
 	switch (t)
 	{
 	case 0:
-		return new TestRenderer();
+		return new TestRenderer(context);
 	case 1:
-		return new PathTraceRenderer();
+		return new PathTraceRenderer(context);
+  case 2:
+    return new SurfelRenderer(context);
 	}
+  DoAssert(false);
 	throw "Rendered not implemented";
 }
 
 RenderThread::RenderThread(RenderContext & ctx)
 {
-	_renderer = CreateRenderer(ctx.renderMask);
-	_renderer->_renderCtx = ctx;
+	_renderer = CreateRenderer(ctx.renderMask, ctx);
 	memcpy(_start,ctx.start,sizeof(_start));
 	memcpy(_end,ctx.end,sizeof(_end));
 }
@@ -24,7 +30,6 @@ void RenderThread::run()
 {
 	_image.SetSize( _end[0], _end[1] );
 	_renderer->Init(&_image);
-  _renderer->Bake();
 	_renderer->Render();
 }
 
