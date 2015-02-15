@@ -5,12 +5,6 @@ SurfelRenderer::SurfelRenderer( const RenderContext & ctx ) : DirectMCRenderer(c
   _renderCtx = ctx;
 }
 
-void SurfelRenderer::Init(Image * image)
-{
-  _image = image;
-  _image->SetSize(coarseSize,coarseSize);
-}
-
 void SurfelRenderer::test()
 {
   // create how the world is seen from this perspective. Take surfels as reference
@@ -47,6 +41,7 @@ void SurfelRenderer::test()
 
 Vector4d SurfelRenderer::RenderPixel(const int &x, const int &y)
 {
+   return _image->GetComponent(x,y);
   // TODO change toShowSurfels
   if ( true )
   {
@@ -58,15 +53,15 @@ Vector4d SurfelRenderer::RenderPixel(const int &x, const int &y)
     {
       float dist = (cameraPos - _surfels[i].position).Size2();
       // if surfel position matches the one that is X,Y ( at let +- ) and is nearest, show it
-      Vector4d raster = _scene->GetCamera()->WorldToRaster( _surfels[i].position);
+      Vector4d raster = _scene->GetCamera()->WorldToViewport( _surfels[i].position);
       Vector4d diff= raster - pos;
-      if ( (fabs(raster[0])) < 0.5 && (fabs(raster[1]) < 0.5) && dist < mindist)
+      if ( (fabs(diff[0]) <=1) && (fabs(diff[1]) <= 1) )
       {
         mindist = dist;
         ret = _surfels[i].color;
       }
-
     }
+    return ret;
   }
   return Vector4d(0,0,0,0);
 }
@@ -79,9 +74,22 @@ void SurfelRenderer::Bake()
   _surfels.clear();
   // fill surfels
   Geometry * geom;
+  int last =0;
   for ( int i =0; geom = _renderCtx.scene->Model(i); i++)
   {
+    //if ( geom->Type() != TypeSphere)
+    //  continue;
     geom->GenerateSurfels(_surfels,20);
+#if 0 && _DEBUG
+    Vector4d vc;
+    while (last < _surfels.size())
+    {
+      Surfel & s = _surfels[last];
+      vc = _scene->GetCamera()->WorldToViewport( s.position);
+      last++;      
+    }
+#endif
+   // break;
   }
 
   // todo will not work for glossy
@@ -92,9 +100,13 @@ void SurfelRenderer::Bake()
   {
     sec.model = _surfels[i].parent;
     sec.nrm = _surfels[i].normal;
+    sec.nrm.Normalize();
     sec.t = 0;
     sec.worldPosition = _surfels[i].position;
     _surfels[i].color = SampleLight(dummyRay,sec);
+    Vector4d v = _renderCtx.scene->GetCamera()->WorldToViewport(_surfels[i].position);
+//    _image->AddColor(v[0],v[1],Vector4d(100,100,100,1));
+    _image->AddColor(v[0],v[1],_surfels[i].color);
   }
 }
 

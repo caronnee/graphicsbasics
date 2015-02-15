@@ -185,23 +185,27 @@ void DoubleTriangle::GenerateSurfels(std::vector<Surfel> & surfels, const int & 
   Surfel surf(this);
   surf.color = Vector4d(0,0,0,0);
   surf.normal = _normal;
-  Vector4d start = _points[0];
   Vector4d p1 = _edges[0]*step0;
   Vector4d p2 = _edges[1]*step1;
 
   // this should be the radius of the disc
   surf.radius = Vector4d( p1.Max(),p2.Max(),0,0).Max()/3;
   surf.area =  PI * surf.radius * surf.radius;
-  for ( float a = grain; a<1; a+=step0)
+  Vector4d ustep = _edges[0]*step0;
+  Vector4d vstep = _edges[1]*step1;
+  for ( float a = 0; a<1; a+=step0)
   {
-    for ( float b = grain; b<(1-a); b+=step1)
+    bool t = false;
+    for ( float b = 0; b<(1-a); b+=step1)
     {
-      Vector4d pos1 = _edges[0]*a;
-      Vector4d pos2 = _edges[1]*b;
+      t = true;
+      Vector4d pos0 =  _edges[0]*a + _edges[1]*b;
+      Vector4d pos1 = pos0+ustep;
+      Vector4d pos2 = pos0+vstep;
       // center of mass of triangle - should be sufficient
-      surf.position = ModelToWorld(start + (pos1 + pos2)/3);
+      surf.position = ModelToWorld( _points[0] + ( pos0 + pos1 + pos2)/3);
       surfels.push_back(surf);
     }
-    start = _points[0] + _edges[0]*a;
+    DoAssert(t);
   }
 }
