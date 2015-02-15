@@ -5,6 +5,7 @@
 void Renderer::Init( Image * image )
 {
 	_image = image;
+  _image->Clear();
   Bake();
 }
 
@@ -20,7 +21,6 @@ Vector4d GMaxCoords;
 
 void Renderer::Render()
 {
-	_image->Clear();
 	GetRendererTrack()->Clear();
   int & iterations = _renderCtx.iterations;
 	GetRendererTrack()->SetStages( iterations * _image->W());

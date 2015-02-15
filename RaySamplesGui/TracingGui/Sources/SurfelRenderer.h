@@ -17,7 +17,6 @@ public:
   SurfelRenderer( const RenderContext & ctx);
 
   // initialization of surfels
-  virtual void Init ( Image * image );
   virtual void Bake();
   virtual Vector4d RenderPixel( const int &x, const int &y );
   void test();

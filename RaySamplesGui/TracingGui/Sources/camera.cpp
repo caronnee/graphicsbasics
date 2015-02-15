@@ -81,18 +81,19 @@ Vector4d Camera::SampleIllumination(const Intersection &section, Vector4d & samp
 
 Vector4d Camera::WorldToViewport(const Vector4d & mPoint)
 {
-  Vector4d test = WorldToRaster(mPoint);
-  Vector4d o = ModelToWorld(Vector4d(0,0,0,1));
-  Vector4d testDir = test - WorldToRaster(o);
-  testDir *= test[2] / testDir[2];//normalize Z
-  test -= testDir;
-  Vector4d ret = test;
-#if _DEBUG
+  Vector4d ret = WorldToRaster(mPoint);
+  Vector4d pos = Position();
+  Vector4d testDir = ret - WorldToRaster(pos);
+  testDir *= ret[2] / testDir[2];//normalize Z
+  ret -= testDir;
+#if 0&& _DEBUG // works only for insuide image
   Vector4d th = RasterToWorld(Vector4d(ret[0],ret[1],0,1));
-  Vector4d dir0 = th - mPoint;
+  Vector4d dir0 = mPoint - th;
   dir0.Normalize();
-  Vector4d dir1 = ModelToWorld(Vector4d(0,0,0,1)) - mPoint;
+  Vector4d dir1 = mPoint - Position();
   dir1.Normalize();
+  float te = dir1.Dot(Direction());
+  DoAssert(te > 0);
   DoAssert(dir0 == dir1);
 #endif
   return ret;

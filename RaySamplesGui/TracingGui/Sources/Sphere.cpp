@@ -26,6 +26,7 @@ bool solveQuadratic(const T &a, const T &b, const T &c, T &x0, T &x1)
 bool Sphere::Intersect(const Ray & ray, Intersection & sect)
 {
 	// analytic solution
+  DoAssert( (ray.direction.Size2() - 1) < EPSILON);
 	Vector4d rayDirection = WorldToModel(ray.direction);
 	Vector4d rayOrigin = WorldToModel( ray.origin );
 	Vector4d L = Vector4d(0,0,0,1) - rayOrigin;	
@@ -125,10 +126,12 @@ void Sphere::GenerateSurfels(std::vector<Surfel> & surfels, const int & grain)
   for ( float i =0; i< 2*PI; i+=step)
     for ( float j =0; j< 2*PI; j+=step)
     {
-      Vector4d pos = GetSpherePosition(i,j);
+      Vector4d pos = GetSpherePosition(i,j)*_radius;
+      pos[3] = 1;
       surf.position = ModelToWorld(pos);
       pos[3] = 0;
       surf.normal = ModelToWorld(pos);
+      surf.normal.Normalize();
       surfels.push_back(surf);
     }
 }
