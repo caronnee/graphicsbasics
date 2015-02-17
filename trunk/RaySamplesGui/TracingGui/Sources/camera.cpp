@@ -50,9 +50,11 @@ void Camera::SetPerspective(float zFar, float fov)
 
 Vector4d Camera::WorldToRaster(const Vector4d& v) const
 {
-	Vector4d t = WorldToModel(v);
-	t = _worldToRaster * t;
-	DoAssert(fabs(t[3]) > 0);
+	Vector4d t2 = WorldToModel(v);
+	Vector4d t = _worldToRaster * t2;
+	DoAssert((fabs(t[3]) > 0) || (t2.Size2() == 0));
+  if ( t[3] <=0)
+    return Vector4d(-1,-1,-1,-1);
 	t/=t[3];
 	return t;
 }

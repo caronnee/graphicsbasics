@@ -9,9 +9,9 @@
 Vector4d MoveToCoord( Vector4d origin, Vector4d dir, float dist , int coord);
 
 #if _DEBUG
-#define DoAssert(val) if ( val==false ) { OutputDebugStringA(#val); __debugbreak(); }
+#define DoAssert(val) if ( (val)==false ) { OutputDebugStringA(#val); __debugbreak(); }
 #else
-#define DoAssert(val) if ( val==false ) { OutputDebugStringA("Error! Asserionfailed: "); OutputDebugStringA(#val); }
+#define DoAssert(val) if ( (val)==false ) { OutputDebugStringA("Error! Asserionfailed: "); OutputDebugStringA(#val); }
 #endif
 
 void ShowDebugMessage(char * format, ...);

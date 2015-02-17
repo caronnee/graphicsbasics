@@ -7,8 +7,7 @@
 
 class SurfelRenderer : public DirectMCRenderer, public Renderer
 {
-  const Vector4d SampleGlobalIllumination(const Ray & ray, const Intersection & isec);
-
+  const Vector4d GlobalIllumination(const Ray & ray, const Intersection & isec);
   static const int coarseSize;
 public:
 
@@ -19,7 +18,7 @@ public:
   // initialization of surfels
   virtual void Bake();
   virtual Vector4d RenderPixel( const int &x, const int &y );
-  void test();
+  void GenerateToImage(Camera * camera, Image & image);
   // rendering pixels
 };
 
