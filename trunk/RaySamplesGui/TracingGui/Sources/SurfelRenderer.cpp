@@ -7,26 +7,54 @@ SurfelRenderer::SurfelRenderer( const RenderContext & ctx ) : DirectMCRenderer(c
 
 void SurfelRenderer::GenerateToImage(Camera * camera, Image & image)
 {
+/* TEST
+  Ray testray;
+  testray.origin = camera->Position();
+  testray.direction = camera->Direction();
+  testray.direction[3]= 0;
+  Intersection  sse;
+  _scene->FindIntersection(testray,sse);
+  int index = -1;
+  float lastdist = 19999;
+  float cc;
+  for(int i =0; i < _surfels.size(); i++)
+  {
+    float dist = (_surfels[i].position - sse.worldPosition).Size2();
+    if(dist < lastdist)
+    {
+      Vector4d dir = _surfels[i].position - camera->Position();
+      dir.Normalize();
+      cc = (dir).Dot(testray.direction);
+      lastdist = dist;
+      index = i;
+    }
+  }
+  __debugbreak();
+  */
   // create how the world is seen from this perspective. Take surfels as reference
   Vector4d ret(0,0,0,0);
   Vector4d origin = camera->Position();
   Vector4d cameraDir = camera->Direction();
+  cameraDir[3] = 0;
 
   // check all surfels if they are visible from the point
-  for ( int i =0; i < _surfels.size(); i ++)
+  for ( int i = 0; i < _surfels.size(); i ++)
   {
     //find the one with the nearest distance in the correct direction
     Vector4d toPoint = _surfels[i].position - origin;
+    float len = toPoint.Size();
+    toPoint /= len;
     // check if the position id in the direction of the 
-    float cosFactor = toPoint.Dot(_surfels[i].normal);
-    if ( (toPoint.Dot(cameraDir) < 0 ) || (cosFactor >= 0) )
+    float cosFactor = -toPoint.Dot(_surfels[i].normal);
+    //if ( _surfels[i].normal[0] ==-1)
+    //  __debugbreak();
+    if ( (toPoint.Dot(cameraDir) < 0 ) || (cosFactor <= 0) )
       continue;
     Vector4d raster = camera->WorldToViewport(_surfels[i].position);
     // visible by raster
     if ( (raster.X() < 0) || (raster.Y() < 0) || (raster.X() >= image.W()) || (raster.Y() >= image.H()) )
       continue;
     // find the distance
-    float len = toPoint.Size2();
     HDRComponent & comp = image.GetComponent(raster.X(),raster.Y());
 
     // check if the distance is less
@@ -64,9 +92,15 @@ Vector4d SurfelRenderer::RenderPixel(const int &x, const int &y)
     }
     return ret;
   }
-  
   {
-    Ray ray = _renderCtx.scene->GetCamera()->GetRay(x,y);
+    //int u=25,v=110;
+    int u=x,v=y ;
+    //if (_renderCtx.renderMask & COORDS_ONLY)
+    //{
+    //  u = _renderCtx.fixed[0];
+    //  v = _renderCtx.fixed[1];
+    //}
+    Ray ray = _renderCtx.scene->GetCamera()->GetRay(u,v);
     Intersection isection;
     if ( _renderCtx.scene->FindIntersection(ray,isection) )
       return GlobalIllumination(ray,isection);
@@ -74,7 +108,7 @@ Vector4d SurfelRenderer::RenderPixel(const int &x, const int &y)
   return Vector4d(0,0,0,0);
 }
 
-const int SurfelRenderer::coarseSize = 15;
+const int SurfelRenderer::coarseSize = 150;
 
 void SurfelRenderer::Bake()
 {
@@ -130,8 +164,9 @@ const Vector4d SurfelRenderer::GlobalIllumination(const Ray & ray, const Interse
   xyz.CreateFromZ(isec.nrm);
   ctx.axis[0] = xyz.GetRow(2);
   ctx.axis[1] = xyz.GetRow(1);
-  ctx.fov = 90;
-  ctx.position = isec.worldPosition;
+  ctx.fov = 120;
+  ctx.position = -isec.worldPosition;
+  ctx.position[3] = 0;
   // some wall resolution
   ctx.resolution[0] = ctx.resolution[1] = SurfelRenderer::coarseSize;
 

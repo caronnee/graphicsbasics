@@ -88,13 +88,16 @@ Vector4d Camera::WorldToViewport(const Vector4d & mPoint)
   Vector4d testDir = ret - WorldToRaster(pos);
   testDir *= ret[2] / testDir[2];//normalize Z
   ret -= testDir;
-#if 0&& _DEBUG // works only for insuide image
+  ret /= ret[3];
+#if 0&& _DEBUG // works only when point is not behind the mpoint
   Vector4d th = RasterToWorld(Vector4d(ret[0],ret[1],0,1));
   Vector4d dir0 = mPoint - th;
   dir0.Normalize();
   Vector4d dir1 = mPoint - Position();
   dir1.Normalize();
   float te = dir1.Dot(Direction());
+  DoAssert(te > 0);
+  te = dir0.Dot(Direction());
   DoAssert(te > 0);
   DoAssert(dir0 == dir1);
 #endif
