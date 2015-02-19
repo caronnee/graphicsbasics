@@ -62,6 +62,8 @@ float Vector4d::Dot(const Vector4d& vec) const
 {
 //  DoAssert((Size2() -1) < EPSILON);
 //  DoAssert((vec.Size2() -1) < EPSILON);
+ /* DoAssert(W() == 0);
+  DoAssert(vec.W() == 0);*/
 	return X()*vec.X() + Y()*vec.Y() + Z()*vec.Z() + W()*vec.W();
 }
 
