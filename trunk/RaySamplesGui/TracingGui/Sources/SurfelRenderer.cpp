@@ -1,4 +1,5 @@
 #include "SurfelRenderer.h"
+#include "Debug.h"
 
 SurfelRenderer::SurfelRenderer( const RenderContext & ctx ) : DirectMCRenderer(ctx.scene), Renderer(ctx)
 {
@@ -63,8 +64,13 @@ void SurfelRenderer::GenerateToImage(Camera * camera, Image & image)
 
     // TODO what if the disk is very very close/big? covers more rasters?
     float projectedSolidAngle = _surfels[i].area * cosFactor / (len * len);
-    comp = _surfels[i].color * projectedSolidAngle;
+    comp.Clear();
+    comp.Add(_surfels[i].color * projectedSolidAngle);
     comp[3] = len;
+    for ( int I =0; I < DIM; I++)
+    {
+      DoAssert(comp[I] >=0);
+    }
   }
 }
 
@@ -72,7 +78,7 @@ Vector4d SurfelRenderer::RenderPixel(const int &x, const int &y)
 {
 //   return _image->GetComponent(x,y);
   // TODO change toShowSurfels
-  if ( false )
+  if ( _renderCtx.mask & COORDS_ONLY )
   {
     Vector4d ret(0,0,0,0);
     Vector4d pos (x,y,0,1);
@@ -93,13 +99,10 @@ Vector4d SurfelRenderer::RenderPixel(const int &x, const int &y)
     return ret;
   }
   {
-    //int u=25,v=110;
+    //int u=170,v=1;
+    //if ( x & 1 )
+    //  u++;
     int u=x,v=y ;
-    //if (_renderCtx.renderMask & COORDS_ONLY)
-    //{
-    //  u = _renderCtx.fixed[0];
-    //  v = _renderCtx.fixed[1];
-    //}
     Ray ray = _renderCtx.scene->GetCamera()->GetRay(u,v);
     Intersection isection;
     if ( _renderCtx.scene->FindIntersection(ray,isection) )
@@ -108,7 +111,7 @@ Vector4d SurfelRenderer::RenderPixel(const int &x, const int &y)
   return Vector4d(0,0,0,0);
 }
 
-const int SurfelRenderer::coarseSize = 150;
+const int SurfelRenderer::coarseSize = 15;
 
 void SurfelRenderer::Bake()
 {
@@ -145,8 +148,11 @@ void SurfelRenderer::Bake()
     sec.nrm.Normalize();
     sec.t = 0;
     sec.worldPosition = _surfels[i].position;
-    _surfels[i].color = SampleLight(dummyRay,sec);
-    
+
+    for ( int d =0; d<100; d++)
+      _surfels[i].color += SampleLight(dummyRay,sec);
+ 
+    _surfels[i].color /= 100;
     if ( false )
     {
       Vector4d v = _renderCtx.scene->GetCamera()->WorldToViewport(_surfels[i].position);
@@ -155,6 +161,9 @@ void SurfelRenderer::Bake()
     }
   }
 }
+
+bool first = false;
+Image fImage;
 
 const Vector4d SurfelRenderer::GlobalIllumination(const Ray & ray, const Intersection & isec)
 {
@@ -178,7 +187,10 @@ const Vector4d SurfelRenderer::GlobalIllumination(const Ray & ray, const Interse
   image.SetSize(ctx.resolution[0],ctx.resolution[1]);
   
   GenerateToImage(camera,image);
-
+  
+  int a, b;
+  float mmm = -1;
+  
   // image is the depth buffer
   // calculate from the depth buffer final image
   Vector4d ret(0,0,0,0);
@@ -189,9 +201,17 @@ const Vector4d SurfelRenderer::GlobalIllumination(const Ray & ray, const Interse
       // convert to the position that we can recognize
       Vector4d color = image.GetComponent(i,j);
       // TODO this will only work for diffuse
+      float siz = color.Size2();
+      if ( siz > mmm )
+      {
+        mmm = siz;
+        a = i;
+        b = j;
+      }
       Vector4d brdf = isec.model->GetMaterial()->EvalBrdf(Vector4d(0,0,0,0),Vector4d(0,0,0,0),Vector4d(0,0,0,0));
       ret += color.MultiplyPerElement(brdf);
     }
   }
+  HDRComponent& cmp = image.GetComponent(a,b);
   return ret;
 }

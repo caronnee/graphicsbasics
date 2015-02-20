@@ -63,6 +63,15 @@ void Image::SaveHdr(const char * name)
 	}
 }
 
+const HDRComponent& Image::GetComponent(int i, int j)const
+{
+  DoAssert( i < _w);
+  DoAssert( j < _h);
+  DoAssert( i >= 0);
+  DoAssert( j >= 0);
+  return _buffer[ j*_w + i];
+}
+
 HDRComponent& Image::GetComponent(int i, int j)
 {
   DoAssert( i < _w);
@@ -98,6 +107,10 @@ void Image::Divide(double inv)
 
 Image& Image::operator=(const Image& image)
 {
-  throw "XYZ";
+  SetSize(image.W(), image.H());
+  for ( int i =0; i < image.W(); i++)
+    for ( int j =0; j < image.H(); j++ )
+      GetComponent(i,j) = image.GetComponent(i,j);
+  return *this;
 }
 

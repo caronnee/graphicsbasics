@@ -45,3 +45,9 @@ void HDRComponent::SetUnit()
   base::operator/=(_weight);
   _weight = 1;
 }
+
+void HDRComponent::Clear()
+{
+  _weight = 0;
+  Zero();
+}

@@ -16,7 +16,8 @@ public:
 	int W() const { return _w;}
 	int H() const { return _h;}
 	HDRComponent& GetComponent(int i, int j);
-	void Clear();
+  const HDRComponent& GetComponent(int i, int j)const;
+  void Clear();
 	void SetSize(int w, int h);
 	void Divide(double inv);
   Image& operator=(const Image& image);
