@@ -143,13 +143,7 @@ Vector4d DoubleTriangle::SampleIllumination(const Intersection &section, Vector4
   sampledDir = mPoint - section.worldPosition;
   sampleLen = sampledDir.Size();
   sampledDir.Normalize();
-  Vector4d total = Radiance( section.nrm, sampledDir, sampleLen);
-  float pdf = GetDirectionalPdf(sampledDir,section.nrm,section.worldPosition,sampleLen);
-  if (pdf <=0)
-    return Vector4d(0,0,0,0);
-  total/=pdf;
-
-  return total;
+  return Radiance( section.nrm, sampledDir, sampleLen);
 }
 
 void DoubleTriangle::SaveProperties(FileHandler & handler)

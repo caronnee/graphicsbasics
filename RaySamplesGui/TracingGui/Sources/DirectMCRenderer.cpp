@@ -21,6 +21,8 @@ Vector4d DirectMCRenderer::SampleLight(Ray & ray, Intersection & isec)
     float t;
     Vector4d illumination = light->SampleIllumination( isec, lightVector,t);
     float pdf = light->GetDirectionalPdf(lightVector,isec.nrm,isec.worldPosition,t);
+    if ( pdf < 0 )
+      continue;
     Intersection occSec;
     occSec.t = t - EPSILON;
     Ray r2;

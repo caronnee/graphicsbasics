@@ -18,5 +18,6 @@ public:
     base::operator=(oper);
     return *this;
   }
+  void Clear();
 };
 #endif
