@@ -2,7 +2,7 @@
 
 Rng james;
 
-#define USE_SEQUENCE 0
+#define USE_SEQUENCE 1
 
 #if USE_SEQUENCE
 FILE * GSequence = NULL;
