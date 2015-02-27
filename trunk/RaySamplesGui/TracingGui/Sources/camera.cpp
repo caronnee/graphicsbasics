@@ -54,7 +54,10 @@ Vector4d Camera::WorldToRaster(const Vector4d& v) const
 	Vector4d t = _worldToRaster * t2;
 	DoAssert((fabs(t[3]) > 0) || (t2.Size2() == 0));
   if ( t[3] <=0)
+  {
+    DoAssert(false);
     return Vector4d(-1,-1,-1,-1);
+  }
 	t/=t[3];
 	return t;
 }
@@ -83,11 +86,13 @@ Vector4d Camera::SampleIllumination(const Intersection &section, Vector4d & samp
 
 Vector4d Camera::WorldToViewport(const Vector4d & mPoint)
 {
-  Vector4d ret = WorldToRaster(mPoint);
-  Vector4d pos = Position();
-  Vector4d testDir = ret - WorldToRaster(pos);
-  testDir *= ret[2] / testDir[2];//normalize Z
-  ret -= testDir;
+  Vector4d dir = mPoint - Position();
+  dir.Normalize();
+  float cfactor = dir.Dot(Direction());
+  Vector4d rasterP = Position() + dir * _zProj /cfactor;
+  Vector4d ret = WorldToRaster(rasterP);
+  DoAssert (ret[2] < EPSILON);
+  DoAssert (ret[3] == 1);
   ret /= ret[3];
 #if 0&& _DEBUG // works only when point is not behind the mpoint
   Vector4d th = RasterToWorld(Vector4d(ret[0],ret[1],0,1));

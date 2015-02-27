@@ -52,7 +52,7 @@ float PointObject::GetDirectionalPdf(const Vector4d & direction, const Vector4d&
   return (len *len);
 }
 
-void PointObject::GenerateSurfels(std::vector<Surfel> & surfels, const float & grain)
+void PointObject::GenerateSurfels(std::vector<Surfel> & surfels, const int & grain)
 {
-  //  return;/ do nothing
+  return;
 }

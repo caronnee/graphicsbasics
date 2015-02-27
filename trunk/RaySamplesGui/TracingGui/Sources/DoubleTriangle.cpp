@@ -183,8 +183,9 @@ void DoubleTriangle::GenerateSurfels(std::vector<Surfel> & surfels, const int & 
   Vector4d p2 = _edges[1]*step1;
 
   // this should be the radius of the disc
-  surf.radius = Vector4d( p1.Max(),p2.Max(),0,0).Max()/3;
+  surf.radius = Vector4d( p1.Max(),p2.Max(), fabs(p1.Min()), fabs(p2.Min())).Max()/3;
   surf.area =  PI * surf.radius * surf.radius;
+  DoAssert(surf.area > 0);
   Vector4d ustep = _edges[0]*step0;
   Vector4d vstep = _edges[1]*step1;
   for ( float a = 0; a<1; a+=step0)
