@@ -1,7 +1,7 @@
 #ifndef __RENDER_THREAD
 #define __RENDER_THREAD
 
-#include <QThread>
+#include <QTCore/QThread>
 #include "Scene.h"
 #include "renderer.h"
 

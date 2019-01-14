@@ -1,8 +1,8 @@
 #ifndef __DOUBLEINTSPINBOX__
 #define __DOUBLEINTSPINBOX__
 
-#include <qobject>
-#include <QDoubleSpinBox>
+#include <QTCore/qobject.h>
+#include <QtWidgets/QDoubleSpinBox>
 #include "MathUtil.h"
 
 class DoubleIntSpinBox : public QDoubleSpinBox
@@ -21,7 +21,7 @@ public:
 
 public slots:
 	void setValue(int val);
-	void setValue(float val);
+	void setValue(double val);
 };
 
 #endif

@@ -56,7 +56,7 @@ enum TypeId
 	NTypes
 };
 
-#include <QString>
+#include <QTCore/QString>
 #include "FileHandler.h"
 
 class Geometry;

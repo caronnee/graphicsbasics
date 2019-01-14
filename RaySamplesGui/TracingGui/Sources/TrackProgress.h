@@ -1,7 +1,7 @@
 #ifndef __TRACK_PROGRESS__
 #define __TRACK_PROGRESS__
 
-#include <QObject>
+#include <QTCore/QObject>
 
 class TrackProgress : public QObject
 {

@@ -1,6 +1,6 @@
 #include "DoubleIntSpinBox.h"
 
-void DoubleIntSpinBox::setValue(float val)
+void DoubleIntSpinBox::setValue(double val)
 {
 	QDoubleSpinBox::setValue(val);
 }

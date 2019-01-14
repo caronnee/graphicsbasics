@@ -1,4 +1,4 @@
-#include <QAbstractListModel>
+#include <QTCore/QAbstractListModel>
 
 #include "tracinggui.h"
 #include "TrackProgress.h"
@@ -7,7 +7,7 @@
 #include "testRenderer.h"
 #include "Plane.h"
 #include "AmbientLight.h"
-#include <qpainter.h>
+#include <QTGui/qpainter.h>
 #include "Tonemapper.h"
 #include "Debug.h"
 
@@ -867,7 +867,7 @@ void TracingGui::AddPointSlot()
 	ui.treeView->selectionModel()->select(index,QItemSelectionModel::ClearAndSelect);
 }
 
-#include <QDir>
+#include <QTCore/QDir>
 
 void TracingGui::LoadSceneNames()
 {

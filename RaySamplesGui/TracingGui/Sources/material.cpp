@@ -5,7 +5,7 @@
 #include "Debug.h"
 #include <stdio.h>
 
-#include <QList>
+#include <QTCore/QList>
 
 class MaterialCreator
 {

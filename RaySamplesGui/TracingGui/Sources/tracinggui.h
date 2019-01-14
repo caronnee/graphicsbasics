@@ -7,8 +7,8 @@
 
 #include "scene.h"
 
-#include <QStandardItemModel>
-#include <QStandardItem>
+#include <QTGui/QStandardItemModel>
+#include <QTGui/QStandardItem>
 
 struct GProperties
 {
