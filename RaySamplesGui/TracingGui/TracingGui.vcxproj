@@ -117,10 +117,7 @@
     <ClCompile Include="Sources\Geometry.cpp" />
     <ClCompile Include="Sources\HdrComponent.cpp" />
     <ClCompile Include="Sources\image.cpp" />
-    <ClCompile Include="Sources\MaterialLight.cpp" />
     <ClCompile Include="Sources\material.cpp" />
-    <ClCompile Include="Sources\MaterialDiffuse.cpp" />
-    <ClCompile Include="Sources\MaterialSpecular.cpp" />
     <ClCompile Include="Sources\MathUtil.cpp" />
     <ClCompile Include="Sources\Matrix.cpp" />
     <ClCompile Include="Sources\OctTree.cpp" />
@@ -186,10 +183,7 @@
     <ClInclude Include="Sources\Geometry.h" />
     <ClInclude Include="Sources\HdrComponent.h" />
     <ClInclude Include="Sources\image.h" />
-    <ClInclude Include="Sources\MaterialLight.h" />
     <ClInclude Include="Sources\Material.h" />
-    <ClInclude Include="Sources\MaterialDiffuse.h" />
-    <ClInclude Include="Sources\MaterialSpecular.h" />
     <ClInclude Include="Sources\MathUtil.h" />
     <ClInclude Include="Sources\Matrix.h" />
     <ClInclude Include="Sources\OctTree.h" />

@@ -112,12 +112,6 @@
     <ClCompile Include="Sources\HdrComponent.cpp">
       <Filter>Source Files\Logic\Image</Filter>
     </ClCompile>
-    <ClCompile Include="Sources\MaterialDiffuse.cpp">
-      <Filter>Source Files\Logic\Material</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\MaterialSpecular.cpp">
-      <Filter>Source Files\Logic\Material</Filter>
-    </ClCompile>
     <ClCompile Include="Sources\material.cpp">
       <Filter>Source Files\Logic\Material</Filter>
     </ClCompile>
@@ -180,9 +174,6 @@
     </ClCompile>
     <ClCompile Include="Sources\GuiString.cpp">
       <Filter>Source Files\Logic\Utils</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\MaterialLight.cpp">
-      <Filter>Source Files\Logic\Material</Filter>
     </ClCompile>
     <ClCompile Include="Sources\PathTraceRenderer.cpp">
       <Filter>Source Files\Logic\Renderer</Filter>
@@ -251,12 +242,6 @@
     <ClInclude Include="Sources\Material.h">
       <Filter>Source Files\Logic\Material</Filter>
     </ClInclude>
-    <ClInclude Include="Sources\MaterialDiffuse.h">
-      <Filter>Source Files\Logic\Material</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\MaterialSpecular.h">
-      <Filter>Source Files\Logic\Material</Filter>
-    </ClInclude>
     <ClInclude Include="Sources\Matrix.h">
       <Filter>Source Files\Logic\Math</Filter>
     </ClInclude>
@@ -292,9 +277,6 @@
     </ClInclude>
     <ClInclude Include="Sources\GuiString.h">
       <Filter>Source Files\Logic\Utils</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\MaterialLight.h">
-      <Filter>Source Files\Logic\Material</Filter>
     </ClInclude>
     <ClInclude Include="Sources\PathTraceRenderer.h">
       <Filter>Source Files\Logic\Renderer</Filter>

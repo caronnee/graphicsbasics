@@ -15,9 +15,10 @@ struct GProperties
 	Vector4d rotation;
 	Vector4d position;
 	// material color
-	Vector4d parameters[3];
+  Vector4d emmisive;
+  Vector4d diffuse;
+  Vector4d specular;
 	float matSpecularExp;
-	int material;
 	Geometry * geom;
 	QString name;
 };
@@ -88,7 +89,6 @@ private slots:
 	void SaveCurrentSceneSlot();
 	void SaveCurrentMaterialSlot();
 	void AddSphereSlot();
-	void AddTriangleSlot();
 	void DeleteObjectSlot();
 	void AddPointSlot();
 	void SaveNewSceneSlot();

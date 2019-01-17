@@ -92,8 +92,7 @@ void Scene::CreateAddCamera( CameraContext & ctx)
 		delete _camera;
 	}
   _camera =c;
-	Vector4d v[] = {Vector4d(0,0,0,0),Vector4d(0,0,0,0),Vector4d(0,0,0,0)};
-	_camera->SetMaterial(CreateMaterial(MDiffuse,v,0));
+	_camera->SetMaterial(CreateMaterial(Vector4d(0,0,0,0),Vector4d(0,0,0,0),0));
 	AddModel(_camera);
 }
 

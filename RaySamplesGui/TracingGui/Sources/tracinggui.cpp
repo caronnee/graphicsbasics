@@ -80,7 +80,7 @@ QModelIndex GModelObjects::Add(Geometry * geom, int index)
 	pprop = & _geometries[index];
 	GProperties& prop = *pprop;
 	prop.position = Vector4d(0,0,0,0);
-	prop.parameters[0] = Vector4d(1,1,1,1);
+	prop.diffuse = Vector4d(1,1,1,1);
 	prop.geom = geom;
 	prop.name = typeNames[geom->Type()];
 	return ret;
@@ -195,7 +195,6 @@ TracingGui::TracingGui(QWidget *parent)
 
 	// connect buttons to create types
 	connect( ui.addSphere, SIGNAL(clicked(void)), this, SLOT(AddSphereSlot()));
-	connect( ui.addTriangle, SIGNAL(clicked(void)), this, SLOT(AddTriangleSlot()));
 	connect( ui.delObject, SIGNAL(clicked(void)), this, SLOT(DeleteObjectSlot()));
 	connect( ui.addPoint, SIGNAL(clicked(void)), this, SLOT(AddPointSlot()));
 
@@ -213,9 +212,6 @@ TracingGui::TracingGui(QWidget *parent)
   ui.rendererType->addItem("PathtracerRenderer",QVariant(1));	
 	ui.rendererType->addItem("TestRenderer",QVariant(0));
 
-  // material
-  ui.materialType->addItem("Diffuse",QVariant((int)MDiffuse));
-  ui.materialType->addItem("Specular",QVariant((int)MSpecular));
   // what to calculate
   ui.directType->addItem("None",QVariant(RNone));
   ui.directType->addItem("Direct light",QVariant(RDirectLight));
@@ -261,19 +257,18 @@ void TracingGui::SelectionMaterialChangedSlot(const QItemSelection & newSel, con
 	GProperties & gProp = *_gModels->Get(index);
 
 	//ui.MaterialType 
-	ui.dR->setValue(gProp.parameters[0][0] );
-	ui.dG->setValue(gProp.parameters[0][1] );
-	ui.dB->setValue(gProp.parameters[0][2] );
+	ui.dR->setValue(gProp.diffuse[0] );
+	ui.dG->setValue(gProp.diffuse[1] );
+	ui.dB->setValue(gProp.diffuse[2] );
 
-	ui.sR->setValue(gProp.parameters[1][0] );
-	ui.sG->setValue(gProp.parameters[1][1] );
-	ui.sB->setValue(gProp.parameters[1][2] );
+	ui.sR->setValue(gProp.specular[0] );
+	ui.sG->setValue(gProp.specular[1] );
+	ui.sB->setValue(gProp.specular[2] );
 	ui.sE->setValue(gProp.matSpecularExp);
 
-	ui.materialType->setCurrentIndex(gProp.material);
-	ui.eR->setValue(gProp.parameters[2][0] );
-	ui.eG->setValue(gProp.parameters[2][1] );
-	ui.eB->setValue(gProp.parameters[2][2] );
+	ui.eR->setValue(gProp.emmisive[0] );
+	ui.eG->setValue(gProp.emmisive[1] );
+	ui.eB->setValue(gProp.emmisive[2] );
 }
 void TracingGui::SelectionModelChangedSlot(const QItemSelection & newSel, const QItemSelection &oldSel)
 {
@@ -328,14 +323,6 @@ void TracingGui::AddSphereSlot()
 }
 
 #include "doubleTriangle.h"
-
-void TracingGui::AddTriangleSlot()
-{
-	Geometry * geom = new DoubleTriangle(NULL);
-	QModelIndex index = _gModels->Add(geom,-1);
-	ui.treeView->selectionModel()->select(index,QItemSelectionModel::ClearAndSelect);
-}
-
 #include "FileHandler.h"
 #define DEFAULT_SCENE "../../data/test.scene"
 #define DEFAULT_CAMERA "../../data/scene.camera"
@@ -359,13 +346,10 @@ void TracingGui::LoadMaterials(const QString & nname)
 		if (!g)
 			break;
 		index++;
-		handler.Read( &g->material,sizeof (g->material), 1 );
-		handler.Read( &g->parameters[0], sizeof (g->parameters[0]), 1);
-		handler.Read( &g->parameters[1], sizeof (g->parameters[1]), 1);
+		handler.Read( &g->diffuse, sizeof (g->diffuse), 1);
+		handler.Read( &g->specular, sizeof (g->specular), 1);
 		handler.Read( &g->matSpecularExp, sizeof (g->matSpecularExp), 1);
-		handler.Read( &g->parameters[2], sizeof (g->parameters[2]), 1);
-    //g->parameters[0] *=0.48;
-    //g->parameters[1] *=0.58;
+		handler.Read( &g->emmisive, sizeof (g->emmisive), 1);
 	}
 	float ambient[3];
 	handler.Read( &ambient, sizeof (float), 3 );
@@ -472,11 +456,11 @@ void TracingGui::SaveMaterials(const QString & materialName)
 	while ( g = _gModels->Get(i))
 	{
 		// material related
-		handler.Write( &g->material, sizeof (g->material),1 );
-		handler.Write( &g->parameters[0], sizeof (g->parameters[0]),1 );
-		handler.Write( &g->parameters[1], sizeof (g->parameters[1]),1 );
+//		handler.Write( &g->material, sizeof (g->material),1 );
+		handler.Write( &g->diffuse, sizeof (g->diffuse),1 );
+		handler.Write( &g->specular, sizeof (g->specular),1 );
 		handler.Write( &g->matSpecularExp, sizeof (g->matSpecularExp),1 );
-		handler.Write( &g->parameters[2], sizeof (g->parameters[2]),1 );
+		handler.Write( &g->emmisive, sizeof (g->emmisive),1 );
 		i++;
 	}
 	float ambient[]	=	{	ui.aRValue->value(),ui.aGValue->value(),ui.aBValue->value()	};
@@ -629,8 +613,7 @@ void TracingGui::CreateFixedScene( Scene & scene)
 	// for each model in tree, create representation
 	Vector4d pos[3] = { Vector4d(1,1,0,1), Vector4d(0,1,0,1), Vector4d(1,0,0,1) };
 	Geometry * plane = new DoubleTriangle(pos);
-  Vector4d parameters[] = { Vector4d(1,0,0,0) };
-	plane->SetMaterial(CreateMaterial(MDiffuse, parameters,0));
+	plane->SetMaterial(CreateMaterial(Vector4d(1, 0, 0, 0)));
 	Vector4d translation(ui.xModelPos->value(),ui.yModelPos->value(),ui.zModelPos->value(),0);
 	translation = Vector4d(0,0,0,1) - translation;
 	float angle = ui.xRotationRad->value();
@@ -664,11 +647,10 @@ void TracingGui::UpdateSelectedModel( QModelIndexList indexes, int type )
 		}
 		if (type == 1)
 		{
-			g.parameters[0] = Vector4d(ui.dR->value(),ui.dG->value(),ui.dB->value());
-			g.parameters[1] = Vector4d(ui.sR->value(),ui.sG->value(),ui.sB->value());
+			g.diffuse = Vector4d(ui.dR->value(),ui.dG->value(),ui.dB->value());
+			g.specular = Vector4d(ui.sR->value(),ui.sG->value(),ui.sB->value());
 			g.matSpecularExp = ui.sE->value();
-			g.parameters[2] = Vector4d(ui.eR->value(),ui.eG->value(),ui.eB->value());
-			g.material = ui.materialType->currentData().toInt();
+			g.emmisive = Vector4d(ui.eR->value(),ui.eG->value(),ui.eB->value());
 		}
 	}
 }
@@ -680,11 +662,15 @@ void TracingGui::CreateScene( Scene & scene)
 	int i =0;
 	GProperties * g;
 	_scene.Clear();
+  ClearMaterials();
 	while ( g = _gModels->Get(i))
 	{
 		Geometry * geom = g->geom;
 		geom->Clear();
-		geom->SetMaterial( CreateMaterial( g->material, g->parameters, g->matSpecularExp ) );			
+    if ( g->emmisive.Size2() > 0 )
+      geom->SetMaterial(CreateLight(g->emmisive));
+    else
+      geom->SetMaterial(CreateMaterial(g->diffuse, g->specular, g->matSpecularExp));
 		geom->Rotate(Axis_X, toRadians( g->rotation[0] ) );
 		geom->Rotate(Axis_Y, toRadians( g->rotation[1] ) );
 		geom->Rotate(Axis_Z, toRadians( g->rotation[2] ) );

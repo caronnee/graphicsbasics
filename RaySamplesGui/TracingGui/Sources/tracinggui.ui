@@ -15,20 +15,37 @@
   </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QGridLayout" name="gridLayout_4">
-    <item row="6" column="10">
-     <widget class="QPushButton" name="saveScene">
+    <item row="6" column="2">
+     <widget class="QLabel" name="currentScene">
       <property name="text">
-       <string>Resave scene</string>
+       <string>point.scene</string>
       </property>
      </widget>
     </item>
-    <item row="9" column="7" rowspan="3" colspan="7">
+    <item row="10" column="0">
+     <widget class="QLabel" name="lExposure">
+      <property name="text">
+       <string>Exposure</string>
+      </property>
+     </widget>
+    </item>
+    <item row="13" column="4" colspan="2">
+     <widget class="QSpinBox" name="sZoomNumber">
+      <property name="maximum">
+       <number>10</number>
+      </property>
+     </widget>
+    </item>
+    <item row="8" column="6" rowspan="3" colspan="7">
      <widget class="QTabWidget" name="sceneInformation">
       <property name="tabPosition">
        <enum>QTabWidget::North</enum>
       </property>
       <property name="currentIndex">
-       <number>3</number>
+       <number>1</number>
+      </property>
+      <property name="tabBarAutoHide">
+       <bool>false</bool>
       </property>
       <widget class="QWidget" name="model">
        <property name="layoutDirection">
@@ -59,9 +76,9 @@
          </widget>
         </item>
         <item row="2" column="0">
-         <widget class="QPushButton" name="addTriangle">
+         <widget class="QPushButton" name="addModel">
           <property name="text">
-           <string>Add Triangle</string>
+           <string>Add Model</string>
           </property>
          </widget>
         </item>
@@ -390,85 +407,10 @@
       </widget>
       <widget class="QWidget" name="light">
        <attribute name="title">
-        <string>Light</string>
+        <string>Material</string>
        </attribute>
        <layout class="QGridLayout" name="gridLayout_5">
-        <item row="1" column="1">
-         <widget class="QLabel" name="materialLabel">
-          <property name="text">
-           <string>Material</string>
-          </property>
-         </widget>
-        </item>
-        <item row="4" column="1">
-         <widget class="QLabel" name="label_6">
-          <property name="text">
-           <string>Specular</string>
-          </property>
-         </widget>
-        </item>
-        <item row="3" column="1">
-         <widget class="QLabel" name="label_4">
-          <property name="text">
-           <string>Diffuse</string>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="2" colspan="4">
-         <widget class="QComboBox" name="materialType">
-          <property name="currentText">
-           <string/>
-          </property>
-         </widget>
-        </item>
-        <item row="5" column="1">
-         <widget class="QLabel" name="label_7">
-          <property name="text">
-           <string>Emmisive</string>
-          </property>
-         </widget>
-        </item>
-        <item row="4" column="5">
-         <widget class="QDoubleSpinBox" name="sE">
-          <property name="minimum">
-           <double>0.100000000000000</double>
-          </property>
-          <property name="maximum">
-           <double>999.899999999999977</double>
-          </property>
-         </widget>
-        </item>
-        <item row="9" column="1" colspan="5">
-         <widget class="QTreeView" name="treeViewLight">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-         </widget>
-        </item>
-        <item row="5" column="4">
-         <widget class="QDoubleSpinBox" name="eB">
-          <property name="maximum">
-           <double>10.000000000000000</double>
-          </property>
-          <property name="singleStep">
-           <double>0.001000000000000</double>
-          </property>
-         </widget>
-        </item>
-        <item row="5" column="3">
-         <widget class="QDoubleSpinBox" name="eG">
-          <property name="maximum">
-           <double>10.000000000000000</double>
-          </property>
-          <property name="singleStep">
-           <double>0.001000000000000</double>
-          </property>
-         </widget>
-        </item>
-        <item row="5" column="2">
+        <item row="4" column="2">
          <widget class="QDoubleSpinBox" name="eR">
           <property name="maximum">
            <double>10.000000000000000</double>
@@ -478,53 +420,114 @@
           </property>
          </widget>
         </item>
-        <item row="3" column="4">
-         <widget class="QDoubleSpinBox" name="dB"/>
+        <item row="2" column="1">
+         <widget class="QLabel" name="label_4">
+          <property name="text">
+           <string>Diffuse</string>
+          </property>
+         </widget>
         </item>
-        <item row="4" column="4">
+        <item row="3" column="4">
          <widget class="QDoubleSpinBox" name="sB"/>
         </item>
-        <item row="3" column="3">
-         <widget class="QDoubleSpinBox" name="dG"/>
-        </item>
-        <item row="3" column="2">
-         <widget class="QDoubleSpinBox" name="dR"/>
-        </item>
-        <item row="4" column="2">
-         <widget class="QDoubleSpinBox" name="sR"/>
-        </item>
-        <item row="4" column="3">
-         <widget class="QDoubleSpinBox" name="sG"/>
-        </item>
-        <item row="11" column="2">
+        <item row="10" column="2">
          <widget class="QLabel" name="aB">
           <property name="text">
            <string>Ambient B</string>
           </property>
          </widget>
         </item>
-        <item row="11" column="1">
+        <item row="12" column="2">
+         <widget class="QDoubleSpinBox" name="aBValue"/>
+        </item>
+        <item row="4" column="3">
+         <widget class="QDoubleSpinBox" name="eG">
+          <property name="maximum">
+           <double>10.000000000000000</double>
+          </property>
+          <property name="singleStep">
+           <double>0.001000000000000</double>
+          </property>
+         </widget>
+        </item>
+        <item row="12" column="1">
+         <widget class="QDoubleSpinBox" name="aRValue"/>
+        </item>
+        <item row="3" column="5">
+         <widget class="QDoubleSpinBox" name="sE">
+          <property name="minimum">
+           <double>0.000000000000000</double>
+          </property>
+          <property name="maximum">
+           <double>999.899999999999977</double>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="3">
+         <widget class="QDoubleSpinBox" name="sG"/>
+        </item>
+        <item row="3" column="1">
+         <widget class="QLabel" name="label_6">
+          <property name="text">
+           <string>Specular</string>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="1">
+         <widget class="QLabel" name="label_7">
+          <property name="text">
+           <string>Emmisive</string>
+          </property>
+         </widget>
+        </item>
+        <item row="12" column="3">
+         <widget class="QDoubleSpinBox" name="aGValue"/>
+        </item>
+        <item row="2" column="4">
+         <widget class="QDoubleSpinBox" name="dB"/>
+        </item>
+        <item row="2" column="3">
+         <widget class="QDoubleSpinBox" name="dG"/>
+        </item>
+        <item row="3" column="2">
+         <widget class="QDoubleSpinBox" name="sR"/>
+        </item>
+        <item row="2" column="2">
+         <widget class="QDoubleSpinBox" name="dR"/>
+        </item>
+        <item row="8" column="1" colspan="5">
+         <widget class="QTreeView" name="treeViewLight">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+         </widget>
+        </item>
+        <item row="10" column="1">
          <widget class="QLabel" name="aR">
           <property name="text">
            <string>Ambient R</string>
           </property>
          </widget>
         </item>
-        <item row="11" column="3">
+        <item row="4" column="4">
+         <widget class="QDoubleSpinBox" name="eB">
+          <property name="maximum">
+           <double>10.000000000000000</double>
+          </property>
+          <property name="singleStep">
+           <double>0.001000000000000</double>
+          </property>
+         </widget>
+        </item>
+        <item row="10" column="3">
          <widget class="QLabel" name="aG">
           <property name="text">
            <string>Ambient G</string>
           </property>
          </widget>
-        </item>
-        <item row="13" column="1">
-         <widget class="QDoubleSpinBox" name="aRValue"/>
-        </item>
-        <item row="13" column="2">
-         <widget class="QDoubleSpinBox" name="aBValue"/>
-        </item>
-        <item row="13" column="3">
-         <widget class="QDoubleSpinBox" name="aGValue"/>
         </item>
        </layout>
       </widget>
@@ -1032,148 +1035,7 @@
       </widget>
      </widget>
     </item>
-    <item row="13" column="12">
-     <widget class="QPushButton" name="bSave">
-      <property name="text">
-       <string>Save HDR</string>
-      </property>
-     </widget>
-    </item>
-    <item row="13" column="13">
-     <widget class="QLineEdit" name="filename">
-      <property name="text">
-       <string>output.hdr</string>
-      </property>
-      <property name="maxLength">
-       <number>30</number>
-      </property>
-     </widget>
-    </item>
-    <item row="16" column="0" colspan="14">
-     <widget class="QProgressBar" name="renderProgress">
-      <property name="value">
-       <number>0</number>
-      </property>
-     </widget>
-    </item>
-    <item row="13" column="0">
-     <widget class="QLabel" name="lZoom">
-      <property name="text">
-       <string>Zoom</string>
-      </property>
-     </widget>
-    </item>
-    <item row="11" column="0">
-     <widget class="QLabel" name="lExposure">
-      <property name="text">
-       <string>Exposure</string>
-      </property>
-     </widget>
-    </item>
-    <item row="13" column="4" colspan="2">
-     <widget class="QSpinBox" name="sZoomNumber">
-      <property name="maximum">
-       <number>10</number>
-      </property>
-     </widget>
-    </item>
-    <item row="6" column="2">
-     <widget class="QLabel" name="currentScene">
-      <property name="text">
-       <string>point.scene</string>
-      </property>
-     </widget>
-    </item>
-    <item row="6" column="3">
-     <widget class="QLabel" name="currentMaterial">
-      <property name="text">
-       <string>specularpoint.material</string>
-      </property>
-     </widget>
-    </item>
-    <item row="6" column="13">
-     <widget class="QPushButton" name="loadScene">
-      <property name="text">
-       <string>Load camera</string>
-      </property>
-     </widget>
-    </item>
-    <item row="11" column="1" colspan="3">
-     <widget class="QSlider" name="sExposure">
-      <property name="whatsThis">
-       <string>Exposure</string>
-      </property>
-      <property name="minimum">
-       <number>-200</number>
-      </property>
-      <property name="maximum">
-       <number>200</number>
-      </property>
-      <property name="singleStep">
-       <number>1</number>
-      </property>
-      <property name="pageStep">
-       <number>10</number>
-      </property>
-      <property name="orientation">
-       <enum>Qt::Horizontal</enum>
-      </property>
-      <property name="tickPosition">
-       <enum>QSlider::TicksAbove</enum>
-      </property>
-     </widget>
-    </item>
-    <item row="13" column="1" colspan="3">
-     <widget class="QSlider" name="sZoom">
-      <property name="maximum">
-       <number>10</number>
-      </property>
-      <property name="orientation">
-       <enum>Qt::Horizontal</enum>
-      </property>
-      <property name="tickPosition">
-       <enum>QSlider::TicksBelow</enum>
-      </property>
-     </widget>
-    </item>
-    <item row="11" column="4">
-     <widget class="QDoubleSpinBox" name="sExposureNumber">
-      <property name="decimals">
-       <number>1</number>
-      </property>
-      <property name="minimum">
-       <double>-20.000000000000000</double>
-      </property>
-      <property name="maximum">
-       <double>20.000000000000000</double>
-      </property>
-      <property name="singleStep">
-       <double>0.100000000000000</double>
-      </property>
-     </widget>
-    </item>
-    <item row="6" column="7">
-     <widget class="QPushButton" name="exportScene">
-      <property name="text">
-       <string>Export Scene</string>
-      </property>
-     </widget>
-    </item>
-    <item row="6" column="8" colspan="2">
-     <widget class="QPushButton" name="exportMaterial">
-      <property name="text">
-       <string>Export Material</string>
-      </property>
-     </widget>
-    </item>
-    <item row="6" column="11" colspan="2">
-     <widget class="QPushButton" name="saveMaterial">
-      <property name="text">
-       <string>Resave material</string>
-      </property>
-     </widget>
-    </item>
-    <item row="10" column="0" colspan="6">
+    <item row="9" column="0" colspan="6">
      <widget class="QScrollArea" name="scrollArea">
       <property name="widgetResizable">
        <bool>true</bool>
@@ -1184,7 +1046,7 @@
          <x>0</x>
          <y>0</y>
          <width>310</width>
-         <height>289</height>
+         <height>283</height>
         </rect>
        </property>
        <property name="sizePolicy">
@@ -1211,10 +1073,137 @@
       </widget>
      </widget>
     </item>
+    <item row="6" column="10" colspan="2">
+     <widget class="QPushButton" name="saveMaterial">
+      <property name="text">
+       <string>Resave material</string>
+      </property>
+     </widget>
+    </item>
+    <item row="6" column="7" colspan="2">
+     <widget class="QPushButton" name="exportMaterial">
+      <property name="text">
+       <string>Export Material</string>
+      </property>
+     </widget>
+    </item>
+    <item row="6" column="12">
+     <widget class="QPushButton" name="loadScene">
+      <property name="text">
+       <string>Load camera</string>
+      </property>
+     </widget>
+    </item>
+    <item row="6" column="6">
+     <widget class="QPushButton" name="exportScene">
+      <property name="text">
+       <string>Export Scene</string>
+      </property>
+     </widget>
+    </item>
+    <item row="10" column="4">
+     <widget class="QDoubleSpinBox" name="sExposureNumber">
+      <property name="decimals">
+       <number>1</number>
+      </property>
+      <property name="minimum">
+       <double>-20.000000000000000</double>
+      </property>
+      <property name="maximum">
+       <double>20.000000000000000</double>
+      </property>
+      <property name="singleStep">
+       <double>0.100000000000000</double>
+      </property>
+     </widget>
+    </item>
+    <item row="13" column="1" colspan="3">
+     <widget class="QSlider" name="sZoom">
+      <property name="maximum">
+       <number>10</number>
+      </property>
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+      <property name="tickPosition">
+       <enum>QSlider::TicksBelow</enum>
+      </property>
+     </widget>
+    </item>
+    <item row="6" column="9">
+     <widget class="QPushButton" name="saveScene">
+      <property name="text">
+       <string>Resave scene</string>
+      </property>
+     </widget>
+    </item>
+    <item row="10" column="1" colspan="3">
+     <widget class="QSlider" name="sExposure">
+      <property name="whatsThis">
+       <string>Exposure</string>
+      </property>
+      <property name="minimum">
+       <number>-200</number>
+      </property>
+      <property name="maximum">
+       <number>200</number>
+      </property>
+      <property name="singleStep">
+       <number>1</number>
+      </property>
+      <property name="pageStep">
+       <number>10</number>
+      </property>
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+      <property name="tickPosition">
+       <enum>QSlider::TicksAbove</enum>
+      </property>
+     </widget>
+    </item>
     <item row="6" column="4">
      <widget class="QPushButton" name="bRender">
       <property name="text">
        <string>Render!</string>
+      </property>
+     </widget>
+    </item>
+    <item row="13" column="12">
+     <widget class="QLineEdit" name="filename">
+      <property name="text">
+       <string>output.hdr</string>
+      </property>
+      <property name="maxLength">
+       <number>30</number>
+      </property>
+     </widget>
+    </item>
+    <item row="13" column="0">
+     <widget class="QLabel" name="lZoom">
+      <property name="text">
+       <string>Zoom</string>
+      </property>
+     </widget>
+    </item>
+    <item row="16" column="0" colspan="13">
+     <widget class="QProgressBar" name="renderProgress">
+      <property name="value">
+       <number>0</number>
+      </property>
+     </widget>
+    </item>
+    <item row="6" column="3">
+     <widget class="QLabel" name="currentMaterial">
+      <property name="text">
+       <string>specularpoint.material</string>
+      </property>
+     </widget>
+    </item>
+    <item row="13" column="11">
+     <widget class="QPushButton" name="bSave">
+      <property name="text">
+       <string>Save HDR</string>
       </property>
      </widget>
     </item>
