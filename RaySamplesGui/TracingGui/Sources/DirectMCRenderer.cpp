@@ -24,14 +24,15 @@ Vector4d DirectMCRenderer::SampleLight(Ray & ray, Intersection & isec)
     if ( pdf < 0 )
       continue;
     Intersection occSec;
-    occSec.t = t - EPSILON;
+    //occSec.t = t - EPSILON;
+    occSec.model = light;
     Ray r2;
     r2.origin = isec.worldPosition;
     r2.direction = lightVector;
     bool occluded = _scene->FindIntersection(r2, occSec);
 
     // we want to know if the intersection before
-    if ( occluded && ( fabs(occSec.t - t )> EPSILON ) )
+    if ( occluded )
       continue;
     // there is intersection that 
     Vector4d brdf = isec.model->GetMaterial()->EvalBrdf(-ray.direction, isec.nrm, lightVector);

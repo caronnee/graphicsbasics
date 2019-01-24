@@ -42,7 +42,7 @@
        <enum>QTabWidget::North</enum>
       </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <property name="tabBarAutoHide">
        <bool>false</bool>
@@ -58,10 +58,10 @@
         <string>Models</string>
        </attribute>
        <layout class="QGridLayout" name="gridLayout_3">
-        <item row="1" column="0">
-         <widget class="QPushButton" name="addSphere">
+        <item row="3" column="0">
+         <widget class="QPushButton" name="addModel">
           <property name="text">
-           <string>Add Sphere</string>
+           <string>Add Model</string>
           </property>
          </widget>
         </item>
@@ -75,28 +75,21 @@
           </property>
          </widget>
         </item>
-        <item row="2" column="0">
-         <widget class="QPushButton" name="addModel">
-          <property name="text">
-           <string>Add Model</string>
-          </property>
-         </widget>
-        </item>
-        <item row="3" column="0">
+        <item row="4" column="0">
          <widget class="QPushButton" name="delObject">
           <property name="text">
            <string>Delete Object</string>
           </property>
          </widget>
         </item>
-        <item row="4" column="0">
+        <item row="5" column="0">
          <widget class="QPushButton" name="addPoint">
           <property name="text">
            <string>Add Point</string>
           </property>
          </widget>
         </item>
-        <item row="0" column="1" rowspan="5">
+        <item row="0" column="1" rowspan="6">
          <layout class="QGridLayout" name="gridLayout">
           <item row="7" column="0">
            <widget class="QSpinBox" name="xRotationDeg">
@@ -401,7 +394,24 @@
             </property>
            </widget>
           </item>
+          <item row="4" column="3">
+           <widget class="QDoubleSpinBox" name="tuberadius"/>
+          </item>
          </layout>
+        </item>
+        <item row="2" column="0">
+         <widget class="QPushButton" name="addSphere">
+          <property name="text">
+           <string>Add Sphere</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QPushButton" name="addTorus">
+          <property name="text">
+           <string>Add Torus</string>
+          </property>
+         </widget>
         </item>
        </layout>
       </widget>

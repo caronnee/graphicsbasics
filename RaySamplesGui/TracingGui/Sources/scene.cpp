@@ -20,16 +20,19 @@ bool Scene::FindIntersection(const Ray & ray, Intersection& res)
 {
 	bool found = false;
 	res.t = 1e31f;
-
+  Geometry * exc = res.model;
 	// TODO optimize
 	for (size_t i =0; i<_geometry.size(); i++)
 	{
 		Intersection isect;
 		Geometry * geom = _geometry[i];
-		
+    if (geom == exc)
+      continue;
+
 		if ( geom->Intersect(ray,isect) )
 		{
-			if ( res.t < EPSILON)
+      // too near
+			if ( isect.t < EPSILON)
 				continue;
 			if ( isect.t < res.t ) // the nearest the best
 				res = isect;

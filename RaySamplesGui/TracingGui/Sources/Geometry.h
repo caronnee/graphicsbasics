@@ -13,7 +13,7 @@ struct Intersection
 {
 	Vector4d nrm;
 	Vector4d worldPosition;
-	float t;
+	double t;
 	Geometry * model;
 };
 
@@ -37,8 +37,9 @@ enum PropertyType
 {
 	PMaterial,
 	PMatrix,
-	PRadius,
-	PPoints
+  PRadius,
+  PTubeRadius,
+  PPoints
 };
 
 #define TYPE_FACTORY(XX)	\
@@ -46,6 +47,7 @@ enum PropertyType
 	XX(Sphere)	\
 	XX(Triangle)	\
 	XX(Camera)	\
+	XX(Torus)	\
 
 #define CREATE_ENUM(one)	\
 	Type##one,

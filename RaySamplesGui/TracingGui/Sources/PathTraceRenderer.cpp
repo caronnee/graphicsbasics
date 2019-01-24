@@ -25,6 +25,7 @@ Vector4d PathTraceRenderer::RayTrace(Ray ray)
 	else if ( _renderCtx.mask &  ( RIndirectMask) )
 		total += SampleIndirect(ray,isec);
 
+  DoAssert(isec.worldPosition.W() == 1.0);
 	if ( _renderCtx.mask & RDirectLight )
 		total += SampleLight(ray,isec);
   

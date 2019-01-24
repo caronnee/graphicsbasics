@@ -196,28 +196,14 @@
     <ClCompile Include="Sources\SurfelRenderer.cpp">
       <Filter>Source Files\Logic\Renderer</Filter>
     </ClCompile>
+    <ClCompile Include="Sources\Roots.cpp">
+      <Filter>Source Files\Logic\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Torus.cpp">
+      <Filter>Source Files\Logic\Model</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="Sources/tracinggui.ui">
-      <Filter>Form Files</Filter>
-    </CustomBuild>
-    <CustomBuild Include="Sources\tracinggui.qrc">
-      <Filter>Resource Files</Filter>
-    </CustomBuild>
-    <CustomBuild Include="Sources\tracinggui.h">
-      <Filter>Generated Files</Filter>
-    </CustomBuild>
-    <CustomBuild Include="Sources\TrackProgress.h">
-      <Filter>Source Files\Gui\TrackProgress</Filter>
-    </CustomBuild>
-    <CustomBuild Include="Sources\DoubleIntSpinBox.h">
-      <Filter>Source Files\Gui\DoubleIntSpinBoxes</Filter>
-    </CustomBuild>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="GeneratedFiles\ui_tracinggui.h">
-      <Filter>Generated Files</Filter>
-    </ClInclude>
     <ClInclude Include="Sources\AmbientLight.h">
       <Filter>Source Files\Logic\Light</Filter>
     </ClInclude>
@@ -296,5 +282,32 @@
     <ClInclude Include="Sources\SurfelRenderer.h">
       <Filter>Source Files\Logic\Renderer</Filter>
     </ClInclude>
+    <ClInclude Include="Sources\Torus.h">
+      <Filter>Source Files\Logic\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Roots.h">
+      <Filter>Source Files\Logic\Math</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="Sources\tracinggui.h">
+      <Filter>Generated Files</Filter>
+    </QtMoc>
+    <QtMoc Include="Sources\DoubleIntSpinBox.h">
+      <Filter>Generated Files</Filter>
+    </QtMoc>
+    <QtMoc Include="Sources\TrackProgress.h">
+      <Filter>Generated Files</Filter>
+    </QtMoc>
+  </ItemGroup>
+  <ItemGroup>
+    <QtRcc Include="Sources\tracinggui.qrc">
+      <Filter>Resource Files</Filter>
+    </QtRcc>
+  </ItemGroup>
+  <ItemGroup>
+    <QtUic Include="Sources/tracinggui.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
   </ItemGroup>
 </Project>

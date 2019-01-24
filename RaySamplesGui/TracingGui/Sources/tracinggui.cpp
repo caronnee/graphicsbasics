@@ -194,7 +194,8 @@ TracingGui::TracingGui(QWidget *parent)
 	connect(ui.saveMaterial, SIGNAL(clicked(void)),this,SLOT(SaveCurrentMaterialSlot()));
 
 	// connect buttons to create types
-	connect( ui.addSphere, SIGNAL(clicked(void)), this, SLOT(AddSphereSlot()));
+  connect( ui.addSphere, SIGNAL(clicked(void)), this, SLOT(AddSphereSlot()));
+  connect( ui.addTorus, SIGNAL(clicked(void)), this, SLOT(AddTorusSlot()));
 	connect( ui.delObject, SIGNAL(clicked(void)), this, SLOT(DeleteObjectSlot()));
 	connect( ui.addPoint, SIGNAL(clicked(void)), this, SLOT(AddPointSlot()));
 
@@ -292,7 +293,10 @@ void TracingGui::SelectionModelChangedSlot(const QItemSelection & newSel, const 
 		r = &defRadius;
 	
 	ui.radius->setValue( *r );
-
+  r = (float *)gProp.geom->GetProperty(PTubeRadius);
+  if (!r)
+    r = &defRadius;
+  ui.tuberadius->setValue(*r);
 	// position
 	Vector4d * vectors = (Vector4d *)gProp.geom->GetProperty(PPoints);
 	static Vector4d def [] = {Vector4d(0,0,0,1),Vector4d(0,0,0,1),Vector4d(0,0,0,1)};
@@ -315,6 +319,14 @@ void TracingGui::SelectionModelChangedSlot(const QItemSelection & newSel, const 
 
 }
 
+#include "Torus.h"
+
+void TracingGui::AddTorusSlot()
+{
+  Geometry * geom = new Torus(2,1);
+  QModelIndex index = _gModels->Add(geom, -1);
+  ui.treeView->selectionModel()->select(index, QItemSelectionModel::ClearAndSelect);
+}
 void TracingGui::AddSphereSlot()
 {
 	Geometry * geom = new Sphere(1);
@@ -381,21 +393,23 @@ void TracingGui::LoadModels(const QString & nname)
 		Geometry * geom;
 		bool points = false;
 		bool hasRadius = false;
-		if ( w == TypeSphere )
-		{
-			hasRadius = true;
-			positionManual++;
-			geom = new Sphere(1);
-		}
-		else if (w == TypeTriangle)
-		{
-			geom = new DoubleTriangle(NULL);
-			points = true;
-		}
-		else if (w == TypePoint)
-		{
-			geom = new PointObject();
-		}
+    if (w == TypeSphere)
+    {
+      hasRadius = true;
+      positionManual++;
+      geom = new Sphere(1);
+    }
+    else if (w == TypeTriangle)
+    {
+      geom = new DoubleTriangle(NULL);
+      points = true;
+    }
+    else if (w == TypePoint)
+    {
+      geom = new PointObject();
+    }
+    else if (w == TypeTorus)
+      geom = new Torus(0,0);
 		else
 		{
 			DoAssert(false);
@@ -637,13 +651,15 @@ void TracingGui::UpdateSelectedModel( QModelIndexList indexes, int type )
 			g.position = Vector4d(ui.xModelPos->value(),ui.yModelPos->value(),ui.zModelPos->value(),0);
 			g.rotation = Vector4d(ui.xRotationDeg->value(),ui.yRotationDeg->value(),ui.zRotationDeg->value());
 			float radius = ui.radius->value();
+      float tuberadius = ui.tuberadius->value();
 			Vector4d points[] = { 
 				Vector4d(ui.xVert_1->value(),ui.yVert_1->value(),ui.zVert_1->value(),1),
 				Vector4d(ui.xVert_2->value(),ui.yVert_2->value(),ui.zVert_2->value(),1),
 				Vector4d(ui.xVert_3->value(),ui.yVert_3->value(),ui.zVert_3->value(),1),
 			};
 			g.geom->SetProperty(PPoints, points);
-			g.geom->SetProperty(PRadius, &radius);
+      g.geom->SetProperty(PRadius, &radius);
+      g.geom->SetProperty(PTubeRadius, &tuberadius);
 		}
 		if (type == 1)
 		{

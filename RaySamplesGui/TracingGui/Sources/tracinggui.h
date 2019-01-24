@@ -89,6 +89,7 @@ private slots:
 	void SaveCurrentSceneSlot();
 	void SaveCurrentMaterialSlot();
 	void AddSphereSlot();
+  void AddTorusSlot();
 	void DeleteObjectSlot();
 	void AddPointSlot();
 	void SaveNewSceneSlot();
