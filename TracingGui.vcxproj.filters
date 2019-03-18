@@ -1,0 +1,313 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;cxx;c;def</Extensions>
+    </Filter>
+    <Filter Include="Form Files">
+      <UniqueIdentifier>{99349809-55BA-4b9d-BF79-8FDBB0286EB3}</UniqueIdentifier>
+      <Extensions>ui</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{D9D6E242-F8AF-46E4-B9FD-80ECBC20BA3E}</UniqueIdentifier>
+      <Extensions>qrc;*</Extensions>
+      <ParseFiles>false</ParseFiles>
+    </Filter>
+    <Filter Include="Generated Files">
+      <UniqueIdentifier>{71ED8ED8-ACB9-4CE9-BBE1-E00B30144E11}</UniqueIdentifier>
+      <Extensions>moc;h;cpp</Extensions>
+      <SourceControlFiles>False</SourceControlFiles>
+    </Filter>
+    <Filter Include="Generated Files\Debug">
+      <UniqueIdentifier>{bd71dd75-db8a-496d-aae6-b4cb53e45f31}</UniqueIdentifier>
+      <Extensions>cpp;moc</Extensions>
+      <SourceControlFiles>False</SourceControlFiles>
+    </Filter>
+    <Filter Include="Generated Files\Release">
+      <UniqueIdentifier>{0b8e9147-520a-4909-8b7d-873c4f0aaa52}</UniqueIdentifier>
+      <Extensions>cpp;moc</Extensions>
+      <SourceControlFiles>False</SourceControlFiles>
+    </Filter>
+    <Filter Include="Source Files\Gui">
+      <UniqueIdentifier>{044700b1-c9b2-4b02-b1fa-9a7245e6bae3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Logic">
+      <UniqueIdentifier>{e37409ee-f175-4d3c-8c75-bc9d39dfd759}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Logic\Model">
+      <UniqueIdentifier>{2a144ce8-f384-452f-8b09-73dfd4bdc277}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Logic\Material">
+      <UniqueIdentifier>{5171f14b-88c0-499a-b80d-5627f2486051}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Logic\Camera">
+      <UniqueIdentifier>{51ce8bcb-75e4-4d03-a3ef-0e0425a0d62c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Logic\Debug">
+      <UniqueIdentifier>{eed0c16d-654e-466d-92bc-2457502c4ee8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Logic\File">
+      <UniqueIdentifier>{925a6746-ed1d-43b1-a6e0-7cccca16d304}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Logic\Image">
+      <UniqueIdentifier>{f190de8d-aba2-48a6-b4ad-5cbeeb9105d0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Logic\Light">
+      <UniqueIdentifier>{b4739ae7-4df2-44ff-97e9-d9d6857a35eb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Logic\Math">
+      <UniqueIdentifier>{2fbdec02-0dc1-49e4-b83e-768672dc0761}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Gui\TrackProgress">
+      <UniqueIdentifier>{c5682daf-20bf-4a0b-a031-00cce3844227}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Logic\Renderer">
+      <UniqueIdentifier>{3675438c-2aeb-478d-aa0e-5c766c4b075e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Logic\Utils">
+      <UniqueIdentifier>{3c19a7c8-ee4f-4368-bf55-9f8e08ac7cbc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Gui\DoubleIntSpinBoxes">
+      <UniqueIdentifier>{830d2998-c39f-4696-9586-96508d1b9548}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Logic\Random">
+      <UniqueIdentifier>{6e4c6540-bd4c-4d47-aa18-bd700fd609b0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Gui\Thread">
+      <UniqueIdentifier>{ffd813e7-fc9d-443c-a21e-c6ec93a6c20e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Logic\Scene">
+      <UniqueIdentifier>{7d719dd5-e4bc-4179-a215-8fb2241b5e25}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Structs">
+      <UniqueIdentifier>{2d80d281-7a45-4fc5-8e11-642343d15029}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="GeneratedFiles\Debug\moc_tracinggui.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_tracinggui.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\qrc_tracinggui.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\AmbientLight.cpp">
+      <Filter>Source Files\Logic\Light</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\camera.cpp">
+      <Filter>Source Files\Logic\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\FileHandler.cpp">
+      <Filter>Source Files\Logic\File</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Geometry.cpp">
+      <Filter>Source Files\Logic\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\image.cpp">
+      <Filter>Source Files\Logic\Image</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\HdrComponent.cpp">
+      <Filter>Source Files\Logic\Image</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\material.cpp">
+      <Filter>Source Files\Logic\Material</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Matrix.cpp">
+      <Filter>Source Files\Logic\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Plane.cpp">
+      <Filter>Source Files\Logic\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Point.cpp">
+      <Filter>Source Files\Logic\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Renderer.cpp">
+      <Filter>Source Files\Logic\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\TestRenderer.cpp">
+      <Filter>Source Files\Logic\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\scene.cpp">
+      <Filter>Source Files\Logic\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\vector.cpp">
+      <Filter>Source Files\Logic\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\tracinggui.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\ToneMapper.cpp">
+      <Filter>Source Files\Logic\Image</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\TrackProgress.cpp">
+      <Filter>Source Files\Gui\TrackProgress</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_TrackProgress.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_TrackProgress.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\MathUtil.cpp">
+      <Filter>Source Files\Logic\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\DoubleIntSpinBox.cpp">
+      <Filter>Source Files\Gui\DoubleIntSpinBoxes</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_DoubleIntSpinBox.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_DoubleIntSpinBox.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Sphere.cpp">
+      <Filter>Source Files\Logic\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\DoubleTriangle.cpp">
+      <Filter>Source Files\Logic\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\GuiString.cpp">
+      <Filter>Source Files\Logic\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\PathTraceRenderer.cpp">
+      <Filter>Source Files\Logic\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\RandomNumber.cpp">
+      <Filter>Source Files\Logic\Random</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\RenderThread.cpp">
+      <Filter>Source Files\Gui\Thread</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Debug.cpp">
+      <Filter>Source Files\Logic\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\OctTree.cpp">
+      <Filter>Source Files\Structs</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\DirectMCRenderer.cpp">
+      <Filter>Source Files\Logic\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\SurfelRenderer.cpp">
+      <Filter>Source Files\Logic\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Roots.cpp">
+      <Filter>Source Files\Logic\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Torus.cpp">
+      <Filter>Source Files\Logic\Model</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Sources\AmbientLight.h">
+      <Filter>Source Files\Logic\Light</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Camera.h">
+      <Filter>Source Files\Logic\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Debug.h">
+      <Filter>Source Files\Logic\Debug</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\FileHandler.h">
+      <Filter>Source Files\Logic\File</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Geometry.h">
+      <Filter>Source Files\Logic\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\image.h">
+      <Filter>Source Files\Logic\Image</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\HdrComponent.h">
+      <Filter>Source Files\Logic\Image</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Material.h">
+      <Filter>Source Files\Logic\Material</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Matrix.h">
+      <Filter>Source Files\Logic\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Plane.h">
+      <Filter>Source Files\Logic\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Point.h">
+      <Filter>Source Files\Logic\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\TestRenderer.h">
+      <Filter>Source Files\Logic\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\renderer.h">
+      <Filter>Source Files\Logic\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\scene.h">
+      <Filter>Source Files\Logic\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Vector.h">
+      <Filter>Source Files\Logic\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\MathUtil.h">
+      <Filter>Source Files\Logic\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\ToneMapper.h">
+      <Filter>Source Files\Logic\Image</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Sphere.h">
+      <Filter>Source Files\Logic\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\DoubleTriangle.h">
+      <Filter>Source Files\Logic\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\GuiString.h">
+      <Filter>Source Files\Logic\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\PathTraceRenderer.h">
+      <Filter>Source Files\Logic\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\RandomNumber.h">
+      <Filter>Source Files\Logic\Random</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\RenderThread.h">
+      <Filter>Source Files\Gui\Thread</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\OctTree.h">
+      <Filter>Source Files\Structs</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\DirectMCRenderer.h">
+      <Filter>Source Files\Logic\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\SurfelRenderer.h">
+      <Filter>Source Files\Logic\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Torus.h">
+      <Filter>Source Files\Logic\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Roots.h">
+      <Filter>Source Files\Logic\Math</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="Sources\tracinggui.h">
+      <Filter>Generated Files</Filter>
+    </QtMoc>
+    <QtMoc Include="Sources\DoubleIntSpinBox.h">
+      <Filter>Generated Files</Filter>
+    </QtMoc>
+    <QtMoc Include="Sources\TrackProgress.h">
+      <Filter>Generated Files</Filter>
+    </QtMoc>
+  </ItemGroup>
+  <ItemGroup>
+    <QtRcc Include="Sources\tracinggui.qrc">
+      <Filter>Resource Files</Filter>
+    </QtRcc>
+  </ItemGroup>
+  <ItemGroup>
+    <QtUic Include="Sources/tracinggui.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+  </ItemGroup>
+</Project>
