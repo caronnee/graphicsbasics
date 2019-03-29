@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>813</width>
-    <height>484</height>
+    <width>845</width>
+    <height>573</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -47,17 +47,21 @@
       <property name="tabBarAutoHide">
        <bool>false</bool>
       </property>
-      <widget class="QWidget" name="model">
-       <property name="layoutDirection">
-        <enum>Qt::LeftToRight</enum>
-       </property>
-       <property name="autoFillBackground">
-        <bool>false</bool>
-       </property>
+      <widget class="QWidget" name="xModel">
        <attribute name="title">
         <string>Models</string>
        </attribute>
-       <layout class="QGridLayout" name="gridLayout_3">
+       <layout class="QGridLayout" name="gridLayout_3" columnstretch="7,9">
+        <item row="5" column="0">
+         <widget class="QPushButton" name="addPoint">
+          <property name="text">
+           <string>Add Point</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="0">
+         <widget class="QTreeView" name="treeView"/>
+        </item>
         <item row="3" column="0">
          <widget class="QPushButton" name="addModel">
           <property name="text">
@@ -65,13 +69,10 @@
           </property>
          </widget>
         </item>
-        <item row="0" column="0">
-         <widget class="QTreeView" name="treeView">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
+        <item row="1" column="0">
+         <widget class="QPushButton" name="addTorus">
+          <property name="text">
+           <string>Add Torus</string>
           </property>
          </widget>
         </item>
@@ -82,323 +83,6 @@
           </property>
          </widget>
         </item>
-        <item row="5" column="0">
-         <widget class="QPushButton" name="addPoint">
-          <property name="text">
-           <string>Add Point</string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="1" rowspan="6">
-         <layout class="QGridLayout" name="gridLayout">
-          <item row="7" column="0">
-           <widget class="QSpinBox" name="xRotationDeg">
-            <property name="maximum">
-             <number>359</number>
-            </property>
-           </widget>
-          </item>
-          <item row="7" column="2">
-           <widget class="QSpinBox" name="yRotationDeg">
-            <property name="maximum">
-             <number>359</number>
-            </property>
-           </widget>
-          </item>
-          <item row="5" column="3">
-           <widget class="QDial" name="zRotation">
-            <property name="maximum">
-             <number>359</number>
-            </property>
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-            <property name="invertedAppearance">
-             <bool>false</bool>
-            </property>
-            <property name="wrapping">
-             <bool>true</bool>
-            </property>
-           </widget>
-          </item>
-          <item row="5" column="0">
-           <widget class="QDial" name="xRotation">
-            <property name="enabled">
-             <bool>true</bool>
-            </property>
-            <property name="maximum">
-             <number>359</number>
-            </property>
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-            <property name="invertedAppearance">
-             <bool>false</bool>
-            </property>
-            <property name="wrapping">
-             <bool>true</bool>
-            </property>
-           </widget>
-          </item>
-          <item row="5" column="2">
-           <widget class="QDial" name="yRotation">
-            <property name="maximum">
-             <number>359</number>
-            </property>
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-            <property name="invertedAppearance">
-             <bool>false</bool>
-            </property>
-            <property name="wrapping">
-             <bool>true</bool>
-            </property>
-           </widget>
-          </item>
-          <item row="6" column="2">
-           <widget class="DoubleIntSpinBox" name="yRotationRad">
-            <property name="readOnly">
-             <bool>true</bool>
-            </property>
-            <property name="ConvertorType" stdset="0">
-             <number>0</number>
-            </property>
-           </widget>
-          </item>
-          <item row="6" column="3">
-           <widget class="DoubleIntSpinBox" name="zRotationRad">
-            <property name="readOnly">
-             <bool>true</bool>
-            </property>
-            <property name="ConvertorType" stdset="0">
-             <number>0</number>
-            </property>
-           </widget>
-          </item>
-          <item row="6" column="0">
-           <widget class="DoubleIntSpinBox" name="xRotationRad">
-            <property name="readOnly">
-             <bool>true</bool>
-            </property>
-            <property name="ConvertorType" stdset="0">
-             <number>0</number>
-            </property>
-           </widget>
-          </item>
-          <item row="7" column="3">
-           <widget class="QSpinBox" name="zRotationDeg">
-            <property name="maximum">
-             <number>359</number>
-            </property>
-           </widget>
-          </item>
-          <item row="8" column="0">
-           <widget class="QDoubleSpinBox" name="xModelPos">
-            <property name="prefix">
-             <string>x:</string>
-            </property>
-            <property name="decimals">
-             <number>1</number>
-            </property>
-            <property name="minimum">
-             <double>-100.000000000000000</double>
-            </property>
-           </widget>
-          </item>
-          <item row="8" column="2">
-           <widget class="QDoubleSpinBox" name="yModelPos">
-            <property name="prefix">
-             <string>y:</string>
-            </property>
-            <property name="suffix">
-             <string/>
-            </property>
-            <property name="decimals">
-             <number>1</number>
-            </property>
-            <property name="minimum">
-             <double>-100.000000000000000</double>
-            </property>
-           </widget>
-          </item>
-          <item row="8" column="3">
-           <widget class="QDoubleSpinBox" name="zModelPos">
-            <property name="prefix">
-             <string>z:</string>
-            </property>
-            <property name="decimals">
-             <number>1</number>
-            </property>
-            <property name="minimum">
-             <double>-100.000000000000000</double>
-            </property>
-            <property name="value">
-             <double>3.000000000000000</double>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="2">
-           <widget class="QDoubleSpinBox" name="yVert_1">
-            <property name="prefix">
-             <string>y:</string>
-            </property>
-            <property name="decimals">
-             <number>2</number>
-            </property>
-            <property name="minimum">
-             <double>-1000.000000000000000</double>
-            </property>
-            <property name="maximum">
-             <double>1000.000000000000000</double>
-            </property>
-           </widget>
-          </item>
-          <item row="3" column="0">
-           <widget class="QDoubleSpinBox" name="xVert_3">
-            <property name="prefix">
-             <string>x:</string>
-            </property>
-            <property name="suffix">
-             <string/>
-            </property>
-            <property name="decimals">
-             <number>2</number>
-            </property>
-            <property name="minimum">
-             <double>-1000.000000000000000</double>
-            </property>
-            <property name="value">
-             <double>0.000000000000000</double>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="0">
-           <widget class="QDoubleSpinBox" name="xVert_2">
-            <property name="prefix">
-             <string>x:</string>
-            </property>
-            <property name="suffix">
-             <string/>
-            </property>
-            <property name="decimals">
-             <number>2</number>
-            </property>
-            <property name="minimum">
-             <double>-1000.000000000000000</double>
-            </property>
-            <property name="value">
-             <double>0.000000000000000</double>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="3">
-           <widget class="QDoubleSpinBox" name="zVert_2">
-            <property name="prefix">
-             <string>z:</string>
-            </property>
-            <property name="decimals">
-             <number>2</number>
-            </property>
-            <property name="minimum">
-             <double>-1000.000000000000000</double>
-            </property>
-            <property name="maximum">
-             <double>1000.000000000000000</double>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="0">
-           <widget class="QDoubleSpinBox" name="xVert_1">
-            <property name="prefix">
-             <string>x:</string>
-            </property>
-            <property name="suffix">
-             <string/>
-            </property>
-            <property name="decimals">
-             <number>2</number>
-            </property>
-            <property name="minimum">
-             <double>-1000.000000000000000</double>
-            </property>
-            <property name="value">
-             <double>0.000000000000000</double>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="2">
-           <widget class="QDoubleSpinBox" name="yVert_2">
-            <property name="prefix">
-             <string>y:</string>
-            </property>
-            <property name="decimals">
-             <number>2</number>
-            </property>
-            <property name="minimum">
-             <double>-1000.000000000000000</double>
-            </property>
-            <property name="maximum">
-             <double>1000.000000000000000</double>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="3">
-           <widget class="QDoubleSpinBox" name="zVert_1">
-            <property name="prefix">
-             <string>z:</string>
-            </property>
-            <property name="decimals">
-             <number>2</number>
-            </property>
-            <property name="minimum">
-             <double>-1000.000000000000000</double>
-            </property>
-            <property name="maximum">
-             <double>1000.000000000000000</double>
-            </property>
-           </widget>
-          </item>
-          <item row="3" column="3">
-           <widget class="QDoubleSpinBox" name="zVert_3">
-            <property name="prefix">
-             <string>z:</string>
-            </property>
-            <property name="decimals">
-             <number>2</number>
-            </property>
-            <property name="minimum">
-             <double>-1000.000000000000000</double>
-            </property>
-            <property name="maximum">
-             <double>1000.000000000000000</double>
-            </property>
-           </widget>
-          </item>
-          <item row="4" column="2">
-           <widget class="QDoubleSpinBox" name="radius"/>
-          </item>
-          <item row="3" column="2">
-           <widget class="QDoubleSpinBox" name="yVert_3">
-            <property name="prefix">
-             <string>y:</string>
-            </property>
-            <property name="decimals">
-             <number>2</number>
-            </property>
-            <property name="minimum">
-             <double>-1000.000000000000000</double>
-            </property>
-            <property name="maximum">
-             <double>1000.000000000000000</double>
-            </property>
-           </widget>
-          </item>
-          <item row="4" column="3">
-           <widget class="QDoubleSpinBox" name="tuberadius"/>
-          </item>
-         </layout>
-        </item>
         <item row="2" column="0">
          <widget class="QPushButton" name="addSphere">
           <property name="text">
@@ -406,11 +90,353 @@
           </property>
          </widget>
         </item>
-        <item row="1" column="0">
-         <widget class="QPushButton" name="addTorus">
-          <property name="text">
-           <string>Add Torus</string>
+        <item row="0" column="1">
+         <widget class="QToolBox" name="xModelProps">
+          <property name="currentIndex">
+           <number>3</number>
           </property>
+          <widget class="QWidget" name="xToolsRotationPage">
+           <attribute name="label">
+            <string>Rotation</string>
+           </attribute>
+           <layout class="QGridLayout" name="gridLayout_8">
+            <item row="0" column="0">
+             <widget class="QDial" name="xRotation">
+              <property name="enabled">
+               <bool>true</bool>
+              </property>
+              <property name="maximum">
+               <number>359</number>
+              </property>
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="invertedAppearance">
+               <bool>false</bool>
+              </property>
+              <property name="wrapping">
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="1">
+             <widget class="QDial" name="yRotation">
+              <property name="maximum">
+               <number>359</number>
+              </property>
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="invertedAppearance">
+               <bool>false</bool>
+              </property>
+              <property name="wrapping">
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="2">
+             <widget class="QDial" name="zRotation">
+              <property name="maximum">
+               <number>359</number>
+              </property>
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="invertedAppearance">
+               <bool>false</bool>
+              </property>
+              <property name="wrapping">
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="0">
+             <widget class="QSpinBox" name="xRotationDeg">
+              <property name="maximum">
+               <number>359</number>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="1">
+             <widget class="QSpinBox" name="yRotationDeg">
+              <property name="maximum">
+               <number>359</number>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="2">
+             <widget class="QSpinBox" name="zRotationDeg">
+              <property name="maximum">
+               <number>359</number>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="0">
+             <widget class="DoubleIntSpinBox" name="xRotationRad">
+              <property name="readOnly">
+               <bool>true</bool>
+              </property>
+              <property name="ConvertorType" stdset="0">
+               <number>0</number>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="1">
+             <widget class="DoubleIntSpinBox" name="yRotationRad">
+              <property name="readOnly">
+               <bool>true</bool>
+              </property>
+              <property name="ConvertorType" stdset="0">
+               <number>0</number>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="2">
+             <widget class="DoubleIntSpinBox" name="zRotationRad">
+              <property name="readOnly">
+               <bool>true</bool>
+              </property>
+              <property name="ConvertorType" stdset="0">
+               <number>0</number>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+          <widget class="QWidget" name="xToolsPositionPage">
+           <attribute name="label">
+            <string>Position</string>
+           </attribute>
+           <layout class="QGridLayout" name="gridLayout_position0">
+            <item row="0" column="0">
+             <widget class="QDoubleSpinBox" name="xModelPos">
+              <property name="prefix">
+               <string>x:</string>
+              </property>
+              <property name="decimals">
+               <number>1</number>
+              </property>
+              <property name="minimum">
+               <double>-100.000000000000000</double>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="1">
+             <widget class="QDoubleSpinBox" name="yModelPos">
+              <property name="prefix">
+               <string>y:</string>
+              </property>
+              <property name="suffix">
+               <string/>
+              </property>
+              <property name="decimals">
+               <number>1</number>
+              </property>
+              <property name="minimum">
+               <double>-100.000000000000000</double>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="2">
+             <widget class="QDoubleSpinBox" name="zModelPos">
+              <property name="prefix">
+               <string>z:</string>
+              </property>
+              <property name="decimals">
+               <number>1</number>
+              </property>
+              <property name="minimum">
+               <double>-100.000000000000000</double>
+              </property>
+              <property name="value">
+               <double>3.000000000000000</double>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+          <widget class="QWidget" name="xToolsPointsPage">
+           <attribute name="label">
+            <string>Points</string>
+           </attribute>
+           <layout class="QGridLayout" name="gridLayout_position1">
+            <item row="0" column="0">
+             <widget class="QDoubleSpinBox" name="xVert_1">
+              <property name="prefix">
+               <string>x:</string>
+              </property>
+              <property name="suffix">
+               <string/>
+              </property>
+              <property name="decimals">
+               <number>2</number>
+              </property>
+              <property name="minimum">
+               <double>-1000.000000000000000</double>
+              </property>
+              <property name="value">
+               <double>0.000000000000000</double>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="1">
+             <widget class="QDoubleSpinBox" name="xVert_2">
+              <property name="prefix">
+               <string>x:</string>
+              </property>
+              <property name="suffix">
+               <string/>
+              </property>
+              <property name="decimals">
+               <number>2</number>
+              </property>
+              <property name="minimum">
+               <double>-1000.000000000000000</double>
+              </property>
+              <property name="value">
+               <double>0.000000000000000</double>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="2">
+             <widget class="QDoubleSpinBox" name="xVert_3">
+              <property name="prefix">
+               <string>x:</string>
+              </property>
+              <property name="suffix">
+               <string/>
+              </property>
+              <property name="decimals">
+               <number>2</number>
+              </property>
+              <property name="minimum">
+               <double>-1000.000000000000000</double>
+              </property>
+              <property name="value">
+               <double>0.000000000000000</double>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="0">
+             <widget class="QDoubleSpinBox" name="yVert_1">
+              <property name="prefix">
+               <string>y:</string>
+              </property>
+              <property name="decimals">
+               <number>2</number>
+              </property>
+              <property name="minimum">
+               <double>-1000.000000000000000</double>
+              </property>
+              <property name="maximum">
+               <double>1000.000000000000000</double>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="1">
+             <widget class="QDoubleSpinBox" name="yVert_2">
+              <property name="prefix">
+               <string>y:</string>
+              </property>
+              <property name="decimals">
+               <number>2</number>
+              </property>
+              <property name="minimum">
+               <double>-1000.000000000000000</double>
+              </property>
+              <property name="maximum">
+               <double>1000.000000000000000</double>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="2">
+             <widget class="QDoubleSpinBox" name="yVert_3">
+              <property name="prefix">
+               <string>y:</string>
+              </property>
+              <property name="decimals">
+               <number>2</number>
+              </property>
+              <property name="minimum">
+               <double>-1000.000000000000000</double>
+              </property>
+              <property name="maximum">
+               <double>1000.000000000000000</double>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="0">
+             <widget class="QDoubleSpinBox" name="zVert_1">
+              <property name="prefix">
+               <string>z:</string>
+              </property>
+              <property name="decimals">
+               <number>2</number>
+              </property>
+              <property name="minimum">
+               <double>-1000.000000000000000</double>
+              </property>
+              <property name="maximum">
+               <double>1000.000000000000000</double>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="1">
+             <widget class="QDoubleSpinBox" name="zVert_2">
+              <property name="prefix">
+               <string>z:</string>
+              </property>
+              <property name="decimals">
+               <number>2</number>
+              </property>
+              <property name="minimum">
+               <double>-1000.000000000000000</double>
+              </property>
+              <property name="maximum">
+               <double>1000.000000000000000</double>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="2">
+             <widget class="QDoubleSpinBox" name="zVert_3">
+              <property name="prefix">
+               <string>z:</string>
+              </property>
+              <property name="decimals">
+               <number>2</number>
+              </property>
+              <property name="minimum">
+               <double>-1000.000000000000000</double>
+              </property>
+              <property name="maximum">
+               <double>1000.000000000000000</double>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+          <widget class="QWidget" name="xToolsRadiusPage">
+           <property name="geometry">
+            <rect>
+             <x>0</x>
+             <y>0</y>
+             <width>269</width>
+             <height>116</height>
+            </rect>
+           </property>
+           <attribute name="label">
+            <string>Radius</string>
+           </attribute>
+           <layout class="QGridLayout" name="gridLayout_position2">
+            <item row="0" column="0">
+             <widget class="QDoubleSpinBox" name="radius"/>
+            </item>
+            <item row="1" column="0">
+             <widget class="QDoubleSpinBox" name="tuberadius"/>
+            </item>
+           </layout>
+          </widget>
          </widget>
         </item>
        </layout>
@@ -1056,7 +1082,7 @@
          <x>0</x>
          <y>0</y>
          <width>310</width>
-         <height>283</height>
+         <height>372</height>
         </rect>
        </property>
        <property name="sizePolicy">
@@ -1224,7 +1250,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>813</width>
+     <width>845</width>
      <height>21</height>
     </rect>
    </property>

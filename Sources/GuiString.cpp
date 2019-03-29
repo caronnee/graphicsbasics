@@ -8,8 +8,9 @@ GuiString::GuiString() :_s(NULL),_len(0),_allocated(0)
 }
 GuiString::GuiString(const char * c, int len)
 {
-	Create(len);
+	Create(len+1);
 	memcpy(_s,c,len);
+  _s[len] = '\0';
 	_len = len;
 }
 
@@ -18,6 +19,7 @@ GuiString::GuiString(const char * n)
 	int len = strlen(n) + 1;
 	Create(len);
 	memcpy(_s,n,len);
+  _len += len;
 }
 
 GuiString::GuiString(const GuiString& str)
